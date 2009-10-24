@@ -47,7 +47,7 @@ layouts =
 tags = {}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
-    tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s)
+    tags[s] = awful.tag({ "1", "2:www", "3:im", "4:mail", "5:music", "6", "7", "8", "9" }, s)
 end
 -- }}}
 
@@ -195,6 +195,11 @@ globalkeys = awful.util.table.join(
 
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
+    awful.key({ modkey,           }, "f",      function () awful.util.spawn("firefox") end),
+    awful.key({ modkey,           }, "t",      function () awful.util.spawn("thunderbird") end),
+    awful.key({ modkey,           }, "p",      function () awful.util.spawn("pidgin") end),
+    awful.key({ modkey,           }, "s",      function () awful.util.spawn("sunbird") end),
+    awful.key({ modkey,           }, "g",      function () awful.util.spawn("gmpc") end),
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 
@@ -206,6 +211,9 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1)         end),
     awful.key({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end),
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
+    
+    awful.key({ }, "F12",        function () teardrop("terminal",center,center, 0.4, 0.99) ),
+    awful.key({ modkey }, "F9",  function () teardrop("xterm -e alsamixer",center,center, 0.4, 0.99) ),
 
     -- Prompt
     awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
@@ -220,7 +228,7 @@ globalkeys = awful.util.table.join(
 )
 
 clientkeys = awful.util.table.join(
-    awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
+    awful.key({ modkey,           }, "F11",      function (c) c.fullscreen = not c.fullscreen  end),
     awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end),
     awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
