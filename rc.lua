@@ -212,8 +212,8 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end),
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
     
-    awful.key({ }, "F12",        function () teardrop("terminal",center,center, 0.4, 0.99) ),
-    awful.key({ modkey }, "F9",  function () teardrop("xterm -e alsamixer",center,center, 0.4, 0.99) ),
+    awful.key({ }, "F12",        function () teardrop("terminal",center,center, 0.99, 0.4)end ),
+    awful.key({ modkey }, "F9",  function () teardrop("xterm -e alsamixer","center","center", 0.99, 0.4)end ),
 
     -- Prompt
     awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
