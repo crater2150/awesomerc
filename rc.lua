@@ -51,9 +51,13 @@ for s = 1, screen.count() do
 end
 
 for i = 1, 9 do
-    tags[1][i].layout = layouts[1]
+    awful.layout.set(layouts[1], tags[1][i]);
 end
-    -- Each screen has its own tag table.
+
+awful.tag.setmwfact(0.3, tags[1][3])
+
+
+-- Each screen has its own tag table.
 -- }}}
 
 -- {{{ Menu
@@ -217,8 +221,8 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end),
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
     
-    awful.key({ }, "F12",        function () teardrop("terminal",center,center, 0.99, 0.4)end ),
-    awful.key({ modkey }, "F9",  function () teardrop("xterm -e alsamixer","center","center", 0.99, 0.4)end ),
+    awful.key({ }, "F12",        function () teardrop("terminal","center","center", 0.99, 0.4)end ),
+    awful.key({ modkey }, "F9",  function () teardrop("xterm -e alsamixer","top","center", 0.99, 0.4)end ),
 
     -- Prompt
     awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
