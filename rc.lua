@@ -49,8 +49,8 @@ tags.setup = {
     { name = "im",    layout = layouts[1], mwfact = 0.20 },
     { name = "mail",  layout = layouts[7]  },
     { name = "music", layout = layouts[7]  },
-    { name = "6",     layout = layouts[1], hide   = true },
-    { name = "7",     layout = layouts[1], hide   = true },
+    { name = "6",     layout = layouts[1]  },
+    { name = "7",     layout = layouts[1]  },
     { name = "8",     layout = layouts[1]  },
     { name = "9",     layout = layouts[1]  }
 }
