@@ -7,6 +7,8 @@ require("beautiful")
 -- Notification library
 require("naughty")
 require("teardrop")
+require("obvious.battery")
+require("obvious.wlan")
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
@@ -78,6 +80,14 @@ mylauncher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
                                      menu = mymainmenu })
 -- }}}
 
+-- {{{ Reusable separators
+spacer         = widget({ type = "textbox", name = "spacer" })
+spacer.text    = " "
+
+separator      = widget({ type = "textbox", name = "separator", align = "center" })
+separator.text = "·"
+-- }}}
+
 -- {{{ Wibox
 -- Create a textclock widget
 mytextclock = awful.widget.textclock({ align = "right" })
@@ -142,6 +152,7 @@ for s = 1, screen.count() do
     mytasklist[s] = awful.widget.tasklist(function(c)
                                               return awful.widget.tasklist.label.currenttags(c, s)
                                           end, mytasklist.buttons)
+    batmon  = obvious.battery();
 
     -- Create the wibox
     mywibox[s] = awful.wibox({ position = "top", screen = s })
@@ -155,6 +166,8 @@ for s = 1, screen.count() do
         },
         mylayoutbox[s],
         mytextclock,
+        separator, spacer, batmon,
+        spacer,
         s == 1 and mysystray or nil,
         mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft
