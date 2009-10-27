@@ -54,7 +54,7 @@ for i = 1, 9 do
     awful.layout.set(layouts[1], tags[1][i]);
 end
 
-awful.tag.setmwfact(0.3, tags[1][3])
+awful.tag.setmwfact(0.7, tags[1][3])
 
 
 -- Each screen has its own tag table.
