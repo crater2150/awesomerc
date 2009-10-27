@@ -35,32 +35,39 @@ layouts =
     awful.layout.suit.tile.top,
     awful.layout.suit.fair,
     awful.layout.suit.fair.horizontal,
-    awful.layout.suit.spiral,
-    awful.layout.suit.spiral.dwindle,
     awful.layout.suit.max,
     awful.layout.suit.max.fullscreen,
-    awful.layout.suit.magnifier,
     awful.layout.suit.floating
 }
 -- }}}
 
 -- {{{ Tags
--- Define a tag table which hold all screen tags.
-tags = {}
+local tags = {}
+tags.setup = {
+    { name = "term",  layout = layouts[1]  },
+    { name = "web",   layout = layouts[7]  },
+    { name = "im",    layout = layouts[1], mwfact = 0.20 },
+    { name = "mail",  layout = layouts[7]  },
+    { name = "music", layout = layouts[7]  },
+    { name = "6",     layout = layouts[1], hide   = true },
+    { name = "7",     layout = layouts[1], hide   = true },
+    { name = "8",     layout = layouts[1]  },
+    { name = "9",     layout = layouts[1]  }
+}
+
 for s = 1, screen.count() do
-    -- Each screen has its own tag table.
-    tags[s] = awful.tag({ "1", "2:www", "3:im", "4:mail", "5:music", "6", "7", "8", "9" }, s)
+    tags[s] = {}
+    for i, t in ipairs(tags.setup) do
+        tags[s][i] = tag({ name = t.name })
+        tags[s][i].screen = s
+        awful.tag.setproperty(tags[s][i], "layout", t.layout)
+        awful.tag.setproperty(tags[s][i], "mwfact", t.mwfact)
+        awful.tag.setproperty(tags[s][i], "hide",   t.hide)
+    end
+    tags[s][1].selected = true
 end
-
-for i = 1, 9 do
-    awful.layout.set(layouts[1], tags[1][i]);
-end
-
-awful.tag.setmwfact(0.7, tags[1][3])
-
-
--- Each screen has its own tag table.
 -- }}}
+
 
 -- {{{ Menu
 -- Create a laucher widget and a main menu
