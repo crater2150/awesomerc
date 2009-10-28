@@ -9,8 +9,7 @@ require("naughty")
 require("teardrop")
 require("obvious.battery")
 require("obvious.wlan")
-
-require("vicious")
+require("obvious.popup_run_prompt")
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
@@ -71,24 +70,6 @@ end
 -- }}}
 
 
--- {{{ Menu
--- Create a laucher widget and a main menu
-myawesomemenu = {
-   { "manual", terminal .. " -e man awesome" },
-   { "edit config", editor_cmd .. " " .. awful.util.getdir("config") .. "/rc.lua" },
-   { "restart", awesome.restart },
-   { "quit", awesome.quit }
-}
-
-mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
-                                    { "open terminal", terminal }
-                                  }
-                        })
-
-mylauncher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
-                                     menu = mymainmenu })
--- }}}
-
 -- {{{ Reusable separators
 spacer         = widget({ type = "textbox", name = "spacer" })
 spacer.text    = " "
@@ -98,10 +79,11 @@ separator.text = "·"
 -- }}}
 
 -- {{{ Wibox
--- Create a textclock widget
-mytextclock = awful.widget.textclock({ align = "right" })
 
--- Create a systray
+--popup run
+
+-- Create a textclock widget
+clock = awful.widget.textclock({ align = "right" })
 mysystray = widget({ type = "systray" })
 
 -- Create a wibox for each screen and add it
@@ -117,31 +99,6 @@ mytaglist.buttons = awful.util.table.join(
                     awful.button({ }, 4, awful.tag.viewnext),
                     awful.button({ }, 5, awful.tag.viewprev)
                     )
-mytasklist = {}
-mytasklist.buttons = awful.util.table.join(
-                     awful.button({ }, 1, function (c)
-                                              if not c:isvisible() then
-                                                  awful.tag.viewonly(c:tags()[1])
-                                              end
-                                              client.focus = c
-                                              c:raise()
-                                          end),
-                     awful.button({ }, 3, function ()
-                                              if instance then
-                                                  instance:hide()
-                                                  instance = nil
-                                              else
-                                                  instance = awful.menu.clients({ width=250 })
-                                              end
-                                          end),
-                     awful.button({ }, 4, function ()
-                                              awful.client.focus.byidx(1)
-                                              if client.focus then client.focus:raise() end
-                                          end),
-                     awful.button({ }, 5, function ()
-                                              awful.client.focus.byidx(-1)
-                                              if client.focus then client.focus:raise() end
-                                          end))
 
 for s = 1, screen.count() do
     -- Create a promptbox for each screen
@@ -158,27 +115,22 @@ for s = 1, screen.count() do
     mytaglist[s] = awful.widget.taglist(s, awful.widget.taglist.label.all, mytaglist.buttons)
 
     -- Create a tasklist widget
-    mytasklist[s] = awful.widget.tasklist(function(c)
-                                              return awful.widget.tasklist.label.currenttags(c, s)
-                                          end, mytasklist.buttons)
     batmon  = obvious.battery();
 
     -- Create the wibox
-    mywibox[s] = awful.wibox({ position = "top", screen = s })
+    mywibox[s] = awful.wibox({ position = "left", screen = s })
     -- Add widgets to the wibox - order matters
     mywibox[s].widgets = {
         {
-            mylauncher,
             mytaglist[s],
             mypromptbox[s],
             layout = awful.widget.layout.horizontal.leftright
         },
         mylayoutbox[s],
-        mytextclock,
+        clock,
         separator, spacer, batmon,
         spacer,
         s == 1 and mysystray or nil,
-        mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft
     }
 end
@@ -248,7 +200,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey }, "F9",  function () teardrop("xterm -e alsamixer","top","center", 0.99, 0.4)end ),
 
     -- Prompt
-    awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
+    awful.key({ modkey }, "r", function () obvious.popup_run_prompt.run_prompt() end),
 
     awful.key({ modkey }, "x",
               function ()
