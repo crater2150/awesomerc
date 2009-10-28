@@ -88,6 +88,15 @@ mysystray = widget({ type = "systray" })
 clock = widget({ type = "textbox" })
 vicious.register(clock, vicious.widgets.date, "%b %d, %R", 60)
 
+memwidget = widget({ type = "textbox" })
+vicious.register(memwidget, vicious.widgets.mem, "⌸ $1% ($2MB / $3MB) ", 13)
+
+--batwidget  = obvious.battery();
+batwidget = widget({ type = "textbox" })
+vicious.register(batwidget, vicious.widgets.batat, "$1$2% - $3", 61)
+
+wlanwidget = widget({ type = "textbox" })
+vicious.register(wlanwidget, vicious.widgets.wifi, "WLAN ${ssid} @ ${rate}", 31, "wlan0")
 -- Create a wibox for each screen and add it
 leftwibox = {}
 rightwibox = {}
@@ -114,8 +123,6 @@ for s = 1, screen.count() do
     -- Create a taglist widget
     mytaglist[s] = awful.widget.taglist(s, awful.widget.taglist.label.all, mytaglist.buttons)
 
-    -- Create a tasklist widget
-    batmon  = obvious.battery();
 
     -- Create the wibox
     leftwibox[s] = awful.wibox({ position = "left", screen = s })
@@ -125,15 +132,14 @@ for s = 1, screen.count() do
         mytaglist[s],
         mylayoutbox[s],
         clock,
-        separator, spacer, batmon,
+        separator, spacer, batwidget,
         spacer,
         layout = awful.widget.layout.horizontal.rightleft
     }
     rightwibox[s].widgets = {
         {
-            mylayoutbox[s],
-            clock,
-            separator, spacer, batmon,
+            memwidget,
+            separator, spacer, batwidget,
             spacer,
             layout = awful.widget.layout.horizontal.leftright
         },
