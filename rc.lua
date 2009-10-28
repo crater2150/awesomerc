@@ -46,7 +46,7 @@ local tags = {}
 tags.setup = {
     { name = "term",  layout = layouts[1]  },
     { name = "web",   layout = layouts[7]  },
-    { name = "im",    layout = layouts[1], mwfact = 0.20 },
+    { name = "im",    layout = layouts[1], mwfact = 0.80 },
     { name = "mail",  layout = layouts[7]  },
     { name = "music", layout = layouts[7]  },
     { name = "6",     layout = layouts[1]  },
