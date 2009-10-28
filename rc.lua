@@ -10,6 +10,8 @@ require("teardrop")
 require("obvious.battery")
 require("obvious.wlan")
 
+require("vicious")
+
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
 beautiful.init("/usr/share/awesome/themes/default/theme.lua")
@@ -338,6 +340,8 @@ awful.rules.rules = {
     -- Set Firefox to always map on tags number 2 of screen 1.
     { rule = { class = "Firefox" },
       properties = { tag = tags[1][2] } },
+    { rule = { class = "Pidgin" },
+      properties = { tag = tags[1][3] } },
     { rule = { class = "Thunderbird-bin" },
       properties = { tag = tags[1][4] } },
 }
