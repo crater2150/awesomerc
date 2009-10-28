@@ -8,8 +8,8 @@ require("beautiful")
 require("naughty")
 require("teardrop")
 require("obvious.battery")
-require("obvious.wlan")
 require("obvious.popup_run_prompt")
+require("vicious")
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
@@ -45,15 +45,15 @@ layouts =
 -- {{{ Tags
 local tags = {}
 tags.setup = {
-    { name = "term",  layout = layouts[1]  },
-    { name = "web",   layout = layouts[7]  },
-    { name = "im",    layout = layouts[1], mwfact = 0.80 },
-    { name = "mail",  layout = layouts[7]  },
-    { name = "music", layout = layouts[7]  },
-    { name = "6",     layout = layouts[1]  },
-    { name = "7",     layout = layouts[1]  },
-    { name = "8",     layout = layouts[1]  },
-    { name = "9",     layout = layouts[1]  }
+    { name = "1:⚙",   layout = layouts[1]  },
+    { name = "2:⌘",   layout = layouts[7]  },
+    { name = "3:☻",   layout = layouts[1], mwfact = 0.80 },
+    { name = "4:✉",   layout = layouts[7]  },
+    { name = "5:☑",   layout = layouts[7]  },
+    { name = "6:♫",   layout = layouts[1]  },
+    { name = "7:☣",    layout = layouts[1]  },
+    { name = "8:☕",    layout = layouts[1]  },
+    { name = "9:⚂",    layout = layouts[1]  }
 }
 
 for s = 1, screen.count() do
@@ -69,7 +69,6 @@ for s = 1, screen.count() do
 end
 -- }}}
 
-
 -- {{{ Reusable separators
 spacer         = widget({ type = "textbox", name = "spacer" })
 spacer.text    = " "
@@ -83,12 +82,15 @@ separator.text = "·"
 --popup run
 
 -- Create a textclock widget
-clock = awful.widget.textclock({ align = "right" })
+--clock     = awful.widget.textclock({ align = "right" })
 mysystray = widget({ type = "systray" })
 
+clock = widget({ type = "textbox" })
+vicious.register(clock, vicious.widgets.date, "%b %d, %R", 60)
+
 -- Create a wibox for each screen and add it
-mywibox = {}
-mypromptbox = {}
+leftwibox = {}
+rightwibox = {}
 mylayoutbox = {}
 mytaglist = {}
 mytaglist.buttons = awful.util.table.join(
@@ -101,8 +103,6 @@ mytaglist.buttons = awful.util.table.join(
                     )
 
 for s = 1, screen.count() do
-    -- Create a promptbox for each screen
-    mypromptbox[s] = awful.widget.prompt({ layout = awful.widget.layout.horizontal.leftright })
     -- Create an imagebox widget which will contains an icon indicating which layout we're using.
     -- We need one layoutbox per screen.
     mylayoutbox[s] = awful.widget.layoutbox(s)
@@ -118,20 +118,27 @@ for s = 1, screen.count() do
     batmon  = obvious.battery();
 
     -- Create the wibox
-    mywibox[s] = awful.wibox({ position = "left", screen = s })
+    leftwibox[s] = awful.wibox({ position = "left", screen = s })
+    rightwibox[s] = awful.wibox({ position = "right", screen = s })
     -- Add widgets to the wibox - order matters
-    mywibox[s].widgets = {
-        {
-            mytaglist[s],
-            mypromptbox[s],
-            layout = awful.widget.layout.horizontal.leftright
-        },
+    leftwibox[s].widgets = {
+        mytaglist[s],
         mylayoutbox[s],
         clock,
         separator, spacer, batmon,
         spacer,
-        s == 1 and mysystray or nil,
         layout = awful.widget.layout.horizontal.rightleft
+    }
+    rightwibox[s].widgets = {
+        {
+            mylayoutbox[s],
+            clock,
+            separator, spacer, batmon,
+            spacer,
+            layout = awful.widget.layout.horizontal.leftright
+        },
+        separator, spacer, s == 1 and mysystray or nil,
+        layout = awful.widget.layout.horizontal.leftright
     }
 end
 -- }}}
@@ -200,15 +207,8 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey }, "F9",  function () teardrop("xterm -e alsamixer","top","center", 0.99, 0.4)end ),
 
     -- Prompt
-    awful.key({ modkey }, "r", function () obvious.popup_run_prompt.run_prompt() end),
+    awful.key({ modkey }, "r", function () obvious.popup_run_prompt.run_prompt() end)
 
-    awful.key({ modkey }, "x",
-              function ()
-                  awful.prompt.run({ prompt = "Run Lua code: " },
-                  mypromptbox[mouse.screen].widget,
-                  awful.util.eval, nil,
-                  awful.util.getdir("cache") .. "/history_eval")
-              end)
 )
 
 clientkeys = awful.util.table.join(
@@ -296,6 +296,8 @@ awful.rules.rules = {
       properties = { tag = tags[1][3] } },
     { rule = { class = "Thunderbird-bin" },
       properties = { tag = tags[1][4] } },
+    { rule = { class = "Sunbird-bin" },
+      properties = { tag = tags[1][5] } },
 }
 -- }}}
 
