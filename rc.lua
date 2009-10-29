@@ -13,7 +13,7 @@ require("vicious")
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
-beautiful.init("/usr/share/awesome/themes/default/theme.lua")
+beautiful.init("/home/crater2150/.config/awesome/zenburn/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "terminal"
@@ -213,7 +213,8 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey }, "F9",  function () teardrop("xterm -e alsamixer","top","center", 0.99, 0.4)end ),
 
     -- Prompt
-    awful.key({ modkey }, "r", function () obvious.popup_run_prompt.run_prompt() end)
+    awful.key({ modkey }, "r", function () obvious.popup_run_prompt.run_prompt() end),
+    awful.key({ }, "Scroll_Lock", function () awful.util.spawn("wli") end)
 
 )
 
