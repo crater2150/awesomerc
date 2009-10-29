@@ -96,7 +96,7 @@ batwidget = widget({ type = "textbox" })
 vicious.register(batwidget, vicious.widgets.batat, "$1$2% - $3", 61)
 
 wlanwidget = widget({ type = "textbox" })
-vicious.register(wlanwidget, vicious.widgets.wifi, "WLAN ${ssid} @ ${rate}", 31, "wlan0")
+vicious.register(wlanwidget, vicious.widgets.wifi, "WLAN ${ssid} @ ${sign}", 31, "wlan0")
 -- Create a wibox for each screen and add it
 leftwibox = {}
 rightwibox = {}
@@ -140,6 +140,7 @@ for s = 1, screen.count() do
         {
             memwidget,
             separator, spacer, batwidget,
+            separator, spacer, wlanwidget,
             spacer,
             layout = awful.widget.layout.horizontal.leftright
         },
