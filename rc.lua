@@ -74,7 +74,7 @@ spacer         = widget({ type = "textbox", name = "spacer" })
 spacer.text    = " "
 
 separator      = widget({ type = "textbox", name = "separator", align = "center" })
-separator.text = "·"
+separator.text = " )( "
 -- }}}
 
 -- {{{ Wibox
@@ -93,10 +93,20 @@ vicious.register(memwidget, vicious.widgets.mem, "⌸ $1% ($2MB / $3MB) ", 13)
 
 --batwidget  = obvious.battery();
 batwidget = widget({ type = "textbox" })
-vicious.register(batwidget, vicious.widgets.batat, "$1$2% - $3", 61)
+vicious.register(batwidget, vicious.widgets.batat, "⌁ $1$2% - $3", 61)
+
+cpuwidget = awful.widget.progressbar()
+cpulabel = widget({ type = "textbox" })
+cpuwidget:set_width(50)
+cpuwidget:set_background_color("#494B4F")
+cpuwidget:set_color("#FF5656")
+cpuwidget:set_gradient_colors({ "#FF5656", "#88A175", "#AECF96" })
+vicious.register(cpuwidget, vicious.widgets.cpu, "$1",41)
+vicious.register(cpulabel, vicious.widgets.cpu, "CPU: $1%")
+
 
 wlanwidget = widget({ type = "textbox" })
-vicious.register(wlanwidget, vicious.widgets.wifi, "WLAN ${ssid} @ ${sign}", 31, "wlan0")
+vicious.register(wlanwidget, vicious.widgets.wifi, "WLAN ${ssid} @ ${sign}, ${link}", 31, "wlan0")
 -- Create a wibox for each screen and add it
 leftwibox = {}
 rightwibox = {}
@@ -141,6 +151,7 @@ for s = 1, screen.count() do
             memwidget,
             separator, spacer, batwidget,
             separator, spacer, wlanwidget,
+            separator, spacer, cpulabel, cpuwidget,
             spacer,
             layout = awful.widget.layout.horizontal.leftright
         },
@@ -314,6 +325,7 @@ awful.rules.rules = {
 client.add_signal("manage", function (c, startup)
     -- Add a titlebar
     -- awful.titlebar.add(c, { modkey = modkey })
+    c.size_hints_honor = false 
 
     -- Enable sloppy focus
     c:add_signal("mouse::enter", function(c)
