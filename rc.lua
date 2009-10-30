@@ -106,7 +106,7 @@ vicious.register(cpulabel, vicious.widgets.cpu, "CPU: $1%")
 
 
 wlanwidget = widget({ type = "textbox" })
-vicious.register(wlanwidget, vicious.widgets.wifi, "WLAN ${ssid} @ ${sign}, ${link}", 31, "wlan0")
+vicious.register(wlanwidget, vicious.widgets.wifi, "WLAN ${ssid} @ ${sign}, Q:${link}/70", 31, "wlan0")
 -- Create a wibox for each screen and add it
 leftwibox = {}
 rightwibox = {}
