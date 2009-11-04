@@ -163,14 +163,15 @@ end
 
 -- {{{ Mouse bindings
 root.buttons(awful.util.table.join(
-    awful.button({ }, 3, function () mymainmenu:toggle() end),
-    awful.button({ }, 4, awful.tag.viewnext),
-    awful.button({ }, 5, awful.tag.viewprev)
+awful.button({ }, 3, function () mymainmenu:toggle() end),
+awful.button({ }, 4, awful.tag.viewnext),
+awful.button({ }, 5, awful.tag.viewprev)
 ))
 -- }}}
 
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
+--{{{ 
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
@@ -186,8 +187,8 @@ globalkeys = awful.util.table.join(
             if client.focus then client.focus:raise() end
         end),
     awful.key({ modkey,           }, "w", function () mymainmenu:show(true)        end),
-
-    -- Layout manipulation
+--}}}
+    --{{{ Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),
     awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1)    end),
     awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end),
@@ -200,7 +201,7 @@ globalkeys = awful.util.table.join(
                 client.focus:raise()
             end
         end),
-
+    --}}}
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
     awful.key({ modkey,           }, "f",      function () awful.util.spawn("firefox") end),
@@ -211,7 +212,17 @@ globalkeys = awful.util.table.join(
     awful.key({ }, "XF86Mail",                 function () awful.util.spawn("xset dpms force off") end),
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
+    
+    -- Audio control
+    awful.key({ modkey }, "F9",  function () teardrop("xterm -e alsamixer","top","center", 0.99, 0.4)end ),
 
+    -- Prompt
+    awful.key({ modkey }, "r", function () obvious.popup_run_prompt.run_prompt() end),
+    awful.key({ }, "Scroll_Lock", function () awful.util.spawn("wli") end)
+    awful.key({ }, "F12",        function () teardrop("terminal","center","center", 0.99, 0.7)end ),
+
+
+    --{{{Default
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)    end),
     awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)    end),
     awful.key({ modkey, "Shift"   }, "h",     function () awful.tag.incnmaster( 1)      end),
@@ -221,13 +232,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end),
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
     
-    awful.key({ }, "F12",        function () teardrop("terminal","center","center", 0.99, 0.4)end ),
-    awful.key({ modkey }, "F9",  function () teardrop("xterm -e alsamixer","top","center", 0.99, 0.4)end ),
-
-    -- Prompt
-    awful.key({ modkey }, "r", function () obvious.popup_run_prompt.run_prompt() end),
-    awful.key({ }, "Scroll_Lock", function () awful.util.spawn("wli") end)
-
+    --}}}
 )
 
 clientkeys = awful.util.table.join(
