@@ -7,6 +7,7 @@ require("beautiful")
 -- Notification library
 require("naughty")
 require("teardrop")
+require("mpdprompt")
 require("obvious.battery")
 require("obvious.popup_run_prompt")
 require("vicious")
@@ -215,10 +216,11 @@ globalkeys = awful.util.table.join(
     
     -- Audio control
     awful.key({ modkey }, "F9",  function () teardrop("xterm -e alsamixer","top","center", 0.99, 0.4)end ),
+    awful.key({ modkey }, "F1",  function () mpdprompt("top","center")end ),
 
     -- Prompt
     awful.key({ modkey }, "r", function () obvious.popup_run_prompt.run_prompt() end),
-    awful.key({ }, "Scroll_Lock", function () awful.util.spawn("wli") end)
+    awful.key({ }, "Scroll_Lock", function () awful.util.spawn("wli") end),
     awful.key({ }, "F12",        function () teardrop("terminal","center","center", 0.99, 0.7)end ),
 
 
@@ -230,7 +232,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol( 1)         end),
     awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1)         end),
     awful.key({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end),
-    awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
+    awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, 0) end)
     
     --}}}
 )
