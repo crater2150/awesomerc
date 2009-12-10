@@ -48,7 +48,7 @@ local tags = {}
 tags.setup = {
     { name = "1:⚙",   layout = layouts[1]  },
     { name = "2:⌘",   layout = layouts[7]  },
-    { name = "3:☻",   layout = layouts[1], mwfact = 0.80 },
+    { name = "3:☻",   layout = layouts[2], mwfact = 0.20 },
     { name = "4:✉",   layout = layouts[7]  },
     { name = "5:☑",   layout = layouts[7]  },
     { name = "6:♫",   layout = layouts[1]  },
@@ -202,6 +202,13 @@ globalkeys = awful.util.table.join(
                 client.focus:raise()
             end
         end),
+    awful.key({ "Mod1",           }, "Tab",
+        function ()
+            awful.client.focus.history.previous()
+            if client.focus then
+                client.focus:raise()
+            end
+        end),
     --}}}
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
@@ -211,17 +218,26 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "s",      function () awful.util.spawn("sunbird") end),
     awful.key({ modkey,           }, "g",      function () awful.util.spawn("gmpc") end),
     awful.key({ }, "XF86Mail",                 function () awful.util.spawn("xset dpms force off") end),
+    awful.key({ modkey }, "XF86Mail",                 function () awful.util.spawn("slock") end),
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
     
     -- Audio control
     awful.key({ modkey }, "F9",  function () teardrop("xterm -e alsamixer","top","center", 0.99, 0.4)end ),
     awful.key({ modkey }, "F1",  function () mpdprompt("top","center")end ),
-
+    awful.key({ }, "XF86AudioLowerVolume",  function () awful.util.spawn("amixer set Front 2dB-")end ),
+    awful.key({ }, "XF86AudioRaiseVolume",  function () awful.util.spawn("amixer set Front 2dB+")end ),
+    awful.key({ }, "XF86AudioMute",         function () awful.util.spawn("amixer set Front toggle") end),
+    awful.key({ modkey , "Shift" },   "m",  function () awful.util.spawn("mpdmenu -a") end),
+    awful.key({ modkey , "Control" }, "m",  function () awful.util.spawn("mpdmenu -t") end),
+    awful.key({ modkey },             "m",  function () awful.util.spawn("mpc toggle") end),
+    awful.key({ modkey },             "n",  function () awful.util.spawn("mpc next") end),
+    awful.key({ modkey , "Shift"},    "n",  function () awful.util.spawn("mpc prev") end),
+    awful.key({ modkey , "Control" }, "n",  function () awful.util.spawn("mpdmenu -j") end),
     -- Prompt
     awful.key({ modkey }, "r", function () obvious.popup_run_prompt.run_prompt() end),
     awful.key({ }, "Scroll_Lock", function () awful.util.spawn("wli") end),
-    awful.key({ }, "F12",        function () teardrop("terminal","center","center", 0.99, 0.7)end ),
+    awful.key({ }, "F12",        function () teardrop("terminal -x zsh -l","center","center", 0.99, 0.7)end ),
 
 
     --{{{Default
@@ -242,14 +258,9 @@ clientkeys = awful.util.table.join(
     awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end),
     awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
-    awful.key({ modkey,           }, "o",      awful.client.movetoscreen                        ),
+    awful.key({ modkey,           }, "o",      function (c) c.ontop = not c.ontop end),
     awful.key({ modkey, "Shift"   }, "r",      function (c) c:redraw()                       end),
-    awful.key({ modkey,           }, "n",      function (c) c.minimized = not c.minimized    end),
-    awful.key({ modkey,           }, "m",
-        function (c)
-            c.maximized_horizontal = not c.maximized_horizontal
-            c.maximized_vertical   = not c.maximized_vertical
-        end)
+    awful.key({ modkey,           }, "n",      function (c) c.minimized = not c.minimized    end)
 )
 
 -- Compute the maximum number of digit we need, limited to 9
@@ -307,10 +318,12 @@ awful.rules.rules = {
       properties = { border_width = beautiful.border_width,
                      border_color = beautiful.border_normal,
                      focus = true,
+                     size_hints_honor = false,
                      keys = clientkeys,
                      buttons = clientbuttons } },
     { rule = { class = "MPlayer" },
-      properties = { floating = true } },
+      properties = { floating = true,
+                     size_hints_honor = true } },
     { rule = { class = "pinentry" },
       properties = { floating = true } },
     { rule = { class = "gimp" },
@@ -320,7 +333,9 @@ awful.rules.rules = {
       properties = { tag = tags[1][2] } },
     { rule = { class = "Pidgin" },
       properties = { tag = tags[1][3] } },
-    { rule = { class = "Thunderbird-bin" },
+    { rule = { role = "buddy_list" },
+      properties = { master = true } },
+    { rule = { class = "Thunderbird" },
       properties = { tag = tags[1][4] } },
     { rule = { class = "Sunbird-bin" },
       properties = { tag = tags[1][5] } },
@@ -332,7 +347,6 @@ awful.rules.rules = {
 client.add_signal("manage", function (c, startup)
     -- Add a titlebar
     -- awful.titlebar.add(c, { modkey = modkey })
-    c.size_hints_honor = false 
 
     -- Enable sloppy focus
     c:add_signal("mouse::enter", function(c)
