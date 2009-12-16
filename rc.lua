@@ -17,7 +17,7 @@ require("vicious")
 beautiful.init("/home/crater2150/.config/awesome/zenburn/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "terminal"
+terminal = "sakura"
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -176,6 +176,9 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
+    awful.key({ }, "XF86Word",   awful.tag.viewprev       ),
+    awful.key({ }, "XF86Webcam",  awful.tag.viewnext       ),
+    awful.key({ }, "XF86Away", awful.tag.history.restore),
 
     awful.key({ modkey,           }, "j",
         function ()
@@ -223,7 +226,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
     
     -- Audio control
-    awful.key({ modkey }, "F9",  function () teardrop("xterm -e alsamixer","top","center", 0.99, 0.4)end ),
+    awful.key({ modkey }, "F9",  function () teardrop("sakura -e alsamixer","top","center", 0.99, 0.4)end ),
     awful.key({ modkey }, "F1",  function () mpdprompt("top","center")end ),
     awful.key({ }, "XF86AudioLowerVolume",  function () awful.util.spawn("amixer set Front 2dB-")end ),
     awful.key({ }, "XF86AudioRaiseVolume",  function () awful.util.spawn("amixer set Front 2dB+")end ),
@@ -237,7 +240,7 @@ globalkeys = awful.util.table.join(
     -- Prompt
     awful.key({ modkey }, "r", function () obvious.popup_run_prompt.run_prompt() end),
     awful.key({ }, "Scroll_Lock", function () awful.util.spawn("wli") end),
-    awful.key({ }, "F12",        function () teardrop("terminal -x zsh -l","center","center", 0.99, 0.7)end ),
+    awful.key({ }, "F12",        function () teardrop("sakura -l","center","center", 0.99, 0.7)end ),
 
 
     --{{{Default
