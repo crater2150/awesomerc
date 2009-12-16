@@ -177,7 +177,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
     awful.key({ }, "XF86Word",   awful.tag.viewprev       ),
-    awful.key({ }, "XF86Webcam",  awful.tag.viewnext       ),
+    awful.key({ }, "XF86WebCam",  awful.tag.viewnext       ),
     awful.key({ }, "XF86Away", awful.tag.history.restore),
 
     awful.key({ modkey,           }, "j",
