@@ -17,9 +17,8 @@ require("vicious")
 beautiful.init("/home/crater2150/.config/awesome/zenburn/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "sakura"
-editor = os.getenv("EDITOR") or "vim"
-editor_cmd = terminal .. " -e " .. editor
+terminal = "sakura -e screen"
+editor_cmd = "sakura -e vim"
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -244,7 +243,7 @@ globalkeys = awful.util.table.join(
     -- Prompt
     awful.key({ modkey }, "r", function () obvious.popup_run_prompt.run_prompt() end),
     awful.key({ }, "Scroll_Lock", function () awful.util.spawn("wli") end),
-    awful.key({ }, "F12",        function () teardrop("sakura -l","center","center", 0.99, 0.7)end ),
+    awful.key({ }, "F12",        function () teardrop("sakura -e 'screen -l'","center","center", 0.99, 0.7)end ),
 
 
     --{{{Default
