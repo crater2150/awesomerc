@@ -236,6 +236,10 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey },             "m",  function () awful.util.spawn("mpc toggle") end),
     awful.key({ modkey },             "n",  function () awful.util.spawn("mpc next") end),
     awful.key({ modkey , "Shift"},    "n",  function () awful.util.spawn("mpc prev") end),
+    awful.key({ },        "XF86AudioPlay",  function () awful.util.spawn("mpc toggle") end),
+    awful.key({ },        "XF86AudioNext",  function () awful.util.spawn("mpc next") end),
+    awful.key({ },        "XF86AudioPrev",  function () awful.util.spawn("mpc prev") end),
+    awful.key({ },        "XF86AudioStop",  function () awful.util.spawn("mpdmenu -a") end),
     awful.key({ modkey , "Control" }, "n",  function () awful.util.spawn("mpdmenu -j") end),
     -- Prompt
     awful.key({ modkey }, "r", function () obvious.popup_run_prompt.run_prompt() end),
