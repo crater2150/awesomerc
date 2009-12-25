@@ -7,7 +7,6 @@ require("beautiful")
 -- Notification library
 require("naughty")
 require("teardrop")
-require("mpdprompt")
 require("obvious.battery")
 require("obvious.popup_run_prompt")
 require("vicious")
@@ -226,7 +225,6 @@ globalkeys = awful.util.table.join(
     
     -- Audio control
     awful.key({ modkey }, "F9",  function () teardrop("sakura -e alsamixer","top","center", 0.99, 0.4)end ),
-    awful.key({ modkey }, "F1",  function () mpdprompt("top","center")end ),
     awful.key({ }, "XF86AudioLowerVolume",  function () awful.util.spawn("amixer set Front 2dB-")end ),
     awful.key({ }, "XF86AudioRaiseVolume",  function () awful.util.spawn("amixer set Front 2dB+")end ),
     awful.key({ }, "XF86AudioMute",         function () awful.util.spawn("amixer set Front toggle") end),
