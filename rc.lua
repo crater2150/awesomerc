@@ -50,9 +50,22 @@ tags.setup = {
     { name = "4:✉",   layout = layouts[7]  },
     { name = "5:☑",   layout = layouts[7]  },
     { name = "6:♫",   layout = layouts[1]  },
-    { name = "7:☣",    layout = layouts[1]  },
-    { name = "8:☕",    layout = layouts[1]  },
-    { name = "9:⚂",    layout = layouts[1]  }
+    { name = "7:☣",   layout = layouts[1]  },
+    { name = "8:☕",   layout = layouts[1]  },
+    { name = "9:⚂",   layout = layouts[1]  },
+    { name = "0:☠",   layout = layouts[1]  },
+    { name = "F1:☭",  layout = layouts[1]  },
+    { name = "F2:♚",  layout = layouts[1]  },
+    { name = "F3:♛",  layout = layouts[1]  },
+    { name = "F4:♜",  layout = layouts[1]  },
+    { name = "F5:♝",  layout = layouts[1]  },
+    { name = "F6:♞",  layout = layouts[1]  },
+    { name = "F7:♟",  layout = layouts[1]  },
+    { name = "F8:⚖",  layout = layouts[1]  },
+    { name = "F9:⚛",  layout = layouts[1]  },
+    { name = "F10:⚡", layout = layouts[1]  },
+    { name = "F11:⚰", layout = layouts[1]  },
+    { name = "F12:⚙", layout = layouts[1]  }
 }
 
 for s = 1, screen.count() do
@@ -140,14 +153,13 @@ for s = 1, screen.count() do
     leftwibox[s].widgets = {
         mytaglist[s],
         mylayoutbox[s],
-        clock,
-        separator, spacer, batwidget,
         spacer,
         layout = awful.widget.layout.horizontal.rightleft
     }
     rightwibox[s].widgets = {
         {
-            memwidget,
+            clock,
+            separator, spacer, memwidget,
             separator, spacer, batwidget,
             separator, spacer, wlanwidget,
             separator, spacer, cpulabel, cpuwidget,
@@ -224,7 +236,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
     
     -- Audio control
-    awful.key({ modkey }, "F9",  function () teardrop("sakura -e alsamixer","top","center", 0.99, 0.4)end ),
+    awful.key({ }, "Print",  function () teardrop("sakura -e alsamixer","top","center", 0.99, 0.4)end ),
     awful.key({ }, "XF86AudioLowerVolume",  function () awful.util.spawn("amixer set Front 2dB-")end ),
     awful.key({ }, "XF86AudioRaiseVolume",  function () awful.util.spawn("amixer set Front 2dB+")end ),
     awful.key({ }, "XF86AudioMute",         function () awful.util.spawn("amixer set Front toggle") end),
@@ -258,7 +270,7 @@ globalkeys = awful.util.table.join(
 )
 
 clientkeys = awful.util.table.join(
-    awful.key({ modkey,           }, "F11",      function (c) c.fullscreen = not c.fullscreen  end),
+    awful.key({ modkey, "Shift"   }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
     awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end),
     awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
@@ -270,35 +282,43 @@ clientkeys = awful.util.table.join(
 -- Compute the maximum number of digit we need, limited to 9
 keynumber = 0
 for s = 1, screen.count() do
-   keynumber = math.min(9, math.max(#tags[s], keynumber));
+   keynumber = math.min(22, math.max(#tags[s], keynumber));
 end
 
 -- Bind all key numbers to tags.
 -- Be careful: we use keycodes to make it works on any keyboard layout.
 -- This should map on the top row of your keyboard, usually 1 to 9.
+-- FKeys: 67-78
 for i = 1, keynumber do
+    if i < 10 then
+        k = "#" .. i + 9
+    elseif i == 10 then
+        k = "#19"
+    elseif i > 10 then
+        k = "F" .. i - 10
+    end
     globalkeys = awful.util.table.join(globalkeys,
-        awful.key({ modkey }, "#" .. i + 9,
+        awful.key({ modkey }, k,
                   function ()
                         local screen = mouse.screen
                         if tags[screen][i] then
                             awful.tag.viewonly(tags[screen][i])
                         end
                   end),
-        awful.key({ modkey, "Control" }, "#" .. i + 9,
+        awful.key({ modkey, "Control" }, k,
                   function ()
                       local screen = mouse.screen
                       if tags[screen][i] then
                           awful.tag.viewtoggle(tags[screen][i])
                       end
                   end),
-        awful.key({ modkey, "Shift" }, "#" .. i + 9,
+        awful.key({ modkey, "Shift" }, k,
                   function ()
                       if client.focus and tags[client.focus.screen][i] then
                           awful.client.movetotag(tags[client.focus.screen][i])
                       end
                   end),
-        awful.key({ modkey, "Control", "Shift" }, "#" .. i + 9,
+        awful.key({ modkey, "Control", "Shift" }, k,
                   function ()
                       if client.focus and tags[client.focus.screen][i] then
                           awful.client.toggletag(tags[client.focus.screen][i])
