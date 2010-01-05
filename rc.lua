@@ -343,6 +343,8 @@ awful.rules.rules = {
       properties = { tag = tags[1][4] } },
     { rule = { class = "Sunbird-bin" },
       properties = { tag = tags[1][5] } },
+    { rule = { class = "Gmpc" },
+      properties = { tag = tags[1][6] } },
 }
 -- }}}
 
