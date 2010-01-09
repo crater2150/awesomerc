@@ -46,7 +46,7 @@ local tags = {}
 tags.setup = {
     { name = "1:⚙",   layout = layouts[1]  },
     { name = "2:⌘",   layout = layouts[7]  },
-    { name = "3:☻",   layout = layouts[2], mwfact = 0.20 },
+    { name = "3:☻",   layout = layouts[2], mwfact = 0.80 },
     { name = "4:✉",   layout = layouts[7]  },
     { name = "5:☑",   layout = layouts[7]  },
     { name = "6:♫",   layout = layouts[1]  },
@@ -275,6 +275,7 @@ clientkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
     awful.key({ modkey,           }, "o",      function (c) c.ontop = not c.ontop end),
+    awful.key({ modkey,           }, "a",      function (c) c.sticky = not c.sticky end),
     awful.key({ modkey, "Shift"   }, "r",      function (c) c:redraw()                       end),
     awful.key({ modkey,           }, "n",      function (c) c.minimized = not c.minimized    end)
 )
@@ -365,6 +366,10 @@ awful.rules.rules = {
       properties = { tag = tags[1][5] } },
     { rule = { class = "Gmpc" },
       properties = { tag = tags[1][6] } },
+    { rule = { class = "Deluge" },
+      properties = { tag = tags[1][7] } },
+    { rule = { class = "Xhtop" },
+      properties = { tag = tags[1][22] } },
 }
 -- }}}
 
