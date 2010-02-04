@@ -231,7 +231,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "s",      function () awful.util.spawn("sunbird") end),
     awful.key({ modkey,           }, "g",      function () awful.util.spawn("gmpc") end),
     awful.key({ }, "XF86Mail",                 function () awful.util.spawn("xset dpms force off") end),
-    awful.key({ modkey }, "XF86Mail",                 function () awful.util.spawn("slock") end),
+    awful.key({ modkey }, "XF86Mail",                 function () awful.util.spawn("urslock") end),
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
     
