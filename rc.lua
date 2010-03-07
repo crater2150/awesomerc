@@ -292,7 +292,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
     
     -- Audio control
-    awful.key({ }, "Print",  function () teardrop("sakura -e alsamixer","top","center", 0.99, 0.4)end ),
+    awful.key({ }, "Print",  function () teardrop("sakura --class=Teardrop -e alsamixer","top","center", 0.99, 0.4)end ),
     awful.key({ }, "XF86AudioLowerVolume",  function () awful.util.spawn("amixer set Front 2dB-")end ),
     awful.key({ }, "XF86AudioRaiseVolume",  function () awful.util.spawn("amixer set Front 2dB+")end ),
     awful.key({ }, "XF86AudioMute",         function () awful.util.spawn("amixer set Front toggle") end),
@@ -309,7 +309,7 @@ globalkeys = awful.util.table.join(
     -- Prompt
     awful.key({ modkey }, "r", function () obvious.popup_run_prompt.run_prompt() end),
     awful.key({ }, "Scroll_Lock", function () awful.util.spawn("wli") end),
-    awful.key({ }, "F12",        function () teardrop("sakura -e 'screen -l'","center","center", 0.99, 0.7)end ),
+    awful.key({ }, "F12",        function () teardrop("sakura --class=Teardrop -e 'screen -l'","center","center", 0.99, 0.7)end ),
 
 
     --{{{Default
@@ -409,7 +409,7 @@ awful.rules.rules = {
       properties = { floating = true,
                      ontop = true,
                      focus = true  } },
-    { rule = { class = "DockApp" },
+    { rule = { class = "Teardrop" },
       properties = { floating = true,
                      size_hints_honor = true } },
     { rule = { class = "pinentry" },
