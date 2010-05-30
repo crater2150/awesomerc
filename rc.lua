@@ -410,8 +410,7 @@ awful.rules.rules = {
                      ontop = true,
                      focus = true  } },
     { rule = { class = "Teardrop" },
-      properties = { floating = true,
-                     size_hints_honor = true } },
+      properties = { floating = true } },
     { rule = { class = "pinentry" },
       properties = { floating = true } },
     { rule = { class = "gimp" },
@@ -433,6 +432,8 @@ awful.rules.rules = {
       properties = { tag = tags[1][7] } },
     { rule = { class = "Xhtop" },
       properties = { tag = tags[1][22] } },
+    --{ rule = { class = "OpenOffice.org 3.2" },
+      --properties = { floating = false } },
 }
 -- }}}
 
