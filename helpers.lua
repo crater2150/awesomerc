@@ -42,3 +42,12 @@ function runraise(cmd, properties)
    awful.util.spawn(cmd)
 end
 
+-- Returns true if all pairs in table1 are present in table2
+function match (table1, table2)
+   for k, v in pairs(table1) do
+      if table2[k] ~= v and not table2[k]:find(v) then
+         return false
+      end
+   end
+   return true
+end
