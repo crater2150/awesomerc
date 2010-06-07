@@ -8,7 +8,7 @@
 
 -- {{{ Main
 theme = {}
-theme.wallpaper_cmd = { "awsetbg -a /home/crater2150/.config/awesome/wallpaper" }
+theme.wallpaper_cmd = { "nitrogen --restore" }
 -- }}}
 
 -- {{{ Styles

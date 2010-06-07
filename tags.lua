@@ -1,6 +1,6 @@
 
 -- {{{ Tags
-local tags = {}
+tags = {}
 tags.setup = {
     { name = "1:⚙",   layout = layouts[1]  },
     { name = "2:⌘",   layout = layouts[7]  },
