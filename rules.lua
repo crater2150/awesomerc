@@ -31,6 +31,8 @@ awful.rules.rules = {
       properties = { master = true } },
     { rule = { class = "Thunderbird" },
       properties = { tag = tags[1][4] } },
+    { rule = { class = "Claws-mail" },
+      properties = { tag = tags[1][4] } },
     { rule = { class = "Sunbird-bin" },
       properties = { tag = tags[1][5] } },
     { rule = { class = "Gmpc" },
