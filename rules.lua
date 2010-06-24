@@ -29,6 +29,8 @@ awful.rules.rules = {
       properties = { tag = tags[1][3] } },
     { rule = { role = "buddy_list" },
       properties = { master = true } },
+    { rule = { class = "Claws-mail" },
+      properties = { tag = tags[1][4] } },
     { rule = { class = "Thunderbird" },
       properties = { tag = tags[1][4] } },
     { rule = { class = "Sunbird-bin" },
@@ -41,5 +43,13 @@ awful.rules.rules = {
       properties = { tag = tags[1][22] } },
     --{ rule = { class = "OpenOffice.org 3.2" },
       --properties = { floating = false } },
+    { rule = { class = "Cellwriter" },
+      properties = { tag = tags[1][1],
+                     ontop = true,
+                     size_hints_honor = true,
+                     float = true,
+                     sticky = true,
+                     fullscreen = true
+                     } },
 }
 -- }}}
