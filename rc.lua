@@ -1,6 +1,7 @@
 terminal = "sakura -e screen"
 editor_cmd = "sakura -e vim"
 modkey = "Mod4"
+hyper = "Mod3"
 
 -- Standard awesome library
 require("awful")
