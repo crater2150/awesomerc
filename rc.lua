@@ -5,10 +5,11 @@ require("awful.rules")
 require("beautiful")
 require("naughty")
 require("teardrop")
-require("obvious.battery")
 require("obvious.popup_run_prompt")
 require("vicious")
---- Spawns cmd if no client can be found matching properties
+
+confdir = "/home/crater2150/.config/awesome"
+-- {{{ Spawns cmd if no client can be found matching properties
 -- If such a client can be found, pop to first tag where it is visible, and give it focus
 -- @param cmd the command to execute
 -- @param properties a table of properties to match against clients.  Possible entries: any properties of the client object
@@ -49,7 +50,7 @@ function runraise(cmd, properties)
       return
    end
    awful.util.spawn(cmd)
-end
+end --}}}
 
 -- Returns true if all pairs in table1 are present in table2
 function match (table1, table2)
@@ -153,10 +154,6 @@ vicious.register(clock, vicious.widgets.date, "%b %d, %R", 60)
 memwidget = widget({ type = "textbox" })
 vicious.register(memwidget, vicious.widgets.mem, "⌸ $1% ($2MB / $3MB) ", 13)
 
---batwidget  = obvious.battery();
-batwidget = widget({ type = "textbox" })
-vicious.register(batwidget, vicious.widgets.batat, "⌁ $1$2% - $3", 61)
-
 cpuwidget = awful.widget.progressbar()
 cpulabel = widget({ type = "textbox" })
 cpuwidget:set_width(50)
@@ -167,8 +164,6 @@ vicious.register(cpuwidget, vicious.widgets.cpu, "$1",41)
 vicious.register(cpulabel, vicious.widgets.cpu, "CPU: $1%")
 
 
-wlanwidget = widget({ type = "textbox" })
-vicious.register(wlanwidget, vicious.widgets.wifi, "WLAN ${ssid} @ ${sign}, Q:${link}/70", 31, "wlan0")
 -- Create a wibox for each screen and add it
 leftwibox = {}
 rightwibox = {}
@@ -210,8 +205,6 @@ for s = 1, screen.count() do
         {
             clock,
             separator, spacer, memwidget,
-            separator, spacer, batwidget,
-            separator, spacer, wlanwidget,
             separator, spacer, cpulabel, cpuwidget,
             spacer,
             layout = awful.widget.layout.horizontal.leftright
@@ -230,12 +223,30 @@ awful.button({ }, 5, awful.tag.viewprev)
 ))
 -- }}}
 
+curtag = 1
+function prevtag() 
+    curtag = curtag - 1
+    if curtag == 0 then curtag = 22 end
+    awful.util.spawn("awbg " .. curtag)
+    awful.tag.viewprev()
+end
+
+function nexttag(
+    if curtag == 23 then curtag = 1 end
+    awful.util.spawn("awbg " .. curtag)
+    awful.tag.viewnext()
+end
+
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
 --{{{ 
-    awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
-    awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
+    --awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
+    --awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
+    awful.key({ modkey,           }, "Left",   prevtag       ),
+    awful.key({ modkey,           }, "Right",  nexttag       ),
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
+    --awful.key({ }, "XF86Word",   awful.tag.viewprev       ),
+    --awful.key({ }, "XF86WebCam",  awful.tag.viewnext       ),
     awful.key({ }, "XF86Word",   awful.tag.viewprev       ),
     awful.key({ }, "XF86WebCam",  awful.tag.viewnext       ),
     awful.key({ }, "XF86Away", awful.tag.history.restore),
@@ -275,16 +286,10 @@ globalkeys = awful.util.table.join(
     --}}}
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
---    awful.key({ modkey,           }, "f",      function () awful.util.spawn("firefox") end),
---    awful.key({ modkey,           }, "t",      function () awful.util.spawn("thunderbird") end),
---    awful.key({ modkey,           }, "p",      function () awful.util.spawn("pidgin") end),
---    awful.key({ modkey,           }, "s",      function () awful.util.spawn("sunbird") end),
---    awful.key({ modkey,           }, "g",      function () awful.util.spawn("gmpc") end),
-    awful.key({ modkey,           }, "f",      function () runraise("firefox", { class = "Firefox" }) end),
-    awful.key({ modkey,           }, "t",      function () runraise("thunderbird", { class = "Thunderbird" }) end),
-    awful.key({ modkey,           }, "p",      function () runraise("pidgin", { class = "Pidgin" }) end),
-    awful.key({ modkey,           }, "s",      function () runraised("sunbird", { class = "Sunbirdi-bin" }) end),
-    awful.key({ modkey,           }, "g",      function () runraise("gmpc", { class = "Gmpc" }) end),
+    awful.key({ modkey,           }, "f",      function () awful.util.spawn("firefox") end),
+    awful.key({ modkey,           }, "t",      function () awful.util.spawn("claws-mail") end),
+    awful.key({ modkey,           }, "p",      function () awful.util.spawn("pidgin") end),
+    awful.key({ modkey,           }, "g",      function () awful.util.spawn("gmpc") end),
     awful.key({ }, "XF86Mail",                 function () awful.util.spawn("xset dpms force off") end),
     awful.key({ }, "XF86Mail",                 function () awful.util.spawn("xset dpms force off") end),
     awful.key({ modkey }, "XF86Mail",                 function () awful.util.spawn("urslock") end),
@@ -359,6 +364,8 @@ for i = 1, keynumber do
                   function ()
                         local screen = mouse.screen
                         if tags[screen][i] then
+                            curtag = i
+                            awful.util.spawn("awbg " .. i)
                             awful.tag.viewonly(tags[screen][i])
                         end
                   end),
@@ -410,8 +417,7 @@ awful.rules.rules = {
                      ontop = true,
                      focus = true  } },
     { rule = { class = "Teardrop" },
-      properties = { floating = true,
-                     size_hints_honor = true } },
+      properties = { floating = true } },
     { rule = { class = "pinentry" },
       properties = { floating = true } },
     { rule = { class = "gimp" },
@@ -423,7 +429,7 @@ awful.rules.rules = {
       properties = { tag = tags[1][3] } },
     { rule = { role = "buddy_list" },
       properties = { master = true } },
-    { rule = { class = "Thunderbird" },
+    { rule = { class = "Claws-mail" },
       properties = { tag = tags[1][4] } },
     { rule = { class = "Sunbird-bin" },
       properties = { tag = tags[1][5] } },
