@@ -70,7 +70,8 @@ globalkeys = awful.util.table.join(
     
     --tabletpc keys
     awful.key({ hyper }, "6", function () awful.util.spawn("/usr/local/bin/rotate") end),
-    awful.key({ modkey }, "x", function () awful.util.spawn("cellwriter --show-window") end),
+    --awful.key({ modkey }, "x", function () awful.util.spawn("cellwriter --show-window") end),
+    awful.key({ modkey }, "x",  function () teardrop("cellwriter","top","center", 0.99, 0.4)end ),
     awful.key({ modkey, "Control" }, "Delete", function () awful.util.spawn("xlock") end),
     
     -- Audio control
