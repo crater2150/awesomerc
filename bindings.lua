@@ -66,6 +66,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey }, "XF86Mail",                 function () awful.util.spawn("urslock") end),
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
+    awful.key({ }, "Menu", aweswt.switch),
    
     
     --tabletpc keys

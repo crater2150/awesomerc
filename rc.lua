@@ -13,6 +13,8 @@ require("teardrop")
 require("obvious.battery")
 require("obvious.popup_run_prompt")
 require("vicious")
+require("aweswt")
+
 
 
 
