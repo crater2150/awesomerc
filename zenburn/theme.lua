@@ -15,12 +15,12 @@ theme.wallpaper_cmd = { "nitrogen --restore" }
 theme.font      = "sans 8"
 
 -- {{{ Colors
-theme.fg_normal = "#DCDCCC"
+theme.fg_normal = "#DCDCDC"
 theme.fg_focus  = "#F0DFAF"
 theme.fg_urgent = "#CC9393"
-theme.bg_normal = "#3F3F3F"
-theme.bg_focus  = "#1E2320"
-theme.bg_urgent = "#3F3F3F"
+theme.bg_normal = "#121212"
+theme.bg_focus  = "#3F3F3F"
+theme.bg_urgent = "#DA4E4E"
 -- }}}
 
 -- {{{ Borders
@@ -83,12 +83,12 @@ theme.tasklist_floating_icon = "/usr/share/awesome/themes/default/tasklist/float
 -- }}}
 
 -- {{{ Layout
-theme.layout_tile       = "/usr/share/awesome/themes/zenburn/layouts/tile.png"
-theme.layout_tileleft   = "/usr/share/awesome/themes/zenburn/layouts/tileleft.png"
-theme.layout_tilebottom = "/usr/share/awesome/themes/zenburn/layouts/tilebottom.png"
-theme.layout_tiletop    = "/usr/share/awesome/themes/zenburn/layouts/tiletop.png"
-theme.layout_fairv      = "/usr/share/awesome/themes/zenburn/layouts/fairv.png"
-theme.layout_fairh      = "/usr/share/awesome/themes/zenburn/layouts/fairh.png"
+theme.layout_tiletop       = "/usr/share/awesome/themes/zenburn/layouts/tile.png"
+theme.layout_tilebottom   = "/usr/share/awesome/themes/zenburn/layouts/tileleft.png"
+theme.layout_tile = "/usr/share/awesome/themes/zenburn/layouts/tilebottom.png"
+theme.layout_tileleft    = "/usr/share/awesome/themes/zenburn/layouts/tiletop.png"
+theme.layout_fairh      = "/usr/share/awesome/themes/zenburn/layouts/fairv.png"
+theme.layout_fairv      = "/usr/share/awesome/themes/zenburn/layouts/fairh.png"
 theme.layout_spiral     = "/usr/share/awesome/themes/zenburn/layouts/spiral.png"
 theme.layout_dwindle    = "/usr/share/awesome/themes/zenburn/layouts/dwindle.png"
 theme.layout_max        = "/usr/share/awesome/themes/zenburn/layouts/max.png"

@@ -25,12 +25,10 @@ beautiful.init("/home/crater2150/.config/awesome/zenburn/theme.lua")
 -- Table of layouts to cover with awful.layout.inc, order matters.
 layouts =
 {
-    awful.layout.suit.tile,
-    awful.layout.suit.tile.left,
-    awful.layout.suit.tile.bottom,
-    awful.layout.suit.tile.top,
     awful.layout.suit.fair,
     awful.layout.suit.fair.horizontal,
+    awful.layout.suit.tile,
+    awful.layout.suit.tile.bottom,
     awful.layout.suit.max,
     awful.layout.suit.max.fullscreen,
     awful.layout.suit.floating
