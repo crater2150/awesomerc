@@ -23,7 +23,7 @@ vicious.register(memwidget, vicious.widgets.mem, "⌸ $1% ($2MB / $3MB) ", 13)
 
 --batwidget  = obvious.battery();
 batwidget = widget({ type = "textbox" })
-vicious.register(batwidget, vicious.widgets.batat, "⌁ $1$2% - $3", 61)
+vicious.register(batwidget, vicious.widgets.bat, "⌁ $1$2% - $3", 61)
 
 cpuwidget = awful.widget.progressbar()
 cpulabel = widget({ type = "textbox" })
