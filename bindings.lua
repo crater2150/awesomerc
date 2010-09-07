@@ -1,7 +1,6 @@
 
 -- {{{ Mouse bindings
 root.buttons(awful.util.table.join(
-awful.button({ }, 3, function () mymainmenu:toggle() end),
 awful.button({ }, 4, awful.tag.viewnext),
 awful.button({ }, 5, awful.tag.viewprev)
 ))
@@ -57,16 +56,24 @@ globalkeys = awful.util.table.join(
 --    awful.key({ modkey,           }, "p",      function () awful.util.spawn("pidgin") end),
 --    awful.key({ modkey,           }, "s",      function () awful.util.spawn("sunbird") end),
 --    awful.key({ modkey,           }, "g",      function () awful.util.spawn("gmpc") end),
-    awful.key({ modkey,           }, "f",      function () runraise("firefox", { class = "Firefox" }) end),
-    awful.key({ modkey,           }, "t",      function () runraise("thunderbird", { class = "Thunderbird" }) end),
-    awful.key({ modkey,           }, "p",      function () runraise("pidgin", { class = "Pidgin" }) end),
-    awful.key({ modkey,           }, "s",      function () runraised("sunbird", { class = "Sunbirdi-bin" }) end),
-    awful.key({ modkey,           }, "g",      function () runraise("gmpc", { class = "Gmpc" }) end),
+    awful.key({ modkey,           }, "f",      function () awful.util.spawn("firefox") end),
+    awful.key({ modkey,           }, "t",      function () awful.util.spawn("thunderbird") end),
+    awful.key({ modkey,           }, "p",      function () awful.util.spawn("pidgin") end),
+    awful.key({ modkey,           }, "s",      function () awful.util.spawn("sunbird") end),
+    awful.key({ modkey,           }, "g",      function () awful.util.spawn("gmpc") end),
     awful.key({ }, "XF86Mail",                 function () awful.util.spawn("xset dpms force off") end),
     awful.key({ }, "XF86Mail",                 function () awful.util.spawn("xset dpms force off") end),
     awful.key({ modkey }, "XF86Mail",                 function () awful.util.spawn("urslock") end),
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
+    awful.key({ }, "Menu", aweswt.switch),
+   
+    
+    --tabletpc keys
+    awful.key({ hyper }, "6", function () awful.util.spawn("/usr/local/bin/rotate") end),
+    --awful.key({ modkey }, "x", function () awful.util.spawn("cellwriter --show-window") end),
+    awful.key({ modkey }, "x",  function () teardrop("cellwriter","top","center", 0.99, 0.4)end ),
+    awful.key({ modkey, "Control" }, "Delete", function () awful.util.spawn("xlock") end),
     
     -- Audio control
     awful.key({ }, "Print",  function () teardrop("sakura --class=Teardrop -e alsamixer","top","center", 0.99, 0.4)end ),

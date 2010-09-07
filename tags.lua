@@ -1,12 +1,12 @@
 
 -- {{{ Tags
-tags = {}
+tags={}
 tags.setup = {
     { name = "1:⚙",   layout = layouts[1]  },
-    { name = "2:⌘",   layout = layouts[7]  },
-    { name = "3:☻",   layout = layouts[2], mwfact = 0.80 },
-    { name = "4:✉",   layout = layouts[7]  },
-    { name = "5:☑",   layout = layouts[7]  },
+    { name = "2:⌘",   layout = layouts[5]  },
+    { name = "3:☻",   layout = layouts[3], mwfact = 0.20 },
+    { name = "4:✉",   layout = layouts[5]  },
+    { name = "5:☑",   layout = layouts[1]  },
     { name = "6:♫",   layout = layouts[1]  },
     { name = "7:☣",   layout = layouts[1]  },
     { name = "8:☕",   layout = layouts[1]  },
