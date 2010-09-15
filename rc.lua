@@ -231,7 +231,7 @@ function prevtag()
     awful.tag.viewprev()
 end
 
-function nexttag(
+function nexttag()
     if curtag == 23 then curtag = 1 end
     awful.util.spawn("awbg " .. curtag)
     awful.tag.viewnext()
@@ -247,8 +247,8 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
     --awful.key({ }, "XF86Word",   awful.tag.viewprev       ),
     --awful.key({ }, "XF86WebCam",  awful.tag.viewnext       ),
-    awful.key({ }, "XF86Word",   awful.tag.viewprev       ),
-    awful.key({ }, "XF86WebCam",  awful.tag.viewnext       ),
+    awful.key({ }, "XF86Word",   prevtag       ),
+    awful.key({ }, "XF86WebCam",  nexttag       ),
     awful.key({ }, "XF86Away", awful.tag.history.restore),
 
     awful.key({ modkey,           }, "j",
