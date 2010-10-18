@@ -8,7 +8,7 @@
 
 -- {{{ Main
 theme = {}
-theme.wallpaper_cmd = { "nitrogen --restore" }
+theme.wallpaper_cmd = { "awsetbg -l" }
 -- }}}
 
 -- {{{ Styles
