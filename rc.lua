@@ -1,5 +1,5 @@
-terminal = "sakura -e screen"
-editor_cmd = "sakura -e vim"
+terminal = "urxvtc -e screen"
+editor_cmd = "urxvt -e vim"
 modkey = "Mod4"
 hyper = "Mod3"
 
