@@ -16,7 +16,7 @@
        return t
    end
    function get_input (a)
-     s1='echo -e "'..a..'"|dmenu'
+     s1='echo -e "'..a..'"|dmenu -i'
      return get_out(s1)
    end
    
