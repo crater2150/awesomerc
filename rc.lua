@@ -16,6 +16,8 @@ require("aweswt")
 
 
 
+MY_PATH  = os.getenv("HOME") .. "/.config/awesome/"
+WALLPATH = MY_PATH .. "walls/"
 
 -- Themes define colours, icons, and wallpapers
 beautiful.init("/home/crater2150/.config/awesome/zenburn/theme.lua")
@@ -33,7 +35,6 @@ layouts =
     awful.layout.suit.floating
 }
 
-MY_PATH = os.getenv("HOME") .. "/.config/awesome/"
 
 dofile (MY_PATH .. "helpers.lua")
 dofile (MY_PATH .. "tags.lua")
@@ -41,5 +42,5 @@ dofile (MY_PATH .. "wibox.lua")
 dofile (MY_PATH .. "bindings.lua")
 dofile (MY_PATH .. "rules.lua")
 dofile (MY_PATH .. "signals.lua")
-
+dofile (MY_PATH .. "wallpaper.lua")
 
