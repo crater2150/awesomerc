@@ -1,5 +1,5 @@
-terminal = "sakura -e screen"
-editor_cmd = "sakura -e vim"
+terminal = "urxvtc -e screen"
+editor_cmd = "urxvtc -e vim"
 modkey = "Mod4"
 hyper = "Mod3"
 
@@ -13,8 +13,6 @@ require("teardrop")
 require("obvious.popup_run_prompt")
 require("vicious")
 require("aweswt")
-
-
 
 MY_PATH  = os.getenv("HOME") .. "/.config/awesome/"
 WALLPATH = MY_PATH .. "walls/"
@@ -35,7 +33,6 @@ layouts =
     awful.layout.suit.floating
 }
 
-
 dofile (MY_PATH .. "helpers.lua")
 dofile (MY_PATH .. "tags.lua")
 dofile (MY_PATH .. "wibox.lua")
@@ -43,4 +40,3 @@ dofile (MY_PATH .. "bindings.lua")
 dofile (MY_PATH .. "rules.lua")
 dofile (MY_PATH .. "signals.lua")
 dofile (MY_PATH .. "wallpaper.lua")
-

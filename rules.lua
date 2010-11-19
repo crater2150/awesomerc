@@ -17,7 +17,7 @@ awful.rules.rules = {
                      ontop = true,
                      focus = true  } },
     { rule = { class = "Teardrop" },
-      properties = { floating = true } },
+      properties = { floating = true, tag = tags[1][12] } },
     { rule = { class = "pinentry" },
       properties = { floating = true } },
     { rule = { class = "gimp" },

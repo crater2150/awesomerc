@@ -57,7 +57,7 @@ globalkeys = awful.util.table.join(
 --    awful.key({ modkey,           }, "s",      function () awful.util.spawn("sunbird") end),
 --    awful.key({ modkey,           }, "g",      function () awful.util.spawn("gmpc") end),
     awful.key({ modkey,           }, "f",      function () awful.util.spawn("firefox") end),
-    awful.key({ modkey,           }, "t",      function () awful.util.spawn("thunderbird") end),
+    awful.key({ modkey,           }, "t",      function () awful.util.spawn("claws-mail") end),
     awful.key({ modkey,           }, "p",      function () awful.util.spawn("pidgin") end),
     awful.key({ modkey,           }, "s",      function () awful.util.spawn("sunbird") end),
     awful.key({ modkey,           }, "g",      function () awful.util.spawn("gmpc") end),
@@ -77,7 +77,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "Delete", function () awful.util.spawn("xlock") end),
     
     -- Audio control
-    awful.key({ }, "Print",  function () teardrop("sakura --class=Teardrop -e alsamixer","top","center", 0.99, 0.4)end ),
+    awful.key({ }, "Print",  function () teardrop("urxvtc -e alsamixer","top","center", 0.99, 0.4)end ),
     awful.key({ }, "XF86AudioLowerVolume",  function () awful.util.spawn("amixer set Front 2dB-")end ),
     awful.key({ }, "XF86AudioRaiseVolume",  function () awful.util.spawn("amixer set Front 2dB+")end ),
     awful.key({ }, "XF86AudioMute",         function () awful.util.spawn("amixer set Front toggle") end),
@@ -94,7 +94,7 @@ globalkeys = awful.util.table.join(
     -- Prompt
     awful.key({ modkey }, "r", function () obvious.popup_run_prompt.run_prompt() end),
     awful.key({ }, "Scroll_Lock", function () awful.util.spawn("wli") end),
-    awful.key({ }, "F12",        function () teardrop("sakura --class=Teardrop -e 'screen -l'","center","center", 0.99, 0.7)end ),
+    awful.key({ }, "F12",        function () teardrop("urxvtc -e screen -l","center","center", 0.99, 0.7)end ),
 
 
     --{{{Default
