@@ -19,19 +19,29 @@ clock = widget({ type = "textbox" })
 vicious.register(clock, vicious.widgets.date, "%b %d, %R", 60)
 
 memwidget = widget({ type = "textbox" })
-vicious.register(memwidget, vicious.widgets.mem, "⌸ $1% ($2MB / $3MB) ", 13)
+vicious.register(memwidget, vicious.widgets.mem, "RAM: $1% ($2MB / $3MB) ", 13)
 
 --batwidget  = obvious.battery();
+--batwidget = awful.widget.progressbar()
+--batwidget:set_width(60)
+--batwidget:set_height(15)
+--batwidget:set_vertical(false)
+--batwidget:set_background_color("#494B4F")
+--batwidget:set_border_color(nil)
+--batwidget:set_color("#AECF96")
+--batwidget:set_gradient_colors({ "#AECF96", "#88A175", "#FF5656" })
 batwidget = widget({ type = "textbox" })
-vicious.register(batwidget, vicious.widgets.bat, "⌁ $1$2% - $3", 61)
+--vicious.register(batwidget, vicious.widgets.bat, "BAT: $2%", 61, "BAT1")
+vicious.register(batwidget, vicious.widgets.bat, "BAT1: $1$2% - $3", 61, "BAT1")
 
-cpuwidget = awful.widget.progressbar()
+--cpuwidget = awful.widget.progressbar()
+--cpuwidget:set_width(50)
+--cpuwidget:set_background_color("#494B4F")
+--cpuwidget:set_color("#FF5656")
+--cpuwidget:set_gradient_colors({ "#FF5656", "#88A175", "#AECF96" })
+--vicious.register(cpuwidget, vicious.widgets.cpu, "$1",41)
+
 cpulabel = widget({ type = "textbox" })
-cpuwidget:set_width(50)
-cpuwidget:set_background_color("#494B4F")
-cpuwidget:set_color("#FF5656")
-cpuwidget:set_gradient_colors({ "#FF5656", "#88A175", "#AECF96" })
-vicious.register(cpuwidget, vicious.widgets.cpu, "$1",41)
 vicious.register(cpulabel, vicious.widgets.cpu, "CPU: $1%")
 
 

@@ -61,6 +61,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "p",      function () awful.util.spawn("pidgin") end),
     awful.key({ modkey,           }, "s",      function () awful.util.spawn("sunbird") end),
     awful.key({ modkey,           }, "g",      function () awful.util.spawn("gmpc") end),
+    awful.key({ modkey,           }, "w",      function () awful.util.spawn("awsetbg -a -r /home/crater2150/.config/awesome/walls/ &") end),
     awful.key({ }, "XF86Mail",                 function () awful.util.spawn("xset dpms force off") end),
     awful.key({ }, "XF86Mail",                 function () awful.util.spawn("xset dpms force off") end),
     awful.key({ modkey }, "XF86Mail",                 function () awful.util.spawn("urslock") end),
