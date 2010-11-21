@@ -77,9 +77,9 @@ globalkeys = awful.util.table.join(
     
     -- Audio control
     awful.key({ }, "Print",  function () teardrop("urxvtc -e alsamixer","top","center", 0.99, 0.4)end ),
-    awful.key({ }, "XF86AudioLowerVolume",  function () awful.util.spawn("amixer set Front 2dB-")end ),
-    awful.key({ }, "XF86AudioRaiseVolume",  function () awful.util.spawn("amixer set Front 2dB+")end ),
-    awful.key({ }, "XF86AudioMute",         function () awful.util.spawn("amixer set Front toggle") end),
+    awful.key({ }, "XF86AudioLowerVolume",  function () awful.util.spawn("amixer set Master 2dB-")end ),
+    awful.key({ }, "XF86AudioRaiseVolume",  function () awful.util.spawn("amixer set Master 2dB+")end ),
+    awful.key({ }, "XF86AudioMute",         function () awful.util.spawn("amixer set Master toggle") end),
     awful.key({ modkey , "Shift" },   "m",  function () awful.util.spawn("mpdmenu -a") end),
     awful.key({ modkey , "Control" }, "m",  function () awful.util.spawn("mpdmenu -t") end),
     awful.key({ modkey },             "m",  function () awful.util.spawn("mpc toggle") end),
