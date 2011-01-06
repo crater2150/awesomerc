@@ -1,5 +1,4 @@
 
--- {{{ Rules
 awful.rules.rules = {
     -- All clients will match this rule.
     { rule = { },
@@ -32,6 +31,9 @@ awful.rules.rules = {
       properties = { master = true } },
     { rule = { role = "conversation" },
       callback = awful.client.setslave},
+    { rule = { instance = "Irssi"},
+      properties = { tag = tags[1][3]} ,
+      callback = awful.client.setslave},
     { rule = { class = "Irssi"},
       properties = { tag = tags[1][3]} ,
       callback = awful.client.setslave},
@@ -60,4 +62,3 @@ awful.rules.rules = {
                      fullscreen = true
                      } },
 }
--- }}}
