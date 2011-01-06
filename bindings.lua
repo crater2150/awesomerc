@@ -92,7 +92,7 @@ globalkeys = awful.util.table.join(
     -- Prompt
     awful.key({ modkey }, "r", function () obvious.popup_run_prompt.run_prompt() end),
     awful.key({ }, "Scroll_Lock", function () awful.util.spawn("wli") end),
-    awful.key({ }, "F12",        function () teardrop("urxvtc -e screen -l","center","center", 0.99, 0.7)end ),
+    awful.key({ }, "F12",        function () teardrop(terminal,"center","center", 0.99, 0.7)end ),
 
 
     --{{{Default

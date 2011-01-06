@@ -1,3 +1,13 @@
+function exists(filename)
+  local file = io.open(filename)
+  if file then
+    io.close(file)
+    return true
+  else
+    return false
+  end
+end
+
 
 -- {{{ Reusable separators
 spacer         = widget({ type = "textbox", name = "spacer" })
@@ -5,6 +15,9 @@ spacer.text    = " "
 
 separator      = widget({ type = "textbox", name = "separator", align = "center" })
 separator.text = " )( "
+
+nullwidget     = widget({ type = "textbox", name = "nullwidget" })
+separator.text = ""
 -- }}}
 
 -- {{{ Wibox
@@ -21,32 +34,29 @@ vicious.register(clock, vicious.widgets.date, "%b %d, %R", 60)
 memwidget = widget({ type = "textbox" })
 vicious.register(memwidget, vicious.widgets.mem, "RAM: $1% ($2MB / $3MB) ", 13)
 
---batwidget  = obvious.battery();
---batwidget = awful.widget.progressbar()
---batwidget:set_width(60)
---batwidget:set_height(15)
---batwidget:set_vertical(false)
---batwidget:set_background_color("#494B4F")
---batwidget:set_border_color(nil)
---batwidget:set_color("#AECF96")
---batwidget:set_gradient_colors({ "#AECF96", "#88A175", "#FF5656" })
-batwidget = widget({ type = "textbox" })
---vicious.register(batwidget, vicious.widgets.bat, "BAT: $2%", 61, "BAT1")
-vicious.register(batwidget, vicious.widgets.bat, "BAT1: $1$2% - $3", 61, "BAT1")
+if exists("/proc/acpi/battery/BAT0") then
+    batwidget1 = widget({ type = "textbox" })
+    vicious.register(batwidget1, vicious.widgets.bat, " )(  BAT1: $1$2% - $3", 61, "BAT1")
+else batwidget1 = nullwidget end
 
---cpuwidget = awful.widget.progressbar()
---cpuwidget:set_width(50)
---cpuwidget:set_background_color("#494B4F")
---cpuwidget:set_color("#FF5656")
---cpuwidget:set_gradient_colors({ "#FF5656", "#88A175", "#AECF96" })
---vicious.register(cpuwidget, vicious.widgets.cpu, "$1",41)
+if exists("/proc/acpi/battery/BAT1") then
+    batwidget2 = widget({ type = "textbox" })
+    vicious.register(batwidget2, vicious.widgets.bat, " )(  BAT2: $1$2% - $3", 61, "BAT2")
+else batwidget2 = nullwidget end
+
+if exists("/proc/acpi/battery/BAT2") then
+    batwidget3 = widget({ type = "textbox" })
+    vicious.register(batwidget3, vicious.widgets.bat, " )(  BAT3: $1$2% - $3", 61, "BAT3")
+else batwidget3 = nullwidget end
 
 cpulabel = widget({ type = "textbox" })
 vicious.register(cpulabel, vicious.widgets.cpu, "CPU: $1%")
 
+if exists("/sys/class/net/wlan0") then
+    wlanwidget = widget({ type = "textbox" })
+    vicious.register(wlanwidget, vicious.widgets.wifi, " )(  WLAN ${ssid} @ ${sign}, Q:${link}/70", 31, "wlan0")
+else wlanwidget = nullwidget end
 
-wlanwidget = widget({ type = "textbox" })
-vicious.register(wlanwidget, vicious.widgets.wifi, "WLAN ${ssid} @ ${sign}, Q:${link}/70", 31, "wlan0")
 -- Create a wibox for each screen and add it
 leftwibox = {}
 rightwibox = {}
@@ -62,8 +72,6 @@ mytaglist.buttons = awful.util.table.join(
                     )
 
 for s = 1, screen.count() do
-    -- Create an imagebox widget which will contains an icon indicating which layout we're using.
-    -- We need one layoutbox per screen.
     mylayoutbox[s] = awful.widget.layoutbox(s)
     mylayoutbox[s]:buttons(awful.util.table.join(
                            awful.button({ }, 1, function () awful.layout.inc(layouts, 1) end),
@@ -88,8 +96,10 @@ for s = 1, screen.count() do
         {
             clock,
             separator, spacer, memwidget,
-            separator, spacer, batwidget,
-            separator, spacer, wlanwidget,
+            batwidget1,
+            batwidget2,
+            batwidget3,
+            wlanwidget,
             separator, spacer, cpulabel, cpuwidget,
             spacer,
             layout = awful.widget.layout.horizontal.leftright

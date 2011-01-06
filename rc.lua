@@ -1,4 +1,4 @@
-terminal = "urxvtc -e screen"
+terminal = "urxvtc -e tmux"
 editor_cmd = "urxvtc -e vim"
 modkey = "Mod4"
 hyper = "Mod3"
