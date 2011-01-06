@@ -36,17 +36,17 @@ vicious.register(memwidget, vicious.widgets.mem, "RAM: $1% ($2MB / $3MB) ", 13)
 
 if exists("/proc/acpi/battery/BAT0") then
     batwidget1 = widget({ type = "textbox" })
-    vicious.register(batwidget1, vicious.widgets.bat, " )(  BAT1: $1$2% - $3", 61, "BAT1")
+    vicious.register(batwidget1, vicious.widgets.bat, " )(  BAT0: $1$2% - $3", 61, "BAT0")
 else batwidget1 = nullwidget end
 
 if exists("/proc/acpi/battery/BAT1") then
     batwidget2 = widget({ type = "textbox" })
-    vicious.register(batwidget2, vicious.widgets.bat, " )(  BAT2: $1$2% - $3", 61, "BAT2")
+    vicious.register(batwidget2, vicious.widgets.bat, " )(  BAT1: $1$2% - $3", 61, "BAT1")
 else batwidget2 = nullwidget end
 
 if exists("/proc/acpi/battery/BAT2") then
     batwidget3 = widget({ type = "textbox" })
-    vicious.register(batwidget3, vicious.widgets.bat, " )(  BAT3: $1$2% - $3", 61, "BAT3")
+    vicious.register(batwidget3, vicious.widgets.bat, " )(  BAT2: $1$2% - $3", 61, "BAT2")
 else batwidget3 = nullwidget end
 
 cpulabel = widget({ type = "textbox" })
