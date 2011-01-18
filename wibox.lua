@@ -104,7 +104,7 @@ for s = 1, screen.count() do
             spacer,
             layout = awful.widget.layout.horizontal.leftright
         },
-        separator, spacer, s == 1 and mysystray or nil,
+        separator, spacer, mysystray,
         layout = awful.widget.layout.horizontal.leftright
     }
 end
