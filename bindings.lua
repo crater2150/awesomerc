@@ -8,13 +8,10 @@ awful.button({ }, 5, awful.tag.viewprev)
 
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
---{{{ 
+--{{{ Focus and Tags
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
-    awful.key({ }, "XF86Word",   awful.tag.viewprev       ),
-    awful.key({ }, "XF86WebCam",  awful.tag.viewnext       ),
-    awful.key({ }, "XF86Away", awful.tag.history.restore),
 
     awful.key({ modkey,           }, "j",
         function ()
@@ -26,13 +23,14 @@ globalkeys = awful.util.table.join(
             awful.client.focus.byidx(-1)
             if client.focus then client.focus:raise() end
         end),
-    awful.key({ modkey,           }, "w", function () mymainmenu:show(true)        end),
+
+    awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end),
+    awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end),
 --}}}
+
     --{{{ Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),
     awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1)    end),
-    awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end),
-    awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end),
     awful.key({ modkey,           }, "u", awful.client.urgent.jumpto),
     awful.key({ modkey,           }, "Tab",
         function ()
@@ -49,32 +47,30 @@ globalkeys = awful.util.table.join(
             end
         end),
     --}}}
-    -- Standard program
+--
+    --{{{ Spawns
     awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
---    awful.key({ modkey,           }, "f",      function () awful.util.spawn("firefox") end),
---    awful.key({ modkey,           }, "t",      function () awful.util.spawn("thunderbird") end),
---    awful.key({ modkey,           }, "p",      function () awful.util.spawn("pidgin") end),
---    awful.key({ modkey,           }, "s",      function () awful.util.spawn("sunbird") end),
---    awful.key({ modkey,           }, "g",      function () awful.util.spawn("gmpc") end),
     awful.key({ modkey,           }, "f",      function () awful.util.spawn("firefox") end),
     awful.key({ modkey,           }, "t",      function () awful.util.spawn("claws-mail") end),
     awful.key({ modkey,           }, "p",      function () awful.util.spawn("pidgin") end),
     awful.key({ modkey,           }, "g",      function () awful.util.spawn("gmpc") end),
     awful.key({ modkey,           }, "w",      function () awful.util.spawn("awsetbg -a -r /home/crater2150/.config/awesome/walls/ &") end),
-    awful.key({ }, "XF86Mail",                 function () awful.util.spawn("xset dpms force off") end),
-    awful.key({ }, "XF86Mail",                 function () awful.util.spawn("xset dpms force off") end),
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
     awful.key({ }, "Menu", aweswt.switch),
+    awful.key({ }, "Scroll_Lock", aweswt.switch),
    
+    --}}}
     
-    --tabletpc keys
+    --{{{ tabletpc keys
+
     awful.key({ hyper }, "6", function () awful.util.spawn("/usr/local/bin/rotate") end),
-    --awful.key({ modkey }, "x", function () awful.util.spawn("cellwriter --show-window") end),
     awful.key({ modkey }, "x",  function () teardrop("cellwriter","top","center", 0.99, 0.4)end ),
     awful.key({ modkey, "Control" }, "Delete", function () awful.util.spawn("xlock") end),
+
+    --}}}
     
-    -- Audio control
+    --{{{ Audio control
     awful.key({ }, "Print",  function () teardrop("urxvtc -e alsamixer","top","center", 0.99, 0.4)end ),
     awful.key({ }, "XF86AudioLowerVolume",  function () awful.util.spawn("amixer set Master 2dB-")end ),
     awful.key({ }, "XF86AudioRaiseVolume",  function () awful.util.spawn("amixer set Master 2dB+")end ),
@@ -89,13 +85,39 @@ globalkeys = awful.util.table.join(
     awful.key({ },        "XF86AudioPrev",  function () awful.util.spawn("mpc prev") end),
     awful.key({ },        "XF86AudioStop",  function () awful.util.spawn("mpdmenu -a") end),
     awful.key({ modkey , "Control" }, "n",  function () awful.util.spawn("mpdmenu -j") end),
-    -- Prompt
-    awful.key({ modkey }, "r", function () obvious.popup_run_prompt.run_prompt() end),
-    awful.key({ }, "Scroll_Lock", function () awful.util.spawn("wli") end),
+
+    --}}}
+
+    --{{{ Prompt
+
+    awful.key({ modkey }, "r", function ()
+			obvious.popup_run_prompt.set_prompt_string(" Run~ ")
+			obvious.popup_run_prompt.set_cache("history")
+			obvious.popup_run_prompt.set_run_function(awful.util.spawn)
+			obvious.popup_run_prompt.run_prompt()
+			end),
+    awful.key({ modkey }, "e", function ()
+			obvious.popup_run_prompt.set_prompt_string(" exec Lua~ ")
+			obvious.popup_run_prompt.set_cache("history_eval")
+			obvious.popup_run_prompt.set_run_function(awful.util.eval)
+			obvious.popup_run_prompt.run_prompt()
+			end),
     awful.key({ }, "F12",        function () teardrop(terminal,"center","center", 0.99, 0.7)end ),
 
+    --}}}
 
-    --{{{Default
+    --{{{ g15Keys
+
+    awful.key({ }, "XF86Word",   awful.tag.viewprev       ),
+    awful.key({ }, "XF86WebCam",  awful.tag.viewnext       ),
+    awful.key({ }, "XF86Away", awful.tag.history.restore),
+
+    awful.key({ }, "XF86iTouch", function () awful.screen.focus_relative( 1) end),
+    awful.key({ }, "XF86Support", function () awful.screen.focus_relative(-1) end),
+
+    --}}}
+
+    --{{{ Default
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)    end),
     awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)    end),
     awful.key({ modkey, "Shift"   }, "h",     function () awful.tag.incnmaster( 1)      end),
@@ -113,10 +135,13 @@ clientkeys = awful.util.table.join(
     awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end),
     awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
-    awful.key({ modkey,           }, "o",      function (c) c.ontop = not c.ontop end),
+    awful.key({ modkey,           }, "o",      awful.client.movetoscreen                        ),
+    awful.key({ modkey, "Control" }, "o",      function (c) c.ontop = not c.ontop end),
     awful.key({ modkey,           }, "a",      function (c) c.sticky = not c.sticky end),
     awful.key({ modkey, "Shift"   }, "r",      function (c) c:redraw()                       end),
-    awful.key({ modkey,           }, "n",      function (c) c.minimized = not c.minimized    end)
+    awful.key({ modkey,           }, "n",      function (c) c.minimized = not c.minimized    end),
+
+    awful.key({ }, "XF86Calculater",      awful.client.movetoscreen                        )
 )
 
 -- Compute the maximum number of digit we need, limited to 9
