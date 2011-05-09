@@ -50,9 +50,9 @@ globalkeys = awful.util.table.join(
 --
     --{{{ Spawns
     awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
-    awful.key({ modkey,           }, "f",      function () awful.util.spawn("firefox") end),
-    awful.key({ modkey,           }, "t",      function () awful.util.spawn("claws-mail") end),
-    awful.key({ modkey,           }, "p",      function () awful.util.spawn("pidgin") end),
+    awful.key({ modkey,           }, "f",      function () awful.util.spawn("webbrowser") end),
+    awful.key({ modkey,           }, "t",      function () awful.util.spawn("mail-client") end),
+    awful.key({ modkey,           }, "p",      function () awful.util.spawn("im-client") end),
     awful.key({ modkey,           }, "g",      function () awful.util.spawn("gmpc") end),
     awful.key({ modkey,           }, "w",      function () awful.util.spawn("awsetbg -a -r /home/crater2150/.config/awesome/walls/ &") end),
     awful.key({ modkey, "Control" }, "r", awesome.restart),
@@ -68,7 +68,11 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey }, "x",  function () teardrop("cellwriter","top","center", 0.99, 0.4)end ),
     awful.key({ modkey, "Control" }, "Delete", function () awful.util.spawn("xlock") end),
 
-    --}}}
+	awful.key({ hyper }, "1", function () awful.util.spawn("/usr/local/bin/tabletstick 1") end),
+	awful.key({ hyper }, "2", function () awful.util.spawn("/usr/local/bin/tabletstick 2") end),
+	awful.key({ hyper }, "3", function () awful.util.spawn("/usr/local/bin/tabletstick 3") end),
+	awful.key({ hyper }, "4", function () awful.util.spawn("/usr/local/bin/tabletstick 4") end),
+	awful.key({ hyper }, "5", function () awful.util.spawn("/usr/local/bin/tabletstick 4") end),
     
     --{{{ Audio control
     awful.key({ }, "Print",  function () teardrop("urxvtc -e alsamixer","top","center", 0.99, 0.4)end ),
