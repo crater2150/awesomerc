@@ -26,7 +26,7 @@ theme.bg_urgent = "#DA4E4E"
 -- {{{ Borders
 theme.border_width  = "2"
 theme.border_normal = "#3F3F3F"
-theme.border_focus  = "#6F6F6F"
+theme.border_focus  = "#AAAAFF"
 theme.border_marked = "#CC9393"
 -- }}}
 
