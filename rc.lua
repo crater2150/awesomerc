@@ -12,6 +12,7 @@ require("naughty")
 require("teardrop")
 require("obvious.popup_run_prompt")
 require("vicious")
+require("rodentbane.rodentbane")
 require("aweswt")
 
 MY_PATH  = os.getenv("HOME") .. "/.config/awesome/"

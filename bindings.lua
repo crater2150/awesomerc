@@ -58,8 +58,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
     awful.key({ }, "Menu", aweswt.switch),
-    awful.key({ }, "Scroll_Lock", aweswt.switch),
-   
+    awful.key({ modkey }, "BackSpace", rodentbane.start),
     --}}}
     
     --{{{ tabletpc keys
