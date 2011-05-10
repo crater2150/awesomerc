@@ -34,10 +34,8 @@ layouts =
     awful.layout.suit.floating
 }
 
-dofile (MY_PATH .. "helpers.lua")
 dofile (MY_PATH .. "tags.lua")
 dofile (MY_PATH .. "wibox.lua")
 dofile (MY_PATH .. "bindings.lua")
 dofile (MY_PATH .. "rules.lua")
 dofile (MY_PATH .. "signals.lua")
---dofile (MY_PATH .. "wallpaper.lua")
