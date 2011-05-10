@@ -88,6 +88,7 @@ globalkeys = awful.util.table.join(
     awful.key({ },        "XF86AudioPrev",  function () awful.util.spawn("mpc prev") end),
     awful.key({ },        "XF86AudioStop",  function () awful.util.spawn("mpdmenu -a") end),
     awful.key({ modkey , "Control" }, "n",  function () awful.util.spawn("mpdmenu -j") end),
+    awful.key({ modkey }, "`",  function () teardrop("urxvtc -e ncmpcpp","bottom","center", 0.99, 0.4)end ),
 
     --}}}
 

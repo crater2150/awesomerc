@@ -28,6 +28,31 @@ clock = widget({ type = "textbox" })
 vicious.register(clock, vicious.widgets.date, "%b %d, %R", 60)
 
 
+-- music widget {{{
+mpdwidget = widget({ type = "textbox" })
+vicious.register(mpdwidget, vicious.widgets.mpd,
+	function(widget, args)
+		if args["{state}"] == "N/A" then
+			return ""
+		else
+			return "[ ♫ "..args["{Artist}"].." - "..args["{Title}"].." ]"
+		end
+	end, 3, {nil, os.getenv("MPD_HOST"), os.getenv("MPD_PORT")})
+mpdwidget:buttons(awful.util.table.join(
+   awful.button({ }, 1, function () teardrop("urxvtc -e ncmpcpp","top","center", 0.99, 0.4)end )
+    ))
+
+mpdnext = widget({ type = "textbox" })
+mpdnext.text = "▲"
+mpdnext:buttons(awful.util.table.join(
+   awful.button({ }, 1, function () awful.util.spawn("mpc next") end)
+    ))
+mpdprev = widget({ type = "textbox" })
+mpdprev.text = "▼"
+mpdprev:buttons(awful.util.table.join(
+   awful.button({ }, 1, function () awful.util.spawn("mpc prev") end)
+    ))
+-- }}}
 
 -- mail widget {{{
 mailwidget = widget({ type = "textbox" })
@@ -52,7 +77,6 @@ vicious.register(mailwidget, vicious.widgets.mdir,
 		return "⬓⬓ Unread "..args[2].." / New "..args[1].. " "
 	end, 181, {os.getenv("HOME") .. "/.maildir/"})
 --}}}
-
 
 -- battery {{{
 if exists("/proc/acpi/battery/BAT0") then
@@ -163,6 +187,7 @@ for s = 1, screen.count() do
             batwidget2,
             wlanwidget,
             spacer, cpulabel, cpuwidget,
+            spacer, mpdwidget, mpdnext, spacer, mpdprev,
             spacer,
             layout = awful.widget.layout.horizontal.leftright
         },
