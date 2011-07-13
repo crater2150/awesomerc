@@ -146,6 +146,7 @@ else wlanwidget = nullwidget end
 -- Create a wibox for each screen and add it
 leftwibox = {}
 rightwibox = {}
+
 mylayoutbox = {}
 mytaglist = {}
 mytaglist.buttons = awful.util.table.join(
