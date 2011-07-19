@@ -1,8 +1,3 @@
-terminal = "urxvtc -e tmux"
-editor_cmd = "urxvtc -e vim"
-modkey = "Mod4"
-hyper = "Mod3"
-rule_screen=1
 
 -- Standard awesome library
 require("awful")
@@ -18,6 +13,8 @@ require("aweswt")
 
 MY_PATH  = os.getenv("HOME") .. "/.config/awesome/"
 WALLPATH = MY_PATH .. "walls/"
+
+dofile (MY_PATH .. "localconf.lua")
 
 -- Themes define colours, icons, and wallpapers
 beautiful.init("/home/crater2150/.config/awesome/zenburn/theme.lua")
