@@ -72,6 +72,16 @@ globalkeys = awful.util.table.join(
 	awful.key({ hyper }, "3", function () awful.util.spawn("/usr/local/bin/tabletstick 3") end),
 	awful.key({ hyper }, "4", function () awful.util.spawn("/usr/local/bin/tabletstick 4") end),
 	awful.key({ hyper }, "5", function () awful.util.spawn("/usr/local/bin/tabletstick 4") end),
+
+	--}}}
+	
+	--{{{ thinkpad
+
+    awful.key({ }, "XF86Sleep",  function () awful.util.spawn("/usr/local/bin/s2ram")end ),
+    awful.key({ }, "XF86Away",  function () awful.util.spawn("xlock")end ),
+    awful.key({ }, "XF86TouchpadToggle",  function () awful.util.spawn("touchpad")end ),
+
+	--}}}
     
     --{{{ Audio control
     awful.key({ }, "Print",  function () teardrop("urxvtc -e alsamixer","top","center", 0.99, 0.4)end ),
@@ -107,17 +117,6 @@ globalkeys = awful.util.table.join(
 			obvious.popup_run_prompt.run_prompt()
 			end),
     awful.key({ }, "F12",        function () teardrop(terminal,"center","center", 0.99, 0.7)end ),
-
-    --}}}
-
-    --{{{ g15Keys
-
-    awful.key({ }, "XF86Word",   awful.tag.viewprev       ),
-    awful.key({ }, "XF86WebCam",  awful.tag.viewnext       ),
-    awful.key({ }, "XF86Away", awful.tag.history.restore),
-
-    awful.key({ }, "XF86iTouch", function () awful.screen.focus_relative( 1) end),
-    awful.key({ }, "XF86Support", function () awful.screen.focus_relative(-1) end),
 
     --}}}
 

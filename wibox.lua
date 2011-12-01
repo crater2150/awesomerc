@@ -79,7 +79,7 @@ vicious.register(mailwidget, vicious.widgets.mdir,
 --}}}
 
 -- battery {{{
-if exists("/proc/acpi/battery/BAT0") then
+if exists("/sys/class/power_supply/BAT0") then
     batwidget0 = widget({ type = "textbox" })
     vicious.register(batwidget0, vicious.widgets.bat,
 	function (widget, args)
@@ -97,7 +97,7 @@ if exists("/proc/acpi/battery/BAT0") then
 	end, 61, "BAT0")
 else batwidget0 = nullwidget end
 
-if exists("/proc/acpi/battery/BAT1") then
+if exists("/sys/class/power_supply/BAT1") then
     batwidget1 = widget({ type = "textbox" })
     vicious.register(batwidget1, vicious.widgets.bat,
 	function (widget, args)
@@ -115,7 +115,7 @@ if exists("/proc/acpi/battery/BAT1") then
 	end, 61, "BAT1")
 else batwidget1 = nullwidget end
 
-if exists("/proc/acpi/battery/BAT2") then
+if exists("/sys/class/power_supply/BAT2") then
     batwidget2 = widget({ type = "textbox" })
     vicious.register(batwidget2, vicious.widgets.bat,
 	function (widget, args)
