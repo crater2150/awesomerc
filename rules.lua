@@ -27,7 +27,7 @@ awful.rules.rules = {
       properties = { tag = tags[rule_screen][2],
                      floating = false, minimized = false } },
     { rule = { class = "Pidgin" },
-      properties = { tag = tags[rule_screen][3]} },
+      properties = { tag = tags[rule_screen][3], opacity = 0.9 } },
     { rule = { role = "buddy_list" },
       properties = { master = true } },
     { rule = { role = "conversation" },
@@ -50,8 +50,6 @@ awful.rules.rules = {
       properties = { tag = tags[rule_screen][6] } },
     { rule = { class = "Deluge" },
       properties = { tag = tags[rule_screen][7] } },
-    { rule = { class = "Xhtop" },
-      properties = { tag = tags[rule_screen][22] } },
     { rule = { class = "Cellwriter" },
       properties = { tag = tags[rule_screen][1],
                      ontop = true,
@@ -60,4 +58,10 @@ awful.rules.rules = {
                      sticky = true,
                      fullscreen = true
                      } },
+     { rule = { class = "Xhtop" },
+	     properties = { tag = tags[rule_screen][22] } },
+     { rule = { class = "URxvt" },
+	     properties = { opacity = 0.9 } },
+     { rule = { instance = "URxvt" },
+	     properties = { opacity = 0.9 } },
 }

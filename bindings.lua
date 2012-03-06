@@ -133,6 +133,19 @@ globalkeys = awful.util.table.join(
     --}}}
 )
 
+function client_opacity_set(c, default, max, step)
+	if c.opacity < 0 or c.opacity > 1 then
+		c.opacity = default
+	end
+
+	if c.opacity * step < (max-step) * step then
+		c.opacity = c.opacity + step
+	else
+		c.opacity = max
+	end
+end
+
+
 clientkeys = awful.util.table.join(
     awful.key({ modkey, "Shift"   }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
     awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end),
@@ -143,7 +156,8 @@ clientkeys = awful.util.table.join(
     awful.key({ modkey,           }, "a",      function (c) c.sticky = not c.sticky end),
     awful.key({ modkey, "Shift"   }, "r",      function (c) c:redraw()                       end),
     awful.key({ modkey,           }, "n",      function (c) c.minimized = not c.minimized    end),
-
+    awful.key({ modkey,           }, "Up",     function(c) client_opacity_set(c, 1, 1, 0.1) end),
+    awful.key({ modkey,           }, "Down",   function(c) client_opacity_set(c, 1, 0, -0.1) end),
     awful.key({ }, "XF86Calculater",      awful.client.movetoscreen                        )
 )
 
