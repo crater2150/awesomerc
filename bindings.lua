@@ -6,6 +6,7 @@ awful.button({ }, 5, awful.tag.viewprev)
 ))
 -- }}}
 
+
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
 --{{{ Focus and Tags
@@ -88,16 +89,13 @@ globalkeys = awful.util.table.join(
     awful.key({ }, "XF86AudioLowerVolume",  function () awful.util.spawn("amixer set Master 2%-")end ),
     awful.key({ }, "XF86AudioRaiseVolume",  function () awful.util.spawn("amixer set Master 2%+")end ),
     awful.key({ }, "XF86AudioMute",         function () awful.util.spawn("amixer set Master toggle") end),
-    awful.key({ modkey , "Shift" },   "m",  function () awful.util.spawn("mpdmenu -a") end),
-    awful.key({ modkey , "Control" }, "m",  function () awful.util.spawn("mpdmenu -t") end),
     awful.key({ modkey },             "m",  function () awful.util.spawn("mpc toggle") end),
-    awful.key({ modkey },             "n",  function () awful.util.spawn("mpc next") end),
-    awful.key({ modkey , "Shift"},    "n",  function () awful.util.spawn("mpc prev") end),
+    awful.key({ modkey },             ">",  function () awful.util.spawn("mpc next") end),
+    awful.key({ modkey },             "<",  function () awful.util.spawn("mpc prev") end),
+    awful.key({ modkey , "Shift" },   "m",  mpd_prompt.grabber),
     awful.key({ },        "XF86AudioPlay",  function () awful.util.spawn("mpc toggle") end),
     awful.key({ },        "XF86AudioNext",  function () awful.util.spawn("mpc next") end),
     awful.key({ },        "XF86AudioPrev",  function () awful.util.spawn("mpc prev") end),
-    awful.key({ },        "XF86AudioStop",  function () awful.util.spawn("mpdmenu -a") end),
-    awful.key({ modkey , "Control" }, "n",  function () awful.util.spawn("mpdmenu -j") end),
     awful.key({ modkey }, "`",  function () teardrop("urxvtc -e ncmpcpp","bottom","center", 0.99, 0.4)end ),
 
     --}}}

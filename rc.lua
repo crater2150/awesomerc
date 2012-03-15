@@ -10,6 +10,7 @@ require("obvious.popup_run_prompt")
 require("vicious")
 require("rodentbane.rodentbane")
 require("aweswt")
+mpd_prompt = require("mpd_prompt")
 
 MY_PATH  = os.getenv("HOME") .. "/.config/awesome/"
 WALLPATH = MY_PATH .. "walls/"
