@@ -12,7 +12,7 @@ theme.wallpaper_cmd = { "awsetbg -l" }
 -- }}}
 
 -- {{{ Styles
-theme.font      = "sans 8"
+theme.font      = "dejavu 7"
 
 -- {{{ Colors
 theme.fg_normal = "#DCDCDC"

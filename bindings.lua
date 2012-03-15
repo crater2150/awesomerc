@@ -1,3 +1,6 @@
+local aweswt = require("aweswt")
+local mb = require("modalbind")
+local mpd = require("mpd")
 
 -- {{{ Mouse bindings
 root.buttons(awful.util.table.join(
@@ -7,128 +10,149 @@ awful.button({ }, 5, awful.tag.viewprev)
 -- }}}
 
 
+mpdmap = {
+	name = "MPD",
+	m = mpd.ctrl.toggle,
+	n = mpd.ctrl.next,
+	N = mpd.ctrl.prev,
+	s = function() awful.util.spawn("mpd") end,
+	g = function () awful.util.spawn(cmd.mpd_client) end,
+	d = mpd.disconnect,
+	c = mpd.connect
+}
+mpdpromts = {
+	name = "MPD PROMPTS",
+	a = mpd.prompt.artist,
+	A = mpd.prompt.album,
+	t = mpd.prompt.title,
+	r = mpd.prompt.toggle_replace_on_search,
+}
+
+progmap = {
+	name = "PROGRAMS",
+	f = function () awful.util.spawn(cmd.browser) end,
+	i = function () awful.util.spawn(cmd.im_client) end,
+	m = function () awful.util.spawn(cmd.mail_client) end
+}
+
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
---{{{ Focus and Tags
-    awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
-    awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
-    awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
+	--{{{ Focus and Tags
+	awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
+	awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
+	awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
 
-    awful.key({ modkey,           }, "j",
-        function ()
-            awful.client.focus.byidx( 1)
-            if client.focus then client.focus:raise() end
-        end),
-    awful.key({ modkey,           }, "k",
-        function ()
-            awful.client.focus.byidx(-1)
-            if client.focus then client.focus:raise() end
-        end),
+	awful.key({ modkey,           }, "j",
+	function ()
+		awful.client.focus.byidx( 1)
+		if client.focus then client.focus:raise() end
+	end),
+	awful.key({ modkey,           }, "k",
+	function ()
+		awful.client.focus.byidx(-1)
+		if client.focus then client.focus:raise() end
+	end),
 
-    awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end),
-    awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end),
---}}}
+	awful.key({ modkey, "Control" }, "j", function ()
+		awful.screen.focus_relative( 1)
+	end),
 
-    --{{{ Layout manipulation
-    awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),
-    awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1)    end),
-    awful.key({ modkey,           }, "u", awful.client.urgent.jumpto),
-    awful.key({ modkey,           }, "Tab",
-        function ()
-            awful.client.focus.history.previous()
-            if client.focus then
-                client.focus:raise()
-            end
-        end),
-    awful.key({ "Mod1",           }, "Tab",
-        function ()
-            awful.client.focus.history.previous()
-            if client.focus then
-                client.focus:raise()
-            end
-        end),
-    --}}}
---
-    --{{{ Spawns
-    awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
-    awful.key({ modkey,           }, "f",      function () awful.util.spawn("webbrowser") end),
-    awful.key({ modkey,           }, "t",      function () awful.util.spawn("mail-client") end),
-    awful.key({ modkey,           }, "p",      function () awful.util.spawn("im-client") end),
-    awful.key({ modkey,           }, "g",      function () awful.util.spawn("gmpc") end),
-    awful.key({ modkey,           }, "w",      function () awful.util.spawn("awsetbg -a -r /home/crater2150/.config/awesome/walls/ &") end),
-    awful.key({ modkey, "Control" }, "r", awesome.restart),
-    awful.key({ modkey, "Shift"   }, "q", awesome.quit),
-    awful.key({ }, "Menu", aweswt.switch),
-    awful.key({ modkey }, "BackSpace", rodentbane.start),
-    --}}}
-    
-    --{{{ tabletpc keys
+	awful.key({ modkey, "Control" }, "k", function ()
+		awful.screen.focus_relative(-1)
+	end),
 
-    awful.key({ hyper }, "6", function () awful.util.spawn("/usr/local/bin/rotate") end),
-    awful.key({ modkey }, "x",  function () teardrop("cellwriter","top","center", 0.99, 0.4)end ),
-    awful.key({ modkey, "Control" }, "Delete", function () awful.util.spawn("xlock") end),
+	awful.key({ }, "Menu", aweswt.switch),
+	--}}}
 
-	awful.key({ hyper }, "1", function () awful.util.spawn("/usr/local/bin/tabletstick 1") end),
-	awful.key({ hyper }, "2", function () awful.util.spawn("/usr/local/bin/tabletstick 2") end),
-	awful.key({ hyper }, "3", function () awful.util.spawn("/usr/local/bin/tabletstick 3") end),
-	awful.key({ hyper }, "4", function () awful.util.spawn("/usr/local/bin/tabletstick 4") end),
-	awful.key({ hyper }, "5", function () awful.util.spawn("/usr/local/bin/tabletstick 4") end),
+	--{{{ Layout manipulation
+	awful.key({ modkey, "Shift"   }, "j", function ()
+		awful.client.swap.byidx(  1)
+	end),
+
+	awful.key({ modkey, "Shift"   }, "k", function ()
+		awful.client.swap.byidx( -1)
+	end),
+
+	awful.key({ modkey,           }, "u", awful.client.urgent.jumpto),
+	awful.key({ modkey,           }, "Tab", function ()
+		awful.client.focus.history.previous()
+		if client.focus then
+			client.focus:raise()
+		end
+	end),
+	awful.key({ "Mod1",           }, "Tab", function ()
+		awful.client.focus.history.previous()
+		if client.focus then
+			client.focus:raise()
+		end
+	end),
+
+	awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)    end),
+	awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)    end),
+	awful.key({ modkey, "Shift"   }, "h",     function () awful.tag.incnmaster( 1)      end),
+	awful.key({ modkey, "Shift"   }, "l",     function () awful.tag.incnmaster(-1)      end),
+	awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol( 1)         end),
+	awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1)         end),
+	awful.key({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end),
+	awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, 0) end),
+
+	--}}}
+
+	awful.key({ modkey, "Control" }, "r", awesome.restart),
+	awful.key({ modkey, "Shift"   }, "q", awesome.quit),
+	awful.key({ modkey,           }, "Return", function () awful.util.spawn(cmd.terminal) end),
+
+	--{{{ Modal mappings
+
+	awful.key({ modkey            },  "m",  function () mb.grab(mpdmap, true) end),
+	awful.key({ modkey, "Shift"   },  "m",  function () mb.grab(mpdpromts) end),
+	awful.key({ modkey            },  "c",  function () mb.grab(progmap) end),
+
+	--}}}
+
+	--{{{ Audio control
+
+	awful.key({ }, "XF86AudioLowerVolume",  function () awful.util.spawn("amixer set Master 2%-")end ),
+	awful.key({ }, "XF86AudioRaiseVolume",  function () awful.util.spawn("amixer set Master 2%+")end ),
+	awful.key({ }, "XF86AudioMute",         function () awful.util.spawn("amixer set Master toggle") end),
+	awful.key({ }, "XF86AudioPlay",         mpd.ctrl.toggle),
+	awful.key({ }, "XF86AudioNext",         mpd.ctrl.next),
+	awful.key({ }, "XF86AudioPrev",         mpd.ctrl.prev),
 
 	--}}}
 	
-	--{{{ thinkpad
+	-- {{{ teardrops
+	awful.key({ }, "F12",        function () teardrop(cmd.terminal,"center","center", 0.99, 0.7)end ),
+	awful.key({ modkey }, "`",  function () teardrop("urxvtc -e ncmpcpp","bottom","center", 0.99, 0.4)end ),
+	awful.key({ }, "Print",  function () teardrop("urxvtc -e alsamixer","top","center", 0.99, 0.4)end ),
+	-- }}}
 
-    awful.key({ }, "XF86Sleep",  function () awful.util.spawn("/usr/local/bin/s2ram")end ),
-    awful.key({ }, "XF86Away",  function () awful.util.spawn("xlock")end ),
-    awful.key({ }, "XF86TouchpadToggle",  function () awful.util.spawn("touchpad")end ),
+	--{{{ Prompt
+
+	awful.key({ modkey }, "r", function ()
+		obvious.popup_run_prompt.set_prompt_string(" Run~ ")
+		obvious.popup_run_prompt.set_cache("history")
+		obvious.popup_run_prompt.set_run_function(awful.util.spawn)
+		obvious.popup_run_prompt.run_prompt()
+	end),
+	awful.key({ modkey }, "e", function ()
+		obvious.popup_run_prompt.set_prompt_string(" exec Lua~ ")
+		obvious.popup_run_prompt.set_cache("history_eval")
+		obvious.popup_run_prompt.set_run_function(awful.util.eval)
+		obvious.popup_run_prompt.run_prompt()
+	end),
 
 	--}}}
-    
-    --{{{ Audio control
-    awful.key({ }, "Print",  function () teardrop("urxvtc -e alsamixer","top","center", 0.99, 0.4)end ),
-    awful.key({ }, "XF86AudioLowerVolume",  function () awful.util.spawn("amixer set Master 2%-")end ),
-    awful.key({ }, "XF86AudioRaiseVolume",  function () awful.util.spawn("amixer set Master 2%+")end ),
-    awful.key({ }, "XF86AudioMute",         function () awful.util.spawn("amixer set Master toggle") end),
-    awful.key({ modkey },             "m",  function () awful.util.spawn("mpc toggle") end),
-    awful.key({ modkey },             ">",  function () awful.util.spawn("mpc next") end),
-    awful.key({ modkey },             "<",  function () awful.util.spawn("mpc prev") end),
-    awful.key({ modkey , "Shift" },   "m",  mpd_prompt.grabber),
-    awful.key({ },        "XF86AudioPlay",  function () awful.util.spawn("mpc toggle") end),
-    awful.key({ },        "XF86AudioNext",  function () awful.util.spawn("mpc next") end),
-    awful.key({ },        "XF86AudioPrev",  function () awful.util.spawn("mpc prev") end),
-    awful.key({ modkey }, "`",  function () teardrop("urxvtc -e ncmpcpp","bottom","center", 0.99, 0.4)end ),
 
-    --}}}
+	--{{{ misc. XF86 Keys
 
-    --{{{ Prompt
+	awful.key({ }, "XF86Sleep",  function () awful.util.spawn("/usr/local/bin/s2ram")end ),
+	awful.key({ }, "XF86Away",  function () awful.util.spawn("xlock")end ),
+	awful.key({ }, "XF86TouchpadToggle",  function () awful.util.spawn("touchpad")end ),
 
-    awful.key({ modkey }, "r", function ()
-			obvious.popup_run_prompt.set_prompt_string(" Run~ ")
-			obvious.popup_run_prompt.set_cache("history")
-			obvious.popup_run_prompt.set_run_function(awful.util.spawn)
-			obvious.popup_run_prompt.run_prompt()
-			end),
-    awful.key({ modkey }, "e", function ()
-			obvious.popup_run_prompt.set_prompt_string(" exec Lua~ ")
-			obvious.popup_run_prompt.set_cache("history_eval")
-			obvious.popup_run_prompt.set_run_function(awful.util.eval)
-			obvious.popup_run_prompt.run_prompt()
-			end),
-    awful.key({ }, "F12",        function () teardrop(terminal,"center","center", 0.99, 0.7)end ),
+	--}}}
 
-    --}}}
-
-    --{{{ Default
-    awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)    end),
-    awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)    end),
-    awful.key({ modkey, "Shift"   }, "h",     function () awful.tag.incnmaster( 1)      end),
-    awful.key({ modkey, "Shift"   }, "l",     function () awful.tag.incnmaster(-1)      end),
-    awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol( 1)         end),
-    awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1)         end),
-    awful.key({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end),
-    awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, 0) end)
-    
-    --}}}
+	awful.key({ modkey }, "BackSpace", rodentbane.start)
 )
 
 function client_opacity_set(c, default, max, step)
@@ -159,7 +183,7 @@ clientkeys = awful.util.table.join(
     awful.key({ }, "XF86Calculater",      awful.client.movetoscreen                        )
 )
 
--- Compute the maximum number of digit we need, limited to 9
+-- Compute the maximum number of digit we need, limited to 22
 keynumber = 0
 for s = 1, screen.count() do
    keynumber = math.min(22, math.max(#tags[s], keynumber));
@@ -214,3 +238,5 @@ clientbuttons = awful.util.table.join(
 -- Set keys
 root.keys(globalkeys)
 -- }}}
+-- vim: set fenc=utf-8 tw=80 foldmethod=marker :
+

@@ -31,7 +31,7 @@ awful.rules.rules = {
     { rule = { role = "buddy_list" },
       properties = { master = true } },
     { rule = { role = "conversation" },
-      callback = awful.client.setslave},
+      callback = awful.client.setslave },
     { rule = { instance = "Weechat"},
       properties = { tag = tags[rule_screen][3]} ,
       callback = awful.client.setslave},

@@ -1,17 +1,24 @@
 -- aweswt.lua
 -- Application switcher using dmenu
 --
-local io        = io
-local table     = table
-local pairs     = pairs
-local awful     = awful
-local client    = client
-local string    = string
-local USE_NAME  = true
 
-module("aweswt")
+local M = {}
 
-function get_out (a)
+local dmenu = "dmenu -nf '#888888' -nb '#222222' -sf '#ffffff' -sb '#285577' -p 'switch to application:' -fn 'Terminus 8'  -i"
+
+local get_out, get_input, _switch
+
+-- switch with window titles
+M.switch = function()
+	_switch(true)
+end
+
+-- switch with client instance and class
+M.switch_class = function()
+	_switch(false)
+end
+
+get_out = function (a)
 	local  f = io.popen(a)
 	t = {}
 	for line in f:lines() do
@@ -20,13 +27,12 @@ function get_out (a)
 	return t
 end
 
-function get_input (a)
-	local dmenu = "dmenu -nf '#888888' -nb '#222222' -sf '#ffffff' -sb '#285577' -p 'switch to application:' -fn 'Terminus 8'  -i"
+get_input = function (a)
 	s1 = 'echo "' .. a .. '" | ' .. dmenu
 	return get_out(s1)
 end
 
-function switch ()
+_switch = function(use_name)
 	local clients = client.get()
 
 	if table.getn(clients) == 0 then 
@@ -39,8 +45,7 @@ function switch ()
 	for key, client in pairs(clients) do
 		local app
 
-		if USE_NAME then
-			--app = key .. ':' .. string.sub(client['name'], 1, 20)
+		if use_name then
 			app = client['name']
 		else
 			app = key .. ':' .. client['instance'] .. '.' .. client['class']
@@ -64,3 +69,4 @@ function switch ()
 	end
 end
 
+return M

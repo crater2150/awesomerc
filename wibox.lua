@@ -170,8 +170,8 @@ for s = 1, screen.count() do
 
 
     -- Create the wibox
-    leftwibox[s] = awful.wibox({ position = "left", screen = s })
-    rightwibox[s] = awful.wibox({ position = "right", screen = s })
+    leftwibox[s] = awful.wibox({ position = "left", screen = s, width = 18 })
+    rightwibox[s] = awful.wibox({ position = "right", screen = s , width = 18})
     -- Add widgets to the wibox - order matters
     leftwibox[s].widgets = {
         mytaglist[s],

@@ -15,15 +15,15 @@ tags.setup = {
     { name = "F1:☭",  layout = layouts[1]  },
     { name = "F2:♚",  layout = layouts[1]  },
     { name = "F3:♛",  layout = layouts[1]  },
-    { name = "F4:♜",  layout = layouts[1]  },
-    { name = "F5:♝",  layout = layouts[1]  },
-    { name = "F6:♞",  layout = layouts[1]  },
-    { name = "F7:♟",  layout = layouts[1]  },
-    { name = "F8:⚖",  layout = layouts[1]  },
-    { name = "F9:⚛",  layout = layouts[1]  },
-    { name = "F10:⚡", layout = layouts[1]  },
-    { name = "F11:⚰", layout = layouts[1]  },
-    { name = "F12:⚙", layout = layouts[1]  }
+    { name = "F4:♜",  layout = layouts[1]  }--,
+    -- { name = "F5:♝",  layout = layouts[1]  },
+    -- { name = "F6:♞",  layout = layouts[1]  },
+    -- { name = "F7:♟",  layout = layouts[1]  },
+    -- { name = "F8:⚖",  layout = layouts[1]  },
+    -- { name = "F9:⚛",  layout = layouts[1]  },
+    -- { name = "F10:⚡", layout = layouts[1]  },
+    -- { name = "F11:⚰", layout = layouts[1]  },
+    -- { name = "F12:⚙", layout = layouts[1]  }
 }
 
 for s = 1, screen.count() do
