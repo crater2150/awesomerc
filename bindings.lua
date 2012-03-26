@@ -16,9 +16,7 @@ mpdmap = {
 	n = mpd.ctrl.next,
 	N = mpd.ctrl.prev,
 	s = function() awful.util.spawn("mpd") end,
-	g = function () awful.util.spawn(cmd.mpd_client) end,
-	d = mpd.disconnect,
-	c = mpd.connect
+	g = function () awful.util.spawn(cmd.mpd_client) end
 }
 mpdpromts = {
 	name = "MPD PROMPTS",

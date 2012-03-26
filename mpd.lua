@@ -36,7 +36,8 @@ M.disconnect = function()
 end
 
 M.ensure_connection = function()
-	if conn == nil then M.connect() end
+	-- luampd throws SOCKET_ERRORs all the time. catch them and reconnect
+	if conn == nil or not pcall(conn:status()) then M.connect() end
 end
 
 -- }}}
