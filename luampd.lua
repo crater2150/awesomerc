@@ -584,18 +584,42 @@ function luampd:isearch(stype, swhat)
   local found = self:search(stype, swhat)
   local count = 0
   local size = table.maxn(found)
-  return function()
+  return reverse_iterator(function()
     count = count + 1
     if count <= size then
       return found[count]
     end
-  end, size
+  end, size), size
+end
+
+function reverse_iterator(iter, size)
+	local reverse = {}
+	i=0
+	for elem in iter do
+		reverse[size - i] = elem
+		i = i+1
+	end
+	local count = 0
+	return function()
+		count = count + 1
+		if count <= size then
+			return reverse[count]
+		end
+	end
 end
 
 function luampd:iadd(file_iterator)
 	for song in file_iterator do
 		self:add(song.file)
 	end
+end
+
+function luampd:idle()
+  self.socket:send('idle\n')
+end
+
+function luampd:noidle()
+  self.socket:send('noidle\n')
 end
 
 return luampd

@@ -1,10 +1,10 @@
-local luampd = require("luampd")
+--assert(package.loadlib(MY_PATH .. "./mpdc.so", "luaopen_mpdc"))
+require "mpdc"
 local M = {}
-
 local type = ""
 
 -- local functions
-local show, mpc_play_search, notify, idlecall
+local show, mpc_play_search, notify
 
 local conn = nil
 
@@ -23,12 +23,7 @@ end
 
 M.connect = function ()
 	print("Connecting to mpd")
-	pcall(function() if conn == nil then conn:close() end end)
-	conn = luampd:new({
-		hostname = settings.hostname,
-		port = settings.port,
-		debug = false
-	})
+	conn = mpdc.open(settings.host, settings.port)
 end
 
 M.disconnect = function()
@@ -37,17 +32,8 @@ M.disconnect = function()
 end
 
 M.ensure_connection = function()
-	-- connect on first call and go into idle mode
-	if conn == nil then M.connect() conn:idle() end
-end
-
-
-idlecall = function(command)
-	M.ensure_connection()
-	-- unidle, send commands and go back to idling
-	conn:noidle()
-	command()
-	conn:idle()
+	-- connect on first call
+	if conn == nil then M.connect() end
 end
 
 -- }}}
@@ -57,32 +43,30 @@ end
 M.ctrl = {}
 
 M.ctrl.toggle = function ()
-	idlecall(function()
-		local status = conn:status()
-		if status["state"] == "pause" or status["state"] == "stop" then
-			conn:play()
-		else
-			conn:pause()
-		end
-	end)
+	M.ensure_connection()
+	conn:toggle()
 end
 
 M.ctrl.play = function ()
-	idlecall(function() conn:play() end)
+	M.ensure_connection()
+	conn:play()
 	-- TODO widget updating
 end
 
 M.ctrl.pause = function ()
-	idlecall(function() conn:pause() end)
+	M.ensure_connection()
+	conn:pause()
 end
 
 M.ctrl.next = function ()
-	idlecall(function() conn:next_() end)
+	M.ensure_connection()
+	conn:next()
 	-- TODO widget updating
 end
 
 M.ctrl.prev = function ()
-	idlecall(function() conn:previous() end)
+	M.ensure_connection()
+	conn:prev()
 	-- TODO widget updating
 end
 
@@ -132,13 +116,11 @@ function show()
 end
 
 function mpc_play_search(s)
-	idlecall(function()
-		if clear_before then conn:clear() end
-		local result, num = conn:isearch(type, s)
-		notify("Found " .. (num) .. " matches");
-		conn:iadd(result)
-		conn:play()
-	end)
+	if clear_before then conn:clear() end
+	local result, num = conn:isearch(type, s)
+	notify("Found " .. (num) .. " matches");
+	conn:iadd(result)
+	conn:play()
 end
 
 -- }}}
