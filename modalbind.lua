@@ -19,11 +19,12 @@ M.grab = function(keymap, stay_in_mode)
 
 		if keymap[key] then
 			keygrabber.stop()
-			keymap[key]()
 			if stay_in_mode then
+				keymap[key](key)
 				M.grab(keymap, true)
 			else
 				hide_box()
+				keymap[key](key)
 				return true
 			end
 		end

@@ -1,12 +1,9 @@
---assert(package.loadlib(MY_PATH .. "./mpdc.so", "luaopen_mpdc"))
-require "mpdc"
+local awful = awful
 local M = {}
 local type = ""
 
 -- local functions
 local show, mpc_play_search, notify
-
-local conn = nil
 
 local defaults = {}
 local settings = {}
@@ -21,21 +18,6 @@ end
 
 -- {{{ basic functions
 
-M.connect = function ()
-	print("Connecting to mpd")
-	conn = mpdc.open(settings.host, settings.port)
-end
-
-M.disconnect = function()
-	if conn ~= nil then conn:close() end
-	conn = nil
-end
-
-M.ensure_connection = function()
-	-- connect on first call
-	if conn == nil then M.connect() end
-end
-
 -- }}}
 
 -- {{{ mpd.ctrl submodule
@@ -43,31 +25,27 @@ end
 M.ctrl = {}
 
 M.ctrl.toggle = function ()
-	M.ensure_connection()
-	conn:toggle()
+	awful.util.spawn("mpc toggle")
 end
 
 M.ctrl.play = function ()
-	M.ensure_connection()
-	conn:play()
-	-- TODO widget updating
+	awful.util.spawn("mpc play")
 end
 
 M.ctrl.pause = function ()
-	M.ensure_connection()
-	conn:pause()
+	awful.util.spawn("mpc pause")
 end
 
 M.ctrl.next = function ()
-	M.ensure_connection()
-	conn:next()
-	-- TODO widget updating
+	awful.util.spawn("mpc next")
 end
 
 M.ctrl.prev = function ()
-	M.ensure_connection()
-	conn:prev()
-	-- TODO widget updating
+	awful.util.spawn("mpc prev")
+end
+
+M.ctrl.clear = function ()
+	awful.util.spawn("mpc clear")
 end
 
 -- }}}
@@ -116,11 +94,8 @@ function show()
 end
 
 function mpc_play_search(s)
-	if clear_before then conn:clear() end
-	local result, num = conn:isearch(type, s)
-	notify("Found " .. (num) .. " matches");
-	conn:iadd(result)
-	conn:play()
+	if clear_before then M.ctrl.clear() end
+	awful.util.spawn("mpc search " .. type .. " | mpc add;  mpc play")
 end
 
 -- }}}

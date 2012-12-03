@@ -9,14 +9,15 @@ awful.button({ }, 5, awful.tag.viewprev)
 ))
 -- }}}
 
+local function spawnf(cmd) return function() awful.util.spawn(cmd) end end
 
 mpdmap = {
 	name = "MPD",
 	m = mpd.ctrl.toggle,
 	n = mpd.ctrl.next,
 	N = mpd.ctrl.prev,
-	s = function() awful.util.spawn("mpd") end,
-	g = function () awful.util.spawn(cmd.mpd_client) end
+	s = spawnf("mpd"),
+	g = spawnf(cmd.mpd_client)
 }
 mpdpromts = {
 	name = "MPD PROMPTS",
@@ -28,9 +29,25 @@ mpdpromts = {
 
 progmap = {
 	name = "PROGRAMS",
-	f = function () awful.util.spawn(cmd.browser) end,
-	i = function () awful.util.spawn(cmd.im_client) end,
-	m = function () awful.util.spawn(cmd.mail_client) end
+	f = spawnf(cmd.browser),
+	i = spawnf(cmd.im_client),
+	I = spawnf(cmd.irc_client),
+	m = spawnf(cmd.mail_client)
+}
+
+adapters = { u = "wwan", w = "wlan", b = "bluetooth" } 
+function rfkill(cmd)
+	map={ name = string.upper(cmd) }
+	for key, adapter in pairs(adapters) do
+		map[key] = spawnf("sudo rfkill "..cmd.." "..adapter)
+	end
+	print(map["name"])
+	return map
+end
+wirelessmap = {
+	name = "RFKILL",
+	b = function () mb.grab(rfkill("block")) end,
+	u = function () mb.grab(rfkill("unblock")) end
 }
 
 -- {{{ Key bindings
@@ -59,7 +76,7 @@ globalkeys = awful.util.table.join(
 		awful.screen.focus_relative(-1)
 	end),
 
-	awful.key({ }, "Menu", aweswt.switch),
+	awful.key({ }, "Menu", spawnf('wmselect')),
 	--}}}
 
 	--{{{ Layout manipulation
@@ -98,13 +115,14 @@ globalkeys = awful.util.table.join(
 
 	awful.key({ modkey, "Control" }, "r", awesome.restart),
 	awful.key({ modkey, "Shift"   }, "q", awesome.quit),
-	awful.key({ modkey,           }, "Return", function () awful.util.spawn(cmd.terminal) end),
+	awful.key({ modkey,           }, "Return", spawnf(cmd.terminal)),
 
 	--{{{ Modal mappings
 
 	awful.key({ modkey            },  "m",  function () mb.grab(mpdmap, true) end),
 	awful.key({ modkey, "Shift"   },  "m",  function () mb.grab(mpdpromts) end),
 	awful.key({ modkey            },  "c",  function () mb.grab(progmap) end),
+	awful.key({ modkey            },  "w",  function () mb.grab(wirelessmap) end),
 
 	--}}}
 
@@ -112,7 +130,7 @@ globalkeys = awful.util.table.join(
 
 	awful.key({ }, "XF86AudioLowerVolume",  function () awful.util.spawn("amixer set Master 2%-")end ),
 	awful.key({ }, "XF86AudioRaiseVolume",  function () awful.util.spawn("amixer set Master 2%+")end ),
-	awful.key({ }, "XF86AudioMute",         function () awful.util.spawn("amixer set Master toggle") end),
+	awful.key({ }, "XF86AudioMute",         spawnf("amixer set Master toggle")),
 	awful.key({ }, "XF86AudioPlay",         mpd.ctrl.toggle),
 	awful.key({ }, "XF86AudioNext",         mpd.ctrl.next),
 	awful.key({ }, "XF86AudioPrev",         mpd.ctrl.prev),
@@ -122,7 +140,7 @@ globalkeys = awful.util.table.join(
 	-- {{{ teardrops
 	awful.key({ }, "F12",        function () teardrop(cmd.terminal,"center","center", 0.99, 0.7)end ),
 	awful.key({ modkey }, "`",  function () teardrop("urxvtc -e ncmpcpp","bottom","center", 0.99, 0.4)end ),
-	awful.key({ }, "Print",  function () teardrop("urxvtc -e alsamixer","top","center", 0.99, 0.4)end ),
+	awful.key({ }, "Print",  function () teardrop("galsamixer","top","center", 0.99, 0.4)end ),
 	-- }}}
 
 	--{{{ Prompt

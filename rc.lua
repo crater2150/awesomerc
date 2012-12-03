@@ -30,9 +30,11 @@ layouts =
     awful.layout.suit.floating
 }
 
-dofile (MY_PATH .. "tags.lua")
-dofile (MY_PATH .. "wibox.lua")
-dofile (MY_PATH .. "bindings.lua")
-dofile (MY_PATH .. "rules.lua")
-dofile (MY_PATH .. "signals.lua")
+awful.util.spawn("wmname LG3D")
+
+dofile (MY_PATH .. "/tags.lua")
+dofile (MY_PATH .. "/boxes.lua")
+dofile (MY_PATH .. "/bindings.lua")
+dofile (MY_PATH .. "/rules.lua")
+dofile (MY_PATH .. "/signals.lua")
 -- dofile (MY_PATH .. "uzbl.lua")
