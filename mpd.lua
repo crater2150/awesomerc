@@ -2,6 +2,7 @@
 require "mpdc"
 local M = {}
 local type = ""
+local conf = conf
 
 -- local functions
 local show, mpc_play_search, notify
@@ -74,9 +75,9 @@ end
 
 -- {{{ mpd.prompt submodule
 
-local clear_before = cfg.mpd_prompt_clear_before == nil and
+local clear_before = conf.mpd_prompt_clear_before == nil and
 	true or
-	cfg.mpd_prompt_clear_before 
+	conf.mpd_prompt_clear_before 
 
 M.prompt = {}
 
