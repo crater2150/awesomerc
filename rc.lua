@@ -11,6 +11,13 @@ conf            = require("localconf")
 
 layouts = require('layouts')
 
+-- {{{ Logging
+log = require("simplelog")
+log.add_logger(log.loggers.stdio, 0)
+log.add_logger(log.loggers.naughty, 2)
+
+-- }}}
+
 -- {{{ Tags
 
 tags = require('tags')
