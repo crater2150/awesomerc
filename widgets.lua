@@ -125,7 +125,7 @@ widgets.layout = get_layout
 --------------------------------------------------------------------------------
 
 -- mail widget
-local function mailwidget(screen, parent_layout, mailboxes) --{{{
+local function mailwidget(name, screen, parent_layout, mailboxes) --{{{
 	local widget = wibox.widget.textbox()
 	local bg = wibox.widget.background()
 	bg:set_widget(widget)
@@ -148,17 +148,17 @@ local function mailwidget(screen, parent_layout, mailboxes) --{{{
 		end
 		return "⬓⬓ Unread "..args[2].." / New "..args[1].. " "
 	end, 0, mailboxes)
-	wlist[screen]["mail"] = widget
+	wlist[screen][name] = widget
 	parent_layout:add(bg)
-	widgets.update("mail")
+	widgets.update(name)
 end
 --}}}
 widgets.add.mail = mailwidget
 
 -- text clock
-local function clockwidget(screen, parent_layout) -- {{{
-	wlist[screen]["clock"] = awful.widget.textclock()
-	parent_layout:add(wlist[screen]["clock"])
+local function clockwidget(name, screen, parent_layout) -- {{{
+	wlist[screen][name] = awful.widget.textclock()
+	parent_layout:add(wlist[screen][name])
 end
 --}}}
 widgets.add.clock = clockwidget
@@ -172,16 +172,17 @@ end
 widgets.add.layout = layoutwidget
 
 -- taglist
-local function taglistwidget(screen, parent_layout) --{{{
+local function taglistwidget(name, screen, parent_layout) --{{{
 	-- Create a taglist widget
-	wlist[screen]["taglist"] = awful.widget.taglist(screen,
+	wlist[screen][name] = awful.widget.taglist(screen,
 		awful.widget.taglist.filter.all,
 		mytaglist.buttons)
-	parent_layout:add(wlist[screen]["taglist"])
+	parent_layout:add(wlist[screen][name])
 end --}}}
 widgets.add.taglist = taglistwidget
 
 -- system tray
+-- not using a name argument, because only one systray is allowed
 local function systraywidget(screen, parent_layout) --{{{
 	if (wlist["systray"] ~= nil) then
 		return
@@ -192,24 +193,20 @@ end --}}}
 widgets.add.systray = systraywidget
 
 -- cpu usage
-local function cpuwidget(screen, parent_layout) --{{{
-	wlist[screen]["cpu"] = wibox.widget.textbox()
-	vicious.register(wlist[screen]["cpu"], vicious.widgets.cpu, "CPU: $1%")
-	parent_layout:add(wlist[screen]["cpu"])
+local function cpuwidget(name, screen, parent_layout) --{{{
+	wlist[screen][name] = wibox.widget.textbox()
+	vicious.register(wlist[screen][name], vicious.widgets.cpu, "CPU: $1%")
+	parent_layout:add(wlist[screen][name])
 end --}}}
 widgets.add.cpu = cpuwidget
 
 -- battery
-local function batterywidget(screen, parent_layout, batname) --{{{
-	if(wlist[screen]["bat"] == nil) then
-		wlist[screen]["bat"] = {}
-	end
-	-- more than one batwidget is possible
-	local batwidget = wibox.widget.textbox()
+local function batterywidget(name, screen, parent_layout, batname) --{{{
+	local widget = wibox.widget.textbox()
 	local bg = wibox.widget.background()
-	bg:set_widget(batwidget)
-	table.insert(wlist[screen]["bat"], batwidget)
-	vicious.register(batwidget, vicious.widgets.bat, function (widget, args)
+	print("creating batwidget '" .. name .. "' for battery '"..batname.."'")
+	bg:set_widget(widget)
+	vicious.register(widget, vicious.widgets.bat, function (widget, args)
 		if args[2] == 0 then return ""
 		else
 			if args[2] < 15 then
@@ -219,20 +216,22 @@ local function batterywidget(screen, parent_layout, batname) --{{{
 				bg:set_bg(theme.bg_normal)
 				bg:set_fg(theme.fg_normal)
 			end
-			return batname .. ": " ..
+			return name .. ": " ..
 				args[1]..args[2].."% - "..args[3]
 		end
 	end, 61, batname)
+	wlist[screen][name] = widget
 	parent_layout:add(bg)
+	widgets.update(name)
 end --}}}
 widgets.add.battery = batterywidget
 
 -- wireless status
-local function wifiwidget(screen, parent_layout, interface) --{{{
-	wlist[screen]["wifi"] = wibox.widget.textbox()
-	vicious.register(wlist[screen]["wifi"], vicious.widgets.wifi,
+local function wifiwidget(name, screen, parent_layout, interface) --{{{
+	wlist[screen][name] = wibox.widget.textbox()
+	vicious.register(wlist[screen][name], vicious.widgets.wifi,
 	"WLAN ${ssid} @ ${sign}, Q:${link}/70", 31, interface)
-	parent_layout:add(wlist[screen]["wifi"])
+	parent_layout:add(wlist[screen][name])
 end --}}}
 widgets.add.wifi = wifiwidget
 

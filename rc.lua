@@ -33,20 +33,22 @@ for s = 1, screen.count() do
 	local lbottom = widgets.layout(s,"left","bottom")
 
 	-- {{{
-	widgets.add.mail(s, ltop, { os.getenv("HOME") .. "/.maildir/" })
+	widgets.add.mail("mail_me", s, ltop, { os.getenv("HOME") .. "/.maildir/me" })
 	widgets.add.spacer(ltop)
-	widgets.add.clock(s, ltop)
+	widgets.add.mail("mail_uber", s, ltop, { os.getenv("HOME") .. "/.maildir/uber" })
+	widgets.add.spacer(ltop)
+	widgets.add.clock("clock", s, ltop)
 
 	widgets.add.layout(s, lbottom)
-	widgets.add.taglist(s, lbottom)
+	widgets.add.taglist("tags", s, lbottom)
 
-	widgets.add.cpu(s, rtop)
+	widgets.add.cpu("cpu", s, rtop)
 	widgets.add.spacer(rtop)
-	widgets.add.battery(s, rtop, "BAT0")
+	widgets.add.battery("bat", s, rtop, "BAT0")
 	widgets.add.spacer(rtop)
-	widgets.add.battery(s, rtop, "BAT1")
+	widgets.add.battery("slice", s, rtop, "BAT1")
 	widgets.add.spacer(rtop)
-	widgets.add.wifi(s, rtop, "wlan0")
+	widgets.add.wifi("wlan", s, rtop, "wlan0")
 	widgets.add.spacer(rtop)
 	widgets.add.systray(s, rtop)
 
