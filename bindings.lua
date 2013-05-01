@@ -2,9 +2,7 @@
 local awful = awful
 local conf = conf
 local mpd = require("mpd")
-local obvious = {}
 local scratch = require("scratch")
-obvious.popup_run_prompt = require("obvious.popup_run_prompt")
 
 local modkey = conf.modkey or "Mod4"
 local mb = require("modalbind")
@@ -32,9 +30,9 @@ mpdmap = {
 mpdpromts = {
 	name = "MPD PROMPTS",
 	a = mpd.prompt.artist,
-	A = mpd.prompt.album,
+	b = mpd.prompt.album,
 	t = mpd.prompt.title,
-	r = mpd.prompt.toggle_replace_on_search,
+	r = mpd.prompt.toggle_replace_on_search
 }
 
 progmap = {
@@ -51,14 +49,13 @@ function rfkill(cmd)
 	for key, adapter in pairs(adapters) do
 		map[key] = spawnf("sudo rfkill "..cmd.." "..adapter)
 	end
-	print(map["name"])
 	return map
 end
--- wirelessmap = {
--- 	name = "RFKILL",
--- 	b = function () mb.grab(rfkill("block")) end,
--- 	u = function () mb.grab(rfkill("unblock")) end
--- }
+wirelessmap = {
+	name = "RFKILL",
+	b = mb.grabf(rfkill("block")),
+	u = mb.grabf(rfkill("unblock"))
+}
 
 function bindings.extend_and_register_key_table(globalkeys)
 	local totalkeys = globalkeys or {}
@@ -71,10 +68,10 @@ function bindings.extend_and_register_key_table(globalkeys)
 
 	--{{{ Modal mappings
 
-	awful.key({ modkey            },  "m",  function () mb.grab(mpdmap, true) end),
-	awful.key({ modkey, "Shift"   },  "m",  function () mb.grab(mpdpromts) end),
-	awful.key({ modkey            },  "c",  function () mb.grab(progmap) end),
-	awful.key({ modkey            },  "w",  function () mb.grab(wirelessmap) end),
+	awful.key({ modkey            },  "m",  mb.grabf(mpdmap, true)),
+	awful.key({ modkey, "Shift"   },  "m",  mb.grabf(mpdpromts)),
+	awful.key({ modkey            },  "c",  mb.grabf(progmap)),
+	awful.key({ modkey            },  "w",  mb.grabf(wirelessmap)),
 	--}}}
 
 	--{{{ Audio control

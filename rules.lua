@@ -130,6 +130,18 @@ local function setup(self)
 			}
 		},
 		{
+			rule = { class = "feh", name = "timetable" },
+			properties = {
+				tag = tags[rule_screen][13],
+				skip_taskbar = true,
+				type = desktop,
+				below = true,
+				focusable = false,
+				border_width = 0,
+				floating = true
+			}
+		},
+		{
 			rule = { instance = "Awesomelog" },
 			properties = {
 				tag = tags[rule_screen][14] 

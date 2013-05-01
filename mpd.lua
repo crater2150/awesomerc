@@ -1,74 +1,46 @@
---assert(package.loadlib(MY_PATH .. "./mpdc.so", "luaopen_mpdc"))
-require "mpdc"
 local M = {}
-local type = ""
 local conf = conf
+local awful = awful
+local log = log
 
 -- local functions
-local show, mpc_play_search, notify
-
-local conn = nil
+local dmenu, mpc_play_search, notify, mpc
 
 local defaults = {}
 local settings = {}
 
-defaults.host = "127.0.0.1"
-defaults.port = 6600
 defaults.replace_on_search = true
 
 for key, value in pairs(defaults) do
     settings[key] = value
 end
 
--- {{{ basic functions
-
-M.connect = function ()
-	print("Connecting to mpd")
-	conn = mpdc.open(settings.host, settings.port)
+mpc = function(command)
+	awful.util.spawn("mpc " .. command)
 end
-
-M.disconnect = function()
-	if conn ~= nil then conn:close() end
-	conn = nil
-end
-
-M.ensure_connection = function()
-	-- connect on first call
-	if conn == nil then M.connect() end
-end
-
--- }}}
 
 -- {{{ mpd.ctrl submodule
 
 M.ctrl = {}
 
 M.ctrl.toggle = function ()
-	M.ensure_connection()
-	conn:toggle()
+	mpc("toggle")
 end
 
 M.ctrl.play = function ()
-	M.ensure_connection()
-	conn:play()
-	-- TODO widget updating
+	mpc("play")
 end
 
 M.ctrl.pause = function ()
-	M.ensure_connection()
-	conn:pause()
+	mpc("pause")
 end
 
 M.ctrl.next = function ()
-	M.ensure_connection()
-	conn:next()
-	-- TODO widget updating
+	mpc("next")
 end
 
 M.ctrl.prev = function ()
-	M.ensure_connection()
-	conn:prev()
-	-- TODO widget updating
+	mpc("prev")
 end
 
 -- }}}
@@ -82,21 +54,22 @@ local clear_before = conf.mpd_prompt_clear_before == nil and
 M.prompt = {}
 
 M.prompt.artist = function()
-	type = "artist"
-	show()
+	dmenu("-a")
 end
 
 M.prompt.album = function()
-	type = "album"
-	show()
+	dmenu("-a -b")
 end
 
 
 M.prompt.title = function()
-	type = "title"
-	show()
+	dmenu("-a -b -t")
 end
 M.prompt.title = title
+
+function dmenu(opts)
+	awful.util.spawn("dmpc " .. (clear_before and "-r" or "-R") .. " " .. opts)
+end
 
 M.prompt.replace_on_search = function(bool)
 	clear_before = bool
@@ -109,19 +82,8 @@ M.prompt.toggle_replace_on_search = function()
 			).. " the playlist")
 end
 
-function show()
-	obvious.popup_run_prompt.set_prompt_string("Play ".. type .. ":")
-	obvious.popup_run_prompt.set_cache("/mpd_ ".. type);
-	obvious.popup_run_prompt.set_run_function(mpc_play_search)
-	obvious.popup_run_prompt.run_prompt()
-end
-
 function mpc_play_search(s)
-	if clear_before then conn:clear() end
-	local result, num = conn:isearch(type, s)
-	notify("Found " .. (num) .. " matches");
-	conn:iadd(result)
-	conn:play()
+	notify("Found " .. (s) .. " matches");
 end
 
 -- }}}

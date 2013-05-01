@@ -1,7 +1,9 @@
-local M = {}
+local modalbind = {}
+local wibox = require("wibox")
 local inited = false
 local modewidget = {}
 local modewibox = { screen = -1 }
+local nesting = 0
 
 --local functions
 
@@ -31,49 +33,54 @@ end
 
 --- Change the opacity of the modebox.
 -- @param amount opacity between 0.0 and 1.0, or nil to use default
-M.set_opacity = function (amount)
+function set_opacity(amount)
 	settings.opacity = amount or defaults.opacity
 	update_settings()
 end
+modalbind.set_opacity = set_opacity
 
 --- Change height of the modebox.
 -- @param amount height in pixels, or nil to use default
-M.set_height = function (amount)
+function set_height(amount)
 	settings.height = amount or defaults.height
 	update_settings()
 end
+modalbind.set_height = set_height 
 
 --- Change border width of the modebox.
 -- @param amount width in pixels, or nil to use default
-M.set_border_width = function (amount)
+function set_border_width(amount)
 	settings.border_width = amount or defaults.border_width
 	update_settings()
 end
+modalbind.set_border_width = set_border_width
 
 --- Change horizontal offset of the modebox.
 -- set location for the box with set_corner(). The box is shifted to the right
 -- if it is in one of the left corners or to the left otherwise
 -- @param amount horizontal shift in pixels, or nil to use default
-M.set_x_offset = function (amount)
+function set_x_offset (amount)
 	settings.x_offset = amount or defaults.x_offset
 	update_settings()
 end
+modalbind.set_x_offset = set_x_offset  
 
 --- Change vertical offset of the modebox.
 -- set location for the box with set_corner(). The box is shifted downwards if it
 -- is in one of the upper corners or upwards otherwise.
 -- @param amount vertical shift in pixels, or nil to use default
-M.set_y_offset = function (amount)
+function set_y_offset(amount)
 	settings.y_offset = amount or defaults.y_offset
 	update_settings()
 end
+modalbind.set_y_offset = set_y_offset
 
 --- Set the corner, where the modebox will be displayed
 -- If a parameter is not a valid orientation (see below), the function returns
 -- without doing anything
 -- @param vertical either top or bottom
 -- @param horizontal either left or right
-M.set_corner = function (vertical, horizontal)
+function set_corner(vertical, horizontal)
 	if (vertical ~= "top" and vertical ~= "bottom") then
 		return
 	end
@@ -83,10 +90,12 @@ M.set_corner = function (vertical, horizontal)
 	settings.corner_v = vertical or defaults.corner_v
 	settings.corner_h = horizontal or defaults.corner_h
 end
+modalbind.set_corner = set_corner
 
-M.set_show_options = function (bool)
+function set_show_options(bool)
 	settings.show_options = bool
 end
+modalbind.set_show_options = set_show_options
 
 local function set_default(s)
 	minwidth, minheight = modewidget[s]:fit(screen[s].geometry.width,
@@ -151,12 +160,16 @@ local function hide_box()
 	if s ~= -1 then modewibox[s].visible = false end
 end
 
-M.grab = function(keymap, stay_in_mode)
-	if keymap.name then show_box(mouse.screen, keymap) end
+function grab(keymap, stay_in_mode)
+	if keymap.name then
+		show_box(mouse.screen, keymap)
+		nesting = nesting + 1
+	end
 
 	keygrabber.run(function(mod, key, event)
 		if key == "Escape" then
 			keygrabber.stop()
+			nesting = 0
 			hide_box();
 			return true
 		end
@@ -167,9 +180,10 @@ M.grab = function(keymap, stay_in_mode)
 			keygrabber.stop()
 			keymap[key]()
 			if stay_in_mode then
-				M.grab(keymap, true)
+				grab(keymap, true)
 			else
-				hide_box()
+				nesting = nesting - 1
+				if nesting < 1 then hide_box() end
 				return true
 			end
 		end
@@ -177,10 +191,14 @@ M.grab = function(keymap, stay_in_mode)
 		return true
 	end)
 end
-M.grabf = function(keymap, stay_in_mode)
-	return function() M.grab(keymap, stay_in_mode) end
+modalbind.grab = grab
+
+function grabf(keymap, stay_in_mode)
+	return function() grab(keymap, stay_in_mode) end
 end
+modalbind.grabf = grabf
 
-M.wibox = function() return modewibox[1] end
+function modebox() return modewibox[1] end
+modalbind.modebox = modebox
 
-return M
+return modalbind

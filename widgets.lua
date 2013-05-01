@@ -202,9 +202,9 @@ widgets.add.cpu = cpuwidget
 
 -- battery
 local function batterywidget(name, screen, parent_layout, batname) --{{{
+	print("creating batwidget '" .. name .. "' for battery '"..batname.."'")
 	local widget = wibox.widget.textbox()
 	local bg = wibox.widget.background()
-	print("creating batwidget '" .. name .. "' for battery '"..batname.."'")
 	bg:set_widget(widget)
 	vicious.register(widget, vicious.widgets.bat, function (widget, args)
 		if args[2] == 0 then return ""

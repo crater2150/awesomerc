@@ -26,10 +26,10 @@ function loglv(msg, level)
 	end
 end
 
-function debug(msg)
+function dbg(msg)
 	loglv(msg, 0)
 end
-simplelog.debug = debug
+simplelog.debug = dbg
 
 function log(msg)
 	loglv(msg, 1)
@@ -50,13 +50,11 @@ function add_logger(logger, level)
 	if level == nil then
 		level = settings.defaultlevel
 	end
-	print(inspect(logger))
 	table.insert(settings.loggers, function(msg, severity)
 		if severity >= level then 
 			logger(msg, severity) 
 		end
 	end)
-	print(inspect(settings.loggers))
 end
 simplelog.add_logger = add_logger
 

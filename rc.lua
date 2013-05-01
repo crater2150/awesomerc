@@ -7,6 +7,7 @@ beautiful       = require("autobeautiful")
 naughty         = require("naughty")
 conf            = require("localconf")
                   require("errors")
+inspect = require("inspect")
 -- }}}
 
 layouts = require('layouts')
@@ -22,6 +23,7 @@ log.add_logger(log.loggers.naughty, 2)
 
 tags = require('tags')
 tags.setup()
+
 -- }}}
 
 -- {{{ widgets
