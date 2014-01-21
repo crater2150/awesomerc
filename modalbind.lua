@@ -1,133 +1,147 @@
-local M = {}
+local modalbind = {}
+local wibox = require("wibox")
 local inited = false
 local modewidget = {}
 local modewibox = { screen = -1 }
+local nesting = 0
 
 --local functions
-local ensure_init, set_default, update_settings, show_box, hide_box 
-M.grab = function(keymap, stay_in_mode)
-	if keymap.name then show_box(mouse.screen, keymap) end
-
-	keygrabber.run(function(mod, key, event)
-		if key == "Escape" then
-			keygrabber.stop()
-			hide_box();
-			return true
-		end
-
-		if event == "release" then return true end
-
-		if keymap[key] then
-			keygrabber.stop()
-			if stay_in_mode then
-				keymap[key](key)
-				M.grab(keymap, true)
-			else
-				hide_box()
-				keymap[key](key)
-				return true
-			end
-		end
-
-		return true
-	end)
-end
-
--- Partially adapted from Obvious Widget Library module "popup_run_prompt" --
--- Original Author: Andrei "Garoth" Thorp                                  --
--- Copyright 2009 Andrei "Garoth" Thorp                                    --
 
 local defaults = {}
--- Default is 1 for people without compositing
+
 defaults.opacity = 1.0
 defaults.height = 22
 defaults.border_width = 1
-defaults.x_offset = 18
+defaults.x_offset = 0
+defaults.y_offset = 0
 defaults.show_options = true
 
 -- Clone the defaults for the used settings
 local settings = {}
 for key, value in pairs(defaults) do
-    settings[key] = value
+	settings[key] = value
+end
+
+local function update_settings()
+	for s, value in ipairs(modewibox) do
+		value.border_width = settings.border_width
+		set_default(s)
+		value.opacity = settings.opacity
+	end
 end
 
 
-M.set_opacity = function (amount)
-    settings.opacity = amount or defaults.opacity
-    update_settings()
+--- Change the opacity of the modebox.
+-- @param amount opacity between 0.0 and 1.0, or nil to use default
+function set_opacity(amount)
+	settings.opacity = amount or defaults.opacity
+	update_settings()
 end
+modalbind.set_opacity = set_opacity
 
-M.set_height = function (amount)
-    settings.height = amount or defaults.height
-    update_settings()
+--- Change height of the modebox.
+-- @param amount height in pixels, or nil to use default
+function set_height(amount)
+	settings.height = amount or defaults.height
+	update_settings()
 end
+modalbind.set_height = set_height 
 
-M.set_border_width = function (amount)
-    settings.border_width = amount or defaults.border_width
-    update_settings()
+--- Change border width of the modebox.
+-- @param amount width in pixels, or nil to use default
+function set_border_width(amount)
+	settings.border_width = amount or defaults.border_width
+	update_settings()
 end
+modalbind.set_border_width = set_border_width
 
-M.set_x_offset = function (amount)
-    settings.x_offset = amount or defaults.x_offset
-    update_settings()
+--- Change horizontal offset of the modebox.
+-- set location for the box with set_corner(). The box is shifted to the right
+-- if it is in one of the left corners or to the left otherwise
+-- @param amount horizontal shift in pixels, or nil to use default
+function set_x_offset (amount)
+	settings.x_offset = amount or defaults.x_offset
+	update_settings()
 end
+modalbind.set_x_offset = set_x_offset  
 
-M.set_show_options = function (bool)
-    settings.show_options = bool
+--- Change vertical offset of the modebox.
+-- set location for the box with set_corner(). The box is shifted downwards if it
+-- is in one of the upper corners or upwards otherwise.
+-- @param amount vertical shift in pixels, or nil to use default
+function set_y_offset(amount)
+	settings.y_offset = amount or defaults.y_offset
+	update_settings()
 end
+modalbind.set_y_offset = set_y_offset
 
-ensure_init = function ()
-    if inited then
-    return
-    end
-
-    inited = true
-    for s = 1, screen.count() do
-        modewidget[s] = widget({
-            type = "textbox",
-            name = "modewidget" .. s,
-            align = "center"
-        })
-
-        modewibox[s] = wibox({
-            fg = beautiful.fg_normal,
-            bg = beautiful.bg_normal,
-            border_width = settings.border_width,
-            border_color = beautiful.bg_focus,
-        })
-        set_default(s)
-        modewibox[s].visible = false
-        modewibox[s].screen = s
-        modewibox[s].ontop = true
-
-        -- Widgets for prompt wibox
-        modewibox[s].widgets = {
-            modewidget[s],
-            layout = awful.widget.layout.vertical.center
-        }
-    end
+--- Set the corner, where the modebox will be displayed
+-- If a parameter is not a valid orientation (see below), the function returns
+-- without doing anything
+-- @param vertical either top or bottom
+-- @param horizontal either left or right
+function set_corner(vertical, horizontal)
+	if (vertical ~= "top" and vertical ~= "bottom") then
+		return
+	end
+	if (horizontal ~= "left" and horizontal ~= "right") then
+		return
+	end
+	settings.corner_v = vertical or defaults.corner_v
+	settings.corner_h = horizontal or defaults.corner_h
 end
+modalbind.set_corner = set_corner
 
-set_default = function (s)
-    modewibox[s]:geometry({
-        width = modewidget[s].extents(modewidget[s]).width,
-        height = settings.height,
-        x = settings.x_offset < 0 and
+function set_show_options(bool)
+	settings.show_options = bool
+end
+modalbind.set_show_options = set_show_options
+
+local function set_default(s)
+	minwidth, minheight = modewidget[s]:fit(screen[s].geometry.width,
+		screen[s].geometry.height)
+	modewibox[s].width = minwidth + 1;
+	modewibox[s].height = math.max(settings.height, minheight)
+	modewibox[s].x = settings.x_offset < 0 and
 		screen[s].geometry.x - width + settings.x_offset or
-		settings.x_offset,
-        y = screen[s].geometry.y + screen[s].geometry.height - settings.height
-    })
+		settings.x_offset
+	modewibox[s].y = screen[s].geometry.height - settings.height
 end
 
-update_settings = function ()
-    for s, value in ipairs(modewibox) do
-        value.border_width = settings.border_width
-        set_default(s)
-        value.opacity = settings.opacity
-    end
+local function ensure_init()
+	if inited then
+		return
+	end
+	inited = true
+	for s = 1, screen.count() do
+		modewidget[s] = wibox.widget.textbox()
+		modewidget[s]:set_align("center")
+
+		modewibox[s] = wibox({
+			fg = beautiful.fg_normal,
+			bg = beautiful.bg_normal,
+			border_width = settings.border_width,
+			border_color = beautiful.bg_focus,
+		})
+
+		local modelayout = {}
+		modelayout[s] = wibox.layout.fixed.horizontal()
+		modelayout[s]:add(modewidget[s])
+		modewibox[s]:set_widget(modelayout[s]);
+		set_default(s)
+		modewibox[s].visible = false
+		modewibox[s].screen = s
+		modewibox[s].ontop = true
+
+		-- Widgets for prompt wibox
+		modewibox[s].widgets = {
+			modewidget[s],
+			layout = wibox.layout.fixed.horizontal
+		}
+	end
 end
 
-show_box = function (s, map)
+local function show_box(s, map)
 	ensure_init()
 	modewibox.screen = s
 	local label = " -- " .. map.name .. " -- "
@@ -136,14 +150,55 @@ show_box = function (s, map)
 			if key ~= "name" then label = label .. " " .. key end
 		end
 	end
-	modewidget[s].text = label
-        set_default(s)
-        modewibox[s].visible = true
+	modewidget[s]:set_text(label)
+	modewibox[s].visible = true
+	set_default(s)
 end
 
-hide_box = function ()
+local function hide_box()
 	local s = modewibox.screen
-        if s ~= -1 then modewibox[s].visible = false end
+	if s ~= -1 then modewibox[s].visible = false end
 end
 
-return M
+function grab(keymap, stay_in_mode)
+	if keymap.name then
+		show_box(mouse.screen, keymap)
+		nesting = nesting + 1
+	end
+
+	keygrabber.run(function(mod, key, event)
+		if key == "Escape" then
+			keygrabber.stop()
+			nesting = 0
+			hide_box();
+			return true
+		end
+
+		if event == "release" then return true end
+
+		if keymap[key] then
+			keygrabber.stop()
+			keymap[key]()
+			if stay_in_mode then
+				grab(keymap, true)
+			else
+				nesting = nesting - 1
+				if nesting < 1 then hide_box() end
+				return true
+			end
+		end
+
+		return true
+	end)
+end
+modalbind.grab = grab
+
+function grabf(keymap, stay_in_mode)
+	return function() grab(keymap, stay_in_mode) end
+end
+modalbind.grabf = grabf
+
+function modebox() return modewibox[1] end
+modalbind.modebox = modebox
+
+return modalbind

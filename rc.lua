@@ -1,40 +1,79 @@
+-- libraries {{{
+awful           = require("awful")
+awful.rules     = require("awful.rules")
+                  require("awful.autofocus")
+wibox           = require("wibox")
+beautiful       = require("autobeautiful")
+naughty         = require("naughty")
+conf            = require("localconf")
+                  require("errors")
+inspect = require("inspect")
+-- }}}
 
--- Standard awesome library
-require("awful")
-require("awful.autofocus")
-require("awful.rules")
-require("beautiful")
-require("naughty")
-require("teardrop")
-require("obvious.popup_run_prompt")
-require("vicious")
-require("rodentbane.rodentbane")
+layouts = require('layouts')
 
-MY_PATH  = os.getenv("HOME") .. "/.config/awesome/"
+-- {{{ Logging
+log = require("simplelog")
+log.add_logger(log.loggers.stdio, 0)
+log.add_logger(log.loggers.naughty, 2)
 
-dofile (MY_PATH .. "localconf.lua")
+-- }}}
 
--- Themes define colours, icons, and wallpapers
-beautiful.init("/home/crater2150/.config/awesome/zenburn/theme.lua")
+-- {{{ Tags
 
+tags = require('tags')
+tags.setup()
 
--- Table of layouts to cover with awful.layout.inc, order matters.
-layouts =
-{
-    awful.layout.suit.fair,
-    awful.layout.suit.fair.horizontal,
-    awful.layout.suit.tile,
-    awful.layout.suit.tile.bottom,
-    awful.layout.suit.max,
-    awful.layout.suit.max.fullscreen,
-    awful.layout.suit.floating
-}
+-- }}}
 
-awful.util.spawn("wmname LG3D")
+-- {{{ widgets
+widgets = require("widgets")
+widgets.setup()
+for s = 1, screen.count() do
+	local ltop = widgets.layout(s,"left","top")
+	local rtop = widgets.layout(s,"right","top")
+	local lbottom = widgets.layout(s,"left","bottom")
 
-dofile (MY_PATH .. "/tags.lua")
-dofile (MY_PATH .. "/boxes.lua")
-dofile (MY_PATH .. "/bindings.lua")
-dofile (MY_PATH .. "/rules.lua")
-dofile (MY_PATH .. "/signals.lua")
--- dofile (MY_PATH .. "uzbl.lua")
+	-- {{{
+	widgets.add.mail("mail_me", s, ltop, { os.getenv("HOME") .. "/.maildir/me" })
+	widgets.add.spacer(ltop)
+	widgets.add.mail("mail_uber", s, ltop, { os.getenv("HOME") .. "/.maildir/uber" })
+	widgets.add.spacer(ltop)
+	widgets.add.clock("clock", s, ltop)
+
+	widgets.add.layout(s, lbottom)
+	widgets.add.taglist("tags", s, lbottom)
+
+	widgets.add.cpu("cpu", s, rtop)
+	widgets.add.spacer(rtop)
+	widgets.add.battery("bat", s, rtop, "BAT0")
+	widgets.add.spacer(rtop)
+	widgets.add.battery("slice", s, rtop, "BAT1")
+	widgets.add.spacer(rtop)
+	widgets.add.wifi("wlan", s, rtop, "wlan0")
+	widgets.add.spacer(rtop)
+	widgets.add.systray(s, rtop)
+
+	widgets.set_spacer_text("    ◈    ")
+end
+-- }}}
+
+-- {{{ Key bindings
+globalkeys = {}
+globalkeys = layouts.extend_key_table(globalkeys);
+globalkeys = tags.extend_key_table(globalkeys);
+
+bindings = require("bindings")
+bindings.extend_and_register_key_table(globalkeys)
+bindings.mb.set_x_offset(18)
+-- }}}
+
+-- {{{ rules
+rules = require("rules")
+rules.setup()
+-- }}}
+
+require("signals")
+
+--
+-- vim: fdm=marker

@@ -1,79 +1,75 @@
-local awful = awful
 local M = {}
-local type = ""
+local conf = conf
+local awful = awful
+local log = log
 
 -- local functions
-local show, mpc_play_search, notify
+local dmenu, mpc_play_search, notify, mpc
 
 local defaults = {}
 local settings = {}
 
-defaults.host = "127.0.0.1"
-defaults.port = 6600
 defaults.replace_on_search = true
 
 for key, value in pairs(defaults) do
     settings[key] = value
 end
 
--- {{{ basic functions
-
--- }}}
+mpc = function(command)
+	awful.util.spawn("mpc " .. command)
+end
 
 -- {{{ mpd.ctrl submodule
 
 M.ctrl = {}
 
 M.ctrl.toggle = function ()
-	awful.util.spawn("mpc toggle")
+	mpc("toggle")
 end
 
 M.ctrl.play = function ()
-	awful.util.spawn("mpc play")
+	mpc("play")
 end
 
 M.ctrl.pause = function ()
-	awful.util.spawn("mpc pause")
+	mpc("pause")
 end
 
 M.ctrl.next = function ()
-	awful.util.spawn("mpc next")
+	mpc("next")
 end
 
 M.ctrl.prev = function ()
-	awful.util.spawn("mpc prev")
-end
-
-M.ctrl.clear = function ()
-	awful.util.spawn("mpc clear")
+	mpc("prev")
 end
 
 -- }}}
 
 -- {{{ mpd.prompt submodule
 
-local clear_before = cfg.mpd_prompt_clear_before == nil and
+local clear_before = conf.mpd_prompt_clear_before == nil and
 	true or
-	cfg.mpd_prompt_clear_before 
+	conf.mpd_prompt_clear_before 
 
 M.prompt = {}
 
 M.prompt.artist = function()
-	type = "artist"
-	show()
+	dmenu("-a")
 end
 
 M.prompt.album = function()
-	type = "album"
-	show()
+	dmenu("-a -b")
 end
 
 
 M.prompt.title = function()
-	type = "title"
-	show()
+	dmenu("-a -b -t")
 end
 M.prompt.title = title
+
+function dmenu(opts)
+	awful.util.spawn("dmpc " .. (clear_before and "-r" or "-R") .. " " .. opts)
+end
 
 M.prompt.replace_on_search = function(bool)
 	clear_before = bool
@@ -86,16 +82,8 @@ M.prompt.toggle_replace_on_search = function()
 			).. " the playlist")
 end
 
-function show()
-	obvious.popup_run_prompt.set_prompt_string("Play ".. type .. ":")
-	obvious.popup_run_prompt.set_cache("/mpd_ ".. type);
-	obvious.popup_run_prompt.set_run_function(mpc_play_search)
-	obvious.popup_run_prompt.run_prompt()
-end
-
 function mpc_play_search(s)
-	if clear_before then M.ctrl.clear() end
-	awful.util.spawn("mpc search " .. type .. " | mpc add;  mpc play")
+	notify("Found " .. (s) .. " matches");
 end
 
 -- }}}
