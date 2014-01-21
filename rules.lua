@@ -38,6 +38,13 @@ local function setup(self)
 			properties = { ontop = true, focus = true}
 		},
 		{
+			rule = { class = "Sm" },
+			properties = {
+				ontop = true,
+				border_width = 0
+			}
+		},
+		{
 			rule_any = { class = {
 				"pinentry", "Passprompt", "MPlayer"
 			}},
@@ -64,6 +71,14 @@ local function setup(self)
 				master = true 
 			}
 		},
+
+		{
+			rule = { class = "Steam", name = "Friends" },
+			properties = {
+				master = true 
+			}
+		},
+
 		{
 			rule_any = { role ={  "conversation" }, instance = { "Weechat" } },
 			callback = awful.client.setslave
@@ -112,6 +127,14 @@ local function setup(self)
 			}
 		},
 		{
+			rule = { class = "Pdfpc" },
+			properties = {
+				size_hints_honor = true,
+				float = true,
+				fullscreen = true 
+			}
+		},
+		{
 			rule = { class = "Cellwriter" },
 			properties = {
 				tag = tags[rule_screen][1],
@@ -126,6 +149,12 @@ local function setup(self)
 			rule = { class = "Xhtop" },
 			properties = {
 				tag = tags[rule_screen][22] 
+			}
+		},
+		{
+			rule = { class = "Dmenu" },
+			properties = {
+				opacity = 0.8
 			}
 		},
 		{
@@ -146,10 +175,8 @@ local function setup(self)
 				tag = tags[rule_screen][13],
 				skip_taskbar = true,
 				type = desktop,
-				below = true,
 				focusable = false,
-				border_width = 0,
-				floating = true
+				border_width = 0
 			}
 		},
 		{
