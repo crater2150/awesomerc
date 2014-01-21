@@ -18,6 +18,8 @@ awful.button({ }, 5, awful.tag.viewprev)
 
 local function spawnf(cmd) return function() awful.util.spawn(cmd) end end
 
+conf.cmd.run = conf.cmd.run or spawnf("dmenu_run")
+
 mpdmap = {
 	name = "MPD",
 	m = mpd.ctrl.toggle,
@@ -43,6 +45,12 @@ progmap = {
 	m = spawnf(conf.cmd.mail_client)
 }
 
+docmap = {
+	name = "DOCUMENTS",
+	u = spawnf("docopen ~/uni pdf"),
+	b = spawnf("docopen ~/books pdf epub mobi txt lit html htm"),
+}
+
 adapters = { u = "wwan", w = "wlan", b = "bluetooth" } 
 function rfkill(cmd)
 	map={ name = string.upper(cmd) }
@@ -51,10 +59,18 @@ function rfkill(cmd)
 	end
 	return map
 end
+
+connectmap = {
+	name = "CONNECT",
+	u = spawnf("umts"),
+	w = spawnf("wlanacpi")
+}
+
 wirelessmap = {
-	name = "RFKILL",
+	name = "WIRELESS",
 	b = mb.grabf(rfkill("block")),
-	u = mb.grabf(rfkill("unblock"))
+	u = mb.grabf(rfkill("unblock")),
+	c = mb.grabf(connectmap)
 }
 
 function bindings.extend_and_register_key_table(globalkeys)
@@ -72,6 +88,7 @@ function bindings.extend_and_register_key_table(globalkeys)
 	awful.key({ modkey, "Shift"   },  "m",  mb.grabf(mpdpromts)),
 	awful.key({ modkey            },  "c",  mb.grabf(progmap)),
 	awful.key({ modkey            },  "w",  mb.grabf(wirelessmap)),
+	awful.key({ modkey            },  "d",  mb.grabf(docmap)),
 	--}}}
 
 	--{{{ Audio control
@@ -90,16 +107,16 @@ function bindings.extend_and_register_key_table(globalkeys)
 		scratch.drop(conf.cmd.terminal,"center","center", 0.99, 0.7)
 	end ),
 	awful.key({ modkey }, "`", function ()
-		scratch.drop("urxvtc -e ncmpcpp","bottom","center", 0.99, 0.4)
+		scratch.drop("gpms","bottom","center", 0.99, 0.4)
 	end ),
 	awful.key({ }, "Print", function ()
-		scratch.drop("galsamixer","top","center", 0.99, 0.4)
+		scratch.drop("gpulse-mixer","top","center", 0.99, 0.4)
 	end ),
 	-- }}}
 
 	--{{{ Prompt
 
-	awful.key({ modkey }, "r", spawnf("dmenu_run")),
+	awful.key({ modkey }, "r", conf.cmd.run),
 
 	awful.key({ modkey }, "s", spawnf("dmsearch")),
 
