@@ -7,6 +7,16 @@ local inspect=require("inspect")
 
 local rule_screen = conf.rule_screen or 1
 
+local function popup_urgent(message)
+	return function(client)
+		client:connect_signal("property::urgent", function (c)
+			if c.urgent and not c.focus then
+				naughty.notify({ text=message })
+			end
+		end)
+	end
+end
+
 local function setup(self)
 	awful.rules.rules = {
 		-- All clients will match this rule.
@@ -45,7 +55,8 @@ local function setup(self)
 			rule_any = { class = {"Pidgin"}, instance = {"Weechat"} },
 			properties = {
 				tag = tags[rule_screen][3], opacity = 0.9 
-			}
+			},
+			callback = popup_urgent("new chat message")
 		},
 		{
 			rule = { role = "buddy_list" },
