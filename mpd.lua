@@ -1,10 +1,12 @@
+-- MPD control and playlist editing
+-- prompts require dmpc script
 local M = {}
 local conf = conf
 local awful = awful
 local log = log
 
 -- local functions
-local dmenu, mpc_play_search, notify, mpc
+local dmenu, notify, mpc
 
 local defaults = {}
 local settings = {}
@@ -80,10 +82,6 @@ M.prompt.toggle_replace_on_search = function()
 	notify("MPD prompts now " ..(
 			clear_before and "replace" or "add to"
 			).. " the playlist")
-end
-
-function mpc_play_search(s)
-	notify("Found " .. (s) .. " matches");
 end
 
 -- }}}

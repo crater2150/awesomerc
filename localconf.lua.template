@@ -1,3 +1,28 @@
-terminal = "urxvtc -e tmux"
-modkey = "Mod4"
-rule_screen=1
+local conf = {}
+local awful = awful
+
+-- modkey to use for most bindings
+conf.modkey = "Mod4"
+
+-- screen number, on which rules will put clients by default
+conf.rule_screen=1
+
+-- should mpd prompt clear playlist before adding matched songs
+conf.mpd_prompt_clear_before = true
+
+-- default programs (for keybindings)
+conf.cmd = {}
+conf.cmd.terminal = "g.zsh"        -- Mod-t
+conf.cmd.browser = "webbrowser"    -- Mod-c f
+conf.cmd.im_client = "im-client"   -- Mod-c i
+conf.cmd.irc_client = "sweechat"   -- Mod-c I
+conf.cmd.mail_client = "gmutt"     -- Mod-c m
+conf.cmd.mpd_client = "gmpc"       -- Mod-m g
+conf.cmd.editor = {}
+conf.cmd.editor.terminal = conf.cmd.terminal .. " -e vim"
+conf.cmd.editor.gui = "gvim"
+
+-- Mod-r binding for running programs
+conf.cmd.run = function() awful.util.spawn("dmenu_run -l 10 -y 350") end
+
+return conf
