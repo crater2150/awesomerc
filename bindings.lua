@@ -7,75 +7,69 @@ local scratch = require("scratch")
 local modkey = conf.modkey or "Mod4"
 local mb = require("modalbind")
 
-local bindings = {mb = mb}
+local bindings = {modalbind = mb}
 
 -- {{{ Mouse bindings
 root.buttons(awful.util.table.join(
-awful.button({ }, 4, awful.tag.viewnext),
-awful.button({ }, 5, awful.tag.viewprev)
+	awful.button({ }, 4, awful.tag.viewnext),
+	awful.button({ }, 5, awful.tag.viewprev)
 ))
 -- }}}
 
 local function spawnf(cmd) return function() awful.util.spawn(cmd) end end
+bindings.spawnf = spawnf
 
 conf.cmd.run = conf.cmd.run or spawnf("dmenu_run")
 
 mpdmap = {
-	name = "MPD",
-	m = mpd.ctrl.toggle,
-	n = mpd.ctrl.next,
-	N = mpd.ctrl.prev,
-	s = spawnf("mpd"),
-	S = spawnf("mpd --kill"),
-	g = spawnf(conf.cmd.mpd_client)
+	m = { func = mpd.ctrl.toggle, desc = "Toggle" },
+	n = { func = mpd.ctrl.next, desc = "Next" },
+	N = { func = mpd.ctrl.prev, desc = "Prev" },
+	s = { func = spawnf("mpd"), desc = "start MPD" },
+	S = { func = spawnf("mpd --kill"), desc = "kill MPD" },
+	g = { func = spawnf(conf.cmd.mpd_client), desc = "Gmpc" }
 }
 mpdpromts = {
-	name = "MPD PROMPTS",
-	a = mpd.prompt.artist,
-	b = mpd.prompt.album,
-	t = mpd.prompt.title,
-	r = mpd.prompt.toggle_replace_on_search
+	a = { func = mpd.prompt.artist, desc = "artist" },
+	b = { func = mpd.prompt.album, desc = "album" },
+	t = { func = mpd.prompt.title, desc = "title" },
+	r = { func = mpd.prompt.toggle_replace_on_search, desc = "toggle replacing" }
 }
 
 progmap = {
-	name = "PROGRAMS",
-	f = spawnf(conf.cmd.browser),
-	i = spawnf(conf.cmd.im_client),
-	I = spawnf(conf.cmd.irc_client),
-	m = spawnf(conf.cmd.mail_client)
+	f = { func = spawnf(conf.cmd.browser), desc = "Browser" },
+	i = { func = spawnf(conf.cmd.im_client), desc = "IM Client" },
+	I = { func = spawnf(conf.cmd.irc_client), desc = "IRC" },
+	m = { func = spawnf(conf.cmd.mail_client), desc = "Mail" }
 }
 
 docmap = {
-	name = "DOCUMENTS",
-	u = spawnf("docopen ~/uni pdf"),
-	b = spawnf("docopen ~/books pdf epub mobi txt lit html htm"),
+	u = { func = spawnf("docopen ~/uni pdf"), desc = "Uni-Dokumente" },
+	b = { func = spawnf("docopen ~/books pdf epub mobi txt lit html htm"), desc = "Bücher" }
 }
 
 adapters = { u = "wwan", w = "wlan", b = "bluetooth" } 
-function rfkill(cmd)
-	map={ name = string.upper(cmd) }
+local function rfkill(cmd)
+	map = {}
 	for key, adapter in pairs(adapters) do
-		map[key] = spawnf("sudo rfkill "..cmd.." "..adapter)
+		map[key] = { func = spawnf("sudo rfkill "..cmd.." "..adapter), desc = adapter }
 	end
 	return map
 end
 
 connectmap = {
-	name = "CONNECT",
-	u = spawnf("umts"),
-	w = spawnf("wlanacpi")
+	u = { func = spawnf("umts"), desc = "umts" },
+	w = { func = spawnf("wlanacpi"), desc = "wlan" }
 }
 
 wirelessmap = {
-	name = "WIRELESS",
-	b = mb.grabf(rfkill("block")),
-	u = mb.grabf(rfkill("unblock")),
-	c = mb.grabf(connectmap)
+	b = { func = mb.grabf(rfkill("block"),"Block"), desc = "block" },
+	u = { func = mb.grabf(rfkill("unblock"),"Unblock"), desc = "unblock" },
+	c = { func = mb.grabf(connectmap, "Connect"), desc = "connect" }
 }
 
-function bindings.extend_and_register_key_table(globalkeys)
-	local totalkeys = globalkeys or {}
-	totalkeys = awful.util.table.join(totalkeys,
+function bindings.extend_key_table(globalkeys)
+	return awful.util.table.join(globalkeys or {},
 	awful.key({ }, "Menu", spawnf('wmselect')),
 
 	awful.key({ modkey, "Control" }, "r", awesome.restart),
@@ -84,11 +78,11 @@ function bindings.extend_and_register_key_table(globalkeys)
 
 	--{{{ Modal mappings
 
-	awful.key({ modkey            },  "m",  mb.grabf(mpdmap, true)),
-	awful.key({ modkey, "Shift"   },  "m",  mb.grabf(mpdpromts)),
-	awful.key({ modkey            },  "c",  mb.grabf(progmap)),
-	awful.key({ modkey            },  "w",  mb.grabf(wirelessmap)),
-	awful.key({ modkey            },  "d",  mb.grabf(docmap)),
+	awful.key({ modkey            },  "m",  mb.grabf(mpdmap, "MPD", true)),
+	awful.key({ modkey, "Shift"   },  "m",  mb.grabf(mpdpromts, "MPD - Search for")),
+	awful.key({ modkey            },  "c",  mb.grabf(progmap, "Commands")),
+	awful.key({ modkey            },  "w",  mb.grabf(wirelessmap, "Wifi")),
+	awful.key({ modkey            },  "d",  mb.grabf(docmap, "Documents")),
 	--}}}
 
 	--{{{ Audio control
@@ -130,13 +124,10 @@ function bindings.extend_and_register_key_table(globalkeys)
 	)
 
 	--}}}
-
-	-- Set keys
-	root.keys(totalkeys)
 end
 
 
-function client_opacity_set(c, default, max, step)
+local function client_opacity_set(c, default, max, step)
 	if c.opacity < 0 or c.opacity > 1 then
 		c.opacity = default
 	end

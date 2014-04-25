@@ -1,4 +1,4 @@
--- tags and layouts
+-- tags
 local awful = awful
 local conf = conf
 local modkey = conf.modkey or "Mod4"
@@ -6,7 +6,7 @@ local modkey = conf.modkey or "Mod4"
 local tags={ mt={} }
 local layouts = layouts
 
-local function funcViewOnly(i)
+local function getfunc_viewonly(i)
 	return function ()
 		local screen = mouse.screen
 		if tags[screen][i] then
@@ -15,7 +15,7 @@ local function funcViewOnly(i)
 	end
 end
 
-local function funcViewToggle(i)
+local function getfunc_viewtoggle(i)
 	return function ()
 		local screen = mouse.screen
 		if tags[screen][i] then
@@ -24,7 +24,7 @@ local function funcViewToggle(i)
 	end
 end
 
-local function funcMoveTo(i)
+local function getfunc_moveto(i)
 	return function ()
 		if client.focus and tags[client.focus.screen][i] then
 			awful.client.movetotag(tags[client.focus.screen][i])
@@ -32,7 +32,7 @@ local function funcMoveTo(i)
 	end
 end
 
-local function funcToggle(i)
+local function getfunc_clienttoggle(i)
 	return function ()
 		if client.focus and tags[client.focus.screen][i] then
 			awful.client.toggletag(tags[client.focus.screen][i])
@@ -104,12 +104,20 @@ function tags.extend_key_table(globalkeys)
 			k = "F" .. i - 10 -- F keys
 		end
 		tagkeys = awful.util.table.join(tagkeys,
-			awful.key( { modkey }, k, funcViewOnly(i)),
-			awful.key( { modkey, "Control" }, k, funcViewToggle(i)),
-			awful.key( { modkey, "Shift" }, k, funcMoveTo(i)),
-			awful.key( { modkey, "Control", "Shift" }, k, funcToggle(i))
+			awful.key( { modkey }, k, getfunc_viewonly(i)),
+			awful.key( { modkey, "Control" }, k, getfunc_viewtoggle(i)),
+			awful.key( { modkey, "Shift" }, k, getfunc_moveto(i)),
+			awful.key( { modkey, "Control", "Shift" }, k, getfunc_clienttoggle(i))
 		)
 	end
+
+	-- keys for all tags
+	tagkeys = awful.util.table.join(tagkeys,
+		awful.key({ modkey }, "u", awful.client.urgent.jumpto),
+		awful.key({ modkey }, "Left",   awful.tag.viewprev       ),
+		awful.key({ modkey }, "Right",  awful.tag.viewnext       ),
+		awful.key({ modkey }, "Escape", awful.tag.history.restore)
+	)
 	return tagkeys;
 end
 

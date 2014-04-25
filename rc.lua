@@ -64,8 +64,10 @@ globalkeys = layouts.extend_key_table(globalkeys);
 globalkeys = tags.extend_key_table(globalkeys);
 
 bindings = require("bindings")
-bindings.extend_and_register_key_table(globalkeys)
-bindings.mb.set_x_offset(18)
+bindings.modalbind.set_x_offset(18)
+globalkeys = bindings.extend_key_table(globalkeys)
+
+root.keys(globalkeys)
 -- }}}
 
 -- {{{ rules

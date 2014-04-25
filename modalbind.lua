@@ -105,7 +105,7 @@ local function set_default(s)
 	modewibox[s].x = settings.x_offset < 0 and
 		screen[s].geometry.x - width + settings.x_offset or
 		settings.x_offset
-	modewibox[s].y = screen[s].geometry.height - settings.height
+	modewibox[s].y = screen[s].geometry.height - modewibox[s].height
 end
 
 local function ensure_init()
@@ -115,7 +115,7 @@ local function ensure_init()
 	inited = true
 	for s = 1, screen.count() do
 		modewidget[s] = wibox.widget.textbox()
-		modewidget[s]:set_align("center")
+		modewidget[s]:set_align("left")
 
 		modewibox[s] = wibox({
 			fg = beautiful.fg_normal,
@@ -141,16 +141,19 @@ local function ensure_init()
 	end
 end
 
-local function show_box(s, map)
+local function show_box(s, map, name)
 	ensure_init()
 	modewibox.screen = s
-	local label = " -- " .. map.name .. " -- "
+	local label = "<b>" .. name .. "</b>"
 	if settings.show_options then
-		for key in pairs(map) do
-			if key ~= "name" then label = label .. " " .. key end
+		for key, mapping in pairs(map) do
+			label = label .. "\n<b>" .. key .. "</b>"
+			if type(mapping) == "table" then
+				label = label .. "\t" .. (mapping.desc or "???")
+			end
 		end
 	end
-	modewidget[s]:set_text(label)
+	modewidget[s]:set_markup(label)
 	modewibox[s].visible = true
 	set_default(s)
 end
@@ -160,9 +163,9 @@ local function hide_box()
 	if s ~= -1 then modewibox[s].visible = false end
 end
 
-function grab(keymap, stay_in_mode)
-	if keymap.name then
-		show_box(mouse.screen, keymap)
+function grab(keymap, name, stay_in_mode)
+	if name then
+		show_box(mouse.screen, keymap, name)
 		nesting = nesting + 1
 	end
 
@@ -178,7 +181,11 @@ function grab(keymap, stay_in_mode)
 
 		if keymap[key] then
 			keygrabber.stop()
-			keymap[key]()
+			if type(keymap[key]) == "table" then
+				keymap[key].func()
+			else
+				keymap[key]()
+			end
 			if stay_in_mode then
 				grab(keymap, true)
 			else
@@ -193,8 +200,8 @@ function grab(keymap, stay_in_mode)
 end
 modalbind.grab = grab
 
-function grabf(keymap, stay_in_mode)
-	return function() grab(keymap, stay_in_mode) end
+function grabf(keymap, name, stay_in_mode)
+	return function() grab(keymap, name, stay_in_mode) end
 end
 modalbind.grabf = grabf
 

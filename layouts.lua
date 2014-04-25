@@ -30,7 +30,6 @@ function layouts.extend_key_table(globalkeys)
 		end),
 
 		-- Layout manipulation
-		awful.key({ modkey }, "u", awful.client.urgent.jumpto),
 		awful.key({ modkey }, "Tab", function ()
 			awful.client.focus.history.previous()
 			if client.focus then
@@ -78,10 +77,7 @@ function layouts.extend_key_table(globalkeys)
 		end),
 		awful.key({ modkey, "Control" }, "k", function ()
 			awful.screen.focus_relative(-1)
-		end),
-		awful.key({ modkey }, "Left",   awful.tag.viewprev       ),
-		awful.key({ modkey }, "Right",  awful.tag.viewnext       ),
-		awful.key({ modkey }, "Escape", awful.tag.history.restore)
+		end)
 	);
 end
 
