@@ -125,7 +125,7 @@ widgets.layout = get_layout
 --------------------------------------------------------------------------------
 
 -- mail widget
-local function mailwidget(name, screen, parent_layout, mailboxes) --{{{
+local function mailwidget(name, screen, parent_layout, mailboxes, notify_pos) --{{{
 	local widget = wibox.widget.textbox()
 	local bg = wibox.widget.background()
 	bg:set_widget(widget)
@@ -134,7 +134,7 @@ local function mailwidget(name, screen, parent_layout, mailboxes) --{{{
 			naughty.notify({
 				title = "New mail arrived",
 				text = "Unread "..args[2].." / New "..args[1],
-				position = "top_left"
+				position = notify_pos or "top_left"
 
 			})
 			bg:set_bg(theme.bg_urgent)
