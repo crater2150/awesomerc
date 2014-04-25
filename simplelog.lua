@@ -12,7 +12,7 @@ for key, value in pairs(defaults) do
     settings[key] = value
 end
 
-level = {
+local level = {
 	ERROR = 3,
 	WARNING = 2,
 	NORMAL = 1,
@@ -20,33 +20,29 @@ level = {
 }
 simplelog.level = level
 
-function loglv(msg, level)
+local function loglv(msg, level)
 	for _,logger in ipairs(settings.loggers) do
 		logger(msg, level)
 	end
 end
 
-function dbg(msg)
+function simplelog.dbg(msg)
 	loglv(msg, 0)
 end
-simplelog.debug = dbg
 
-function log(msg)
+function simplelog.log(msg)
 	loglv(msg, 1)
 end
-simplelog.log = log
 
-function warn(msg)
+function simplelog.warn(msg)
 	loglv(msg, 2)
 end
-simplelog.warn = warn
 
-function error(msg)
+function simplelog.error(msg)
 	loglv(msg, 3)
 end
-simplelog.error = error
 
-function add_logger(logger, level)
+function simplelog.add_logger(logger, level)
 	if level == nil then
 		level = settings.defaultlevel
 	end
@@ -56,9 +52,8 @@ function add_logger(logger, level)
 		end
 	end)
 end
-simplelog.add_logger = add_logger
 
-function logger_naughty(msg, severity)
+function simplelog.loggers.naughty(msg, severity)
 	if severity == level.WARNING then
 		msg = "<span color=\"#ff6\">".. msg .. "</span>"
 	elseif severity == level.ERROR then
@@ -66,14 +61,11 @@ function logger_naughty(msg, severity)
 	end
 	naughty.notify({ text = msg })
 end
-simplelog.loggers.naughty = logger_naughty
 
-
-function logger_print(msg, severity)
+function simplelog.loggers.stdio(msg, severity)
 	print(msg)
 end
-simplelog.loggers.stdio = logger_print
 
-simplelog.mt.__call = log
+simplelog.mt.__call = simplelog.log
 
 return setmetatable(simplelog, simplelog.mt)
