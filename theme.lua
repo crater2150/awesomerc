@@ -3,12 +3,14 @@ theme = {}
 theme.wallpaper = "~/.wallpaper"
 -- }}}
 -- {{{ Styles
-theme.font      = "dejavu 7"
+theme.fontface = "Meslo for Powerline"
+theme.fontsize = 8
+theme.font     = theme.fontface .. " " .. theme.fontsize
 
 -- {{{ Colors
 theme.fg_normal = "#DCDCDC"
 theme.fg_focus  = "#F0DFAF"
-theme.fg_urgent = "#CC9393"
+theme.fg_urgent = "#EECCCC"
 theme.bg_normal = "#121212"
 theme.bg_focus  = "#3F3F3F"
 theme.bg_urgent = "#DA4E4E"
