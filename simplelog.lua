@@ -66,6 +66,6 @@ function simplelog.loggers.stdio(msg, severity)
 	print(msg)
 end
 
-simplelog.mt.__call = simplelog.log
+simplelog.mt.__call = function(t,message) simplelog.log(message) end
 
 return setmetatable(simplelog, simplelog.mt)
