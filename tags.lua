@@ -91,7 +91,6 @@ function tags.extend_key_table(globalkeys)
 		keynumber = math.min(22, math.max(#(list[s]), keynumber));
 	end
 	
-	local inspect = require("inspect")
 	local tagkeys = globalkeys or {}
 
 	-- Bind all key numbers to tags, using keycodes

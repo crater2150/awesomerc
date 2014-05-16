@@ -6,6 +6,7 @@ local scratch = require("scratch")
 
 local modkey = conf.modkey or "Mod4"
 local mb = require("modalbind")
+local calendar = calendar
 
 local bindings = {modalbind = mb}
 
@@ -48,7 +49,13 @@ docmap = {
 	b = { func = spawnf("docopen ~/books pdf epub mobi txt lit html htm"), desc = "Bücher" }
 }
 
-adapters = { u = "wwan", w = "wlan", b = "bluetooth" } 
+calendarmap = {
+	i = { func = function() calendar:next() end, desc = "Next" },
+	o = { func = function() calendar:prev() end, desc = "Prev" }
+}
+
+
+adapters = { u = "wwan", w = "wlan", b = "bluetooth" }
 local function rfkill(cmd)
 	map = {}
 	for key, adapter in pairs(adapters) do
@@ -95,7 +102,7 @@ function bindings.extend_key_table(globalkeys)
 	awful.key({ }, "XF86AudioPrev",         mpd.ctrl.prev),
 
 	--}}}
-	
+
 	-- {{{ teardrops
 	awful.key({ }, "F12", function ()
 		scratch.drop(conf.cmd.terminal,"center","center", 0.99, 0.7)
@@ -120,7 +127,16 @@ function bindings.extend_key_table(globalkeys)
 
 	awful.key({ }, "XF86Sleep",  spawnf("s2ram")),
 	awful.key({ }, "XF86Away",  spawnf("xlock")),
-	awful.key({ }, "XF86TouchpadToggle",  spawnf("touchpad"))
+	awful.key({ }, "XF86TouchpadToggle",  spawnf("touchpad")),
+
+	--}}}
+
+	-- calendar {{{
+	awful.key({ modkey            },  "y",  function() calendar:toggle() end),
+	awful.key({ modkey, "Shift"   },  "y",  function()
+		calendar.wibox.visible = true
+		mb.grab(calendarmap, "Calendar", true)
+	end)
 	)
 
 	--}}}
@@ -146,7 +162,7 @@ clientkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
     awful.key({ modkey,           }, "o",      awful.client.movetoscreen                        ),
     awful.key({ modkey, "Control" }, "o",      function (c) c.ontop = not c.ontop end),
-    awful.key({ modkey,           }, "a",      function (c) c.sticky = not c.sticky end),
+    awful.key({ modkey, "Shift"   }, "a",      function (c) c.sticky = not c.sticky end),
     awful.key({ modkey, "Shift"   }, "r",      function (c) c:redraw()                       end),
     awful.key({ modkey,           }, "n",      function (c) c.minimized = not c.minimized    end),
     awful.key({ modkey,           }, "Up",     function(c) client_opacity_set(c, 1, 1, 0.1) end),

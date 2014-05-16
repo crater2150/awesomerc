@@ -187,7 +187,7 @@ function grab(keymap, name, stay_in_mode)
 				keymap[key]()
 			end
 			if stay_in_mode then
-				grab(keymap, true)
+				grab(keymap, name, true)
 			else
 				nesting = nesting - 1
 				if nesting < 1 then hide_box() end

@@ -59,6 +59,8 @@ for s = 1, screen.count() do
 end
 -- }}}
 
+calendar = require("calendar")
+
 -- {{{ Key bindings
 globalkeys = {}
 globalkeys = layouts.extend_key_table(globalkeys);
@@ -78,5 +80,7 @@ rules.setup()
 
 require("signals")
 
+--cal:calculate_size()
 --
 -- vim: fdm=marker
+--
