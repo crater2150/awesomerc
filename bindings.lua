@@ -46,12 +46,14 @@ progmap = {
 
 docmap = {
 	u = { func = spawnf("docopen ~/uni pdf"), desc = "Uni-Dokumente" },
-	b = { func = spawnf("docopen ~/books pdf epub mobi txt lit html htm"), desc = "Bücher" }
+	b = { func = spawnf("docopen ~/books pdf epub mobi txt lit html htm"), desc = "Bücher" },
+	t = { func = spawnf("dtexdoc"), desc = "Texdoc" }
 }
 
 calendarmap = {
-	i = { func = function() calendar:next() end, desc = "Next" },
-	o = { func = function() calendar:prev() end, desc = "Prev" }
+	o = { func = function() calendar:next() end, desc = "Next" },
+	i = { func = function() calendar:prev() end, desc = "Prev" },
+	q = { func = function() calendar:prev() end, desc = "Close" }
 }
 
 
@@ -77,7 +79,7 @@ wirelessmap = {
 
 function bindings.extend_key_table(globalkeys)
 	return awful.util.table.join(globalkeys or {},
-	awful.key({ }, "Menu", spawnf('wmselect')),
+	awful.key({ }, "Pause", spawnf('wmselect')),
 
 	awful.key({ modkey, "Control" }, "r", awesome.restart),
 	awful.key({ modkey, "Shift"   }, "q", awesome.quit),
@@ -118,6 +120,7 @@ function bindings.extend_key_table(globalkeys)
 	--{{{ Prompt
 
 	awful.key({ modkey }, "r", conf.cmd.run),
+	awful.key({ modkey, "Shift" }, "r", spawnf("dmenu_desktopfile")),
 
 	awful.key({ modkey }, "s", spawnf("dmsearch")),
 
