@@ -31,7 +31,14 @@ local function setup(self)
 				minimized = false,
 				--skip_taskbar = true,
 				buttons = clientbuttons 
-			}
+			},
+			callback = function(c)
+				if(c["name"] ~= nil and c["class"] ~= nil) then
+					print("-----------\nnew client\n")
+					print("name: " .. c["name"])
+					print("class: " .. c["class"])
+				end
+			end
 		},
 		{
 			rule = { class = "Passprompt" },
@@ -40,7 +47,8 @@ local function setup(self)
 		{
 			rule = { class = "Sm" },
 			properties = {
-				ontop = true,
+				--ontop = true,
+				fullscreen = true,
 				border_width = 0
 			}
 		},
@@ -61,7 +69,7 @@ local function setup(self)
 		{
 			rule_any = { class = {"Pidgin"}, instance = {"Weechat"} },
 			properties = {
-				tag = tags[rule_screen][3], opacity = 0.9 
+				tag = tags[rule_screen][3], opacity = 0.8
 			},
 			callback = popup_urgent("new chat message")
 		},
@@ -71,14 +79,28 @@ local function setup(self)
 				master = true 
 			}
 		},
-
 		{
 			rule = { class = "Steam", name = "Friends" },
 			properties = {
-				master = true 
+				tag = tags[rule_screen][3],
 			}
 		},
-
+		{
+			rule = { class = "Steam", name = "Chat" },
+			properties = {
+				tag = tags[rule_screen][3],
+			},
+			callback = function(c)
+				awful.client.setslave(c)
+				callback = popup_urgent("new chat message")(c)
+			end
+		},
+		{
+			rule = { class = "Steam", name = "Steam" },
+			properties = {
+				tag = tags[rule_screen][11],
+			}
+		},
 		{
 			rule_any = { role ={  "conversation" }, instance = { "Weechat" } },
 			callback = awful.client.setslave
@@ -160,13 +182,13 @@ local function setup(self)
 		{
 			rule = { class = "URxvt" },
 			properties = {
-				opacity = 0.9 
+				opacity = 0.8
 			}
 		},
 		{
 			rule = { class = "Gvim" },
 			properties = {
-				opacity = 0.9 
+				opacity = 0.8
 			}
 		},
 		{
