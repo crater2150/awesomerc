@@ -220,7 +220,7 @@ end
 
 function calendar:update_before_showing()
 	if not self.wibox.visible then
-		self:fill_days()
+		self:now()
 	end
 end
 
