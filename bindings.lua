@@ -1,12 +1,12 @@
 -- key bindings
-local awful = awful
+local awful = require("awful")
 local conf = conf
 local mpd = require("mpd")
 local scratch = require("scratch")
 
 local modkey = conf.modkey or "Mod4"
 local mb = require("modalbind")
-local calendar = calendar
+local calendar = require("calendar")
 
 local bindings = {modalbind = mb}
 

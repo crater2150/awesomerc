@@ -1,11 +1,10 @@
 local rules = { mt={} }
-local awful = awful
-local conf = conf
+local awful = require("awful")
 local tags = tags
-local beautiful = beautiful
+local beautiful = require("beautiful")
 local inspect=require("inspect")
 
-local rule_screen = conf.rule_screen or 1
+local rule_screen = 1
 
 local function popup_urgent(message)
 	return function(client)

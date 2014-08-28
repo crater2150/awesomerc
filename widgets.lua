@@ -1,6 +1,7 @@
 local wibox = require("wibox")
 local vicious = require("vicious")
 local modkey = conf.modkey or "Mod4"
+local awful = require("awful")
 
 local widgets = { add = {} }
 

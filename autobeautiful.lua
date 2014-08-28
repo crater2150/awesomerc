@@ -1,5 +1,6 @@
 local beautiful = require("beautiful")
 local gears     = require("gears")
+local awful     = require("awful")
 
 beautiful.init(awful.util.getdir("config") .. "/theme.lua")
 

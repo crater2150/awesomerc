@@ -1,5 +1,5 @@
 -- tags
-local awful = awful
+local awful = require("awful")
 local conf = conf
 local modkey = conf.modkey or "Mod4"
 

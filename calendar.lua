@@ -1,8 +1,9 @@
-local beautiful = beautiful
-local wibox = wibox
+local beautiful = require("beautiful")
+local wibox = require("wibox")
 local conf = conf
 local modkey = conf.modkey or "Mod4"
 local mb = require("modalbind")
+local awful = require("awful")
 
 local log = log
 local calendar = {}
