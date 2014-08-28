@@ -2,7 +2,6 @@
 awful           = require("awful")
 awful.rules     = require("awful.rules")
                   require("awful.autofocus")
-wibox           = require("wibox")
 beautiful       = require("autobeautiful")
 naughty         = require("naughty")
 conf            = require("localconf")
@@ -35,7 +34,6 @@ for s = 1, screen.count() do
 	local lbottom = widgets.layout(s,"left","bottom")
 	local rbottom = widgets.layout(s,"right","bottom")
 
-	-- {{{
 	widgets.add.clock("clock", s, ltop)
 
 	widgets.add.layout(s, lbottom)
@@ -59,8 +57,6 @@ for s = 1, screen.count() do
 end
 -- }}}
 
-calendar = require("calendar")
-
 -- {{{ Key bindings
 globalkeys = {}
 globalkeys = layouts.extend_key_table(globalkeys);
@@ -80,7 +76,6 @@ rules.setup()
 
 require("signals")
 
---cal:calculate_size()
 --
 -- vim: fdm=marker
 --

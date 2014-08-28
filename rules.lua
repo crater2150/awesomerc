@@ -25,13 +25,13 @@ local function setup(self)
 			properties = {
 				border_width = beautiful.border_width,
 				border_color = beautiful.border_normal,
-				focus = true,
-				size_hints_honor = false,
+				focus = awful.client.focus.filter,
+				raise = true,
 				keys = clientkeys,
 				minimized = false,
-				--skip_taskbar = true,
 				buttons = clientbuttons 
 			},
+			-- print name and class of new windows for debugging purposes
 			callback = function(c)
 				if(c["name"] ~= nil and c["class"] ~= nil) then
 					print("-----------\nnew client\n")
