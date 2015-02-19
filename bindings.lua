@@ -93,11 +93,21 @@ wirelessmap = {
 
 function bindings.extend_key_table(globalkeys)
 	return awful.util.table.join(globalkeys or {},
-	awful.key({ }, "Pause", spawnf('wmselect')),
+	awful.key({ }, "Pause", spawnf('wmselect')), -- old keyboard
+	awful.key({ }, "Print", spawnf('wmselect')), -- new keyboard
 
 	awful.key({ modkey, "Control" }, "r", awesome.restart),
 	awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 	awful.key({ modkey,           }, "Return", spawnf(conf.cmd.terminal)),
+
+	awful.key({ modkey, "Control" }, "n", awful.client.restore),
+	awful.key({ modkey, "Shift"   }, "n",
+	function()
+		local tag = awful.tag.selected()
+		for i=1, #tag:clients() do
+			awful.client.restore(tag:clients()[i])
+		end
+	end),
 
 	--{{{ Modal mappings
 
@@ -126,9 +136,6 @@ function bindings.extend_key_table(globalkeys)
 	awful.key({ modkey }, "`", function ()
 		scratch.drop("gpms","bottom","center", 0.99, 0.4)
 	end ),
-	awful.key({ }, "Print", function ()
-		scratch.drop("gpulse-mixer","top","center", 0.99, 0.4)
-	end ),
 	-- }}}
 
 	--{{{ Prompt
@@ -145,6 +152,7 @@ function bindings.extend_key_table(globalkeys)
 	awful.key({ }, "XF86Sleep",  spawnf("s2ram")),
 	awful.key({ }, "XF86Away",  spawnf("xlock")),
 	awful.key({ }, "XF86TouchpadToggle",  spawnf("touchpad")),
+	awful.key({ "Shift" }, "XF86TouchpadToggle",  spawnf("wacomtouch")),
 
 	--}}}
 
