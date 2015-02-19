@@ -176,9 +176,11 @@ local function show_box(s, map, name)
 	local label = "<b>" .. name .. "</b>"
 	if settings.show_options then
 		for key, mapping in pairs(map) do
-			label = label .. "\n<b>" .. key .. "</b>"
-			if type(mapping) == "table" then
-				label = label .. "\t" .. (mapping.desc or "???")
+			if key ~= "onClose" then
+				label = label .. "\n<b>" .. key .. "</b>"
+				if type(mapping) == "table" then
+					label = label .. "\t" .. (mapping.desc or "???")
+				end
 			end
 		end
 	end
@@ -200,6 +202,9 @@ function grab(keymap, name, stay_in_mode)
 
 	keygrabber.run(function(mod, key, event)
 		if key == "Escape" then
+			if keymap["onClose"] then
+				keymap["onClose"]()
+			end
 			keygrabber.stop()
 			nesting = 0
 			hide_box();
