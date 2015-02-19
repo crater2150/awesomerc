@@ -97,15 +97,41 @@ function set_show_options(bool)
 end
 modalbind.set_show_options = set_show_options
 
-local function set_default(s)
+local function set_default(s, position)
 	minwidth, minheight = modewidget[s]:fit(screen[s].geometry.width,
 		screen[s].geometry.height)
 	modewibox[s].width = minwidth + 1;
 	modewibox[s].height = math.max(settings.height, minheight)
-	modewibox[s].x = settings.x_offset < 0 and
-		screen[s].geometry.x - width + settings.x_offset or
-		settings.x_offset
-	modewibox[s].y = screen[s].geometry.height - modewibox[s].height
+	if position then
+		modewibox[s].x = getXOffset(s, position)
+		modewibox[s].y = getYOffset(s, position)
+	else
+		modewibox[s].x = settings.x_offset < 0 and
+			screen[s].geometry.x - modewibox[s].width + settings.x_offset or
+			settings.x_offset
+		modewibox[s].y = screen[s].geometry.height - modewibox[s].height
+	end
+end
+
+local function getXOffset(s,position)
+	if type(position) == "table" then
+		return position.x
+	elseif position == "topleft" or position == "bottomleft" then
+		return 0
+	elseif position == "topright" or position == "bottomright" then
+		return screen[s].geometry.x - modewibox[s].width
+	end
+end
+
+
+local function getYOffset(s,position)
+	if type(position) == "table" then
+		return position.y
+	elseif position == "topleft" or position == "topright" then
+		return 0
+	elseif position == "bottomleft" or position == "bottomright" then
+		return screen[s].geometry.y - modewibox[s].height
+	end
 end
 
 local function ensure_init()
