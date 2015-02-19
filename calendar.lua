@@ -219,6 +219,10 @@ function calendar:show()
 	self.wibox.visible = true
 end
 
+function calendar:hide()
+	self.wibox.visible = false
+end
+
 function calendar:update_before_showing()
 	if not self.wibox.visible then
 		self:now()
