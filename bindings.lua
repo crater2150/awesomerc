@@ -1,5 +1,6 @@
 -- key bindings
 local awful = require("awful")
+local beautiful = beautiful
 local conf = conf
 local mpd = require("mpd")
 local scratch = require("scratch")
@@ -178,6 +179,7 @@ clientkeys = awful.util.table.join(
     awful.key({ modkey, "Shift"   }, "a",      function (c) c.sticky = not c.sticky end),
     awful.key({ modkey, "Shift"   }, "r",      function (c) c:redraw()                       end),
     awful.key({ modkey,           }, "n",      function (c) c.minimized = not c.minimized    end),
+    awful.key({ modkey,           }, "b",      function (c) c.border_width = c.border_width > 0 and 0 or beautiful.border_width end),
     awful.key({ modkey,           }, "Up",     function(c) client_opacity_set(c, 1, 1, 0.1) end),
     awful.key({ modkey,           }, "Down",   function(c) client_opacity_set(c, 1, 0, -0.1) end),
     awful.key({ }, "XF86Calculater",      awful.client.movetoscreen                        )
