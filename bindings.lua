@@ -67,7 +67,7 @@ docmap = {
 calendarmap = {
 	o = { func = function() calendar:next() end, desc = "Next" },
 	i = { func = function() calendar:prev() end, desc = "Prev" },
-	q = { func = function() calendar:prev() end, desc = "Close" }
+	onClose = function() calendar:hide() end
 }
 
 
@@ -149,9 +149,8 @@ function bindings.extend_key_table(globalkeys)
 	--}}}
 
 	-- calendar {{{
-	awful.key({ modkey            },  "y",  function() calendar:toggle() end),
-	awful.key({ modkey, "Shift"   },  "y",  function()
-		calendar.wibox.visible = true
+	awful.key({ modkey,           },  "y",  function()
+		calendar:show()
 		mb.grab(calendarmap, "Calendar", true)
 	end)
 	)
