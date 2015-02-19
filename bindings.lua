@@ -41,6 +41,7 @@ mpdmap = {
 	S = { func = spawnf("mpd --kill"), desc = "kill MPD" },
 	g = { func = spawnf(conf.cmd.mpd_client), desc = "Gmpc" }
 }
+
 mpdpromts = {
 	a = { func = mpd.prompt.artist, desc = "artist" },
 	b = { func = mpd.prompt.album, desc = "album" },
@@ -52,13 +53,15 @@ progmap = {
 	f = { func = spawnf(conf.cmd.browser), desc = "Browser" },
 	i = { func = spawnf(conf.cmd.im_client), desc = "IM Client" },
 	I = { func = spawnf(conf.cmd.irc_client), desc = "IRC" },
-	m = { func = spawnf(conf.cmd.mail_client), desc = "Mail" }
+	m = { func = spawnf(conf.cmd.mail_client), desc = "Mail" },
+	s = { func = spawnf("steam"), desc = "Steam" }
 }
 
 docmap = {
-	u = { func = spawnf("docopen ~/uni pdf"), desc = "Uni-Dokumente" },
+	u = { func = spawnf("docopen ~/doc/uni pdf"), desc = "Uni-Dokumente" },
 	b = { func = spawnf("docopen ~/books pdf epub mobi txt lit html htm"), desc = "Bücher" },
-	t = { func = spawnf("dtexdoc"), desc = "Texdoc" }
+	t = { func = spawnf("dmtexdoc"), desc = "Texdoc" },
+	j = { func = spawnf("dmjavadoc"), desc = "Javadoc" }
 }
 
 calendarmap = {
