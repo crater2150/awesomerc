@@ -8,6 +8,16 @@ local modkey = conf.modkey or "Mod4"
 local mb = require("modalbind")
 local calendar = require("calendar")
 
+app_folders = {
+	"/usr/share/applications",
+	"/usr/local/share/applications",
+	os.getenv("HOME") .. "/.local/applications",
+	os.getenv("HOME") .. "/Desktop"
+}
+local menubar = require("menubar")
+
+menubar.utils.terminal = conf.cmd.terminal -- Set the terminal for applications that require it
+
 local bindings = {modalbind = mb}
 
 -- {{{ Mouse bindings
@@ -120,7 +130,7 @@ function bindings.extend_key_table(globalkeys)
 	--{{{ Prompt
 
 	awful.key({ modkey }, "r", conf.cmd.run),
-	awful.key({ modkey, "Shift" }, "r", spawnf("dmenu_desktopfile")),
+	awful.key({ modkey, "Shift" }, "r", menubar.show),
 
 	awful.key({ modkey }, "s", spawnf("dmsearch")),
 
