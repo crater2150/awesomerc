@@ -28,13 +28,16 @@ local function setup(self)
 				raise = true,
 				keys = clientkeys,
 				minimized = false,
+				size_hints_honor = false,
 				buttons = clientbuttons 
 			},
 			-- print name and class of new windows for debugging purposes
 			callback = function(c)
-				if(c["name"] ~= nil and c["class"] ~= nil) then
-					print("-----------\nnew client\n")
+				print("-----------\nnew client\n")
+				if (c["name"] ~= nil) then
 					print("name: " .. c["name"])
+				end
+				if (c["class"] ~= nil) then
 					print("class: " .. c["class"])
 				end
 			end
