@@ -142,6 +142,9 @@ local function ensure_init()
 	for s = 1, screen.count() do
 		modewidget[s] = wibox.widget.textbox()
 		modewidget[s]:set_align("left")
+		if beautiful.fontface then
+			modewidget[s]:set_font(beautiful.fontface .. " " .. (beautiful.fontsize + 4))
+		end
 
 		modewibox[s] = wibox({
 			fg = beautiful.fg_normal,
