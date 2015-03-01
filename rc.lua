@@ -58,7 +58,6 @@ end
 
 -- {{{ Key bindings
 globalkeys = {}
-globalkeys = layouts.extend_key_table(globalkeys);
 globalkeys = tags.extend_key_table(globalkeys);
 
 bindings = require("bindings")

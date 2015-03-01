@@ -70,25 +70,24 @@ calendarmap = {
 	onClose = function() calendar:hide() end
 }
 
-
-adapters = { u = "wwan", w = "wlan", b = "bluetooth" }
-local function rfkill(cmd)
-	map = {}
-	for key, adapter in pairs(adapters) do
-		map[key] = { func = spawnf("sudo rfkill "..cmd.." "..adapter), desc = adapter }
-	end
-	return map
-end
-
-connectmap = {
-	u = { func = spawnf("umts"), desc = "umts" },
-	w = { func = spawnf("wlanacpi"), desc = "wlan" }
+local function use_layout(layout) return function() awful.layout.set(layout) end end
+layoutmap = {
+	f = { func = use_layout(awful.layout.suit.fair),            desc ="Fair" },
+	h = { func = use_layout(awful.layout.suit.fair.horizontal), desc ="Fair Horizontal" },
+	t = { func = use_layout(awful.layout.suit.tile),            desc ="Tile" },
+	b = { func = use_layout(awful.layout.suit.tile.bottom),     desc ="Tile Bottom" },
+	m = { func = use_layout(awful.layout.suit.max),             desc ="Maximized" },
+	F = { func = use_layout(awful.layout.suit.max.fullscreen),  desc ="Fullscreen" },
+	Space = { func = use_layout(awful.layout.suit.floating),    desc ="Float" }
 }
 
-wirelessmap = {
-	b = { func = mb.grabf(rfkill("block"),"Block"), desc = "block" },
-	u = { func = mb.grabf(rfkill("unblock"),"Unblock"), desc = "unblock" },
-	c = { func = mb.grabf(connectmap, "Connect"), desc = "connect" }
+layoutsettings = {
+	l = { func = function () awful.tag.incmwfact( 0.05) end, desc = "Master bigger" },
+	h = { func = function () awful.tag.incmwfact(-0.05) end, desc = "Master smaller" },
+	H = { func = function () awful.tag.incnmaster( 1) end, desc = "More masters" },
+	L = { func = function () awful.tag.incnmaster(-1) end, desc = "Less masters" },
+	c = { func = function () awful.tag.incncol( 1) end, desc = "More columns" },
+	C = { func = function () awful.tag.incncol(-1) end, desc = "Less columns" },
 }
 
 function bindings.extend_key_table(globalkeys)
@@ -109,13 +108,51 @@ function bindings.extend_key_table(globalkeys)
 		end
 	end),
 
+	--{{{ Layout manipulation and client position
+	awful.key({ modkey }, "j", function ()
+		awful.client.focus.byidx( 1)
+		if client.focus then client.focus:raise() end
+	end),
+	awful.key({ modkey }, "k", function ()
+		awful.client.focus.byidx(-1)
+		if client.focus then client.focus:raise() end
+	end),
+
+	-- Layout manipulation
+	awful.key({ modkey }, "Tab", function ()
+		awful.client.focus.history.previous()
+		if client.focus then
+			client.focus:raise()
+		end
+	end),
+	awful.key({ "Mod1",           }, "Tab", function ()
+		awful.client.focus.history.previous()
+		if client.focus then
+			client.focus:raise()
+		end
+	end),
+	awful.key({ modkey, "Shift"   }, "j", function ()
+		awful.client.swap.byidx(  1)
+	end),
+	awful.key({ modkey, "Shift"   }, "k", function ()
+		awful.client.swap.byidx( -1)
+	end),
+	awful.key({ modkey,           }, "h", function ()
+		awful.screen.focus_relative( 1)
+	end),
+	awful.key({ modkey,           }, "l", function ()
+		awful.screen.focus_relative(-1)
+	end),
+	--}}}
+
 	--{{{ Modal mappings
 
 	awful.key({ modkey            },  "m",  mb.grabf(mpdmap, "MPD", true)),
 	awful.key({ modkey, "Shift"   },  "m",  mb.grabf(mpdpromts, "MPD - Search for")),
 	awful.key({ modkey            },  "c",  mb.grabf(progmap, "Commands")),
-	awful.key({ modkey            },  "w",  mb.grabf(wirelessmap, "Wifi")),
 	awful.key({ modkey            },  "d",  mb.grabf(docmap, "Documents")),
+	awful.key({ modkey            },  "space",  mb.grabf(layoutmap, "Layouts")),
+	awful.key({ modkey, "Shift"   },  "space",  mb.grabf(layoutsettings, "Layout settings", true)),
 	--}}}
 
 	--{{{ Audio control
@@ -185,6 +222,12 @@ clientkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
     awful.key({ modkey,           }, "o",      awful.client.movetoscreen                        ),
+    awful.key({ modkey, "Shift"   }, "h", function ()
+	    awful.client.movetoscreen(c, mouse.screen + 1)
+    end),
+    awful.key({ modkey, "Shift"   }, "l", function ()
+	    awful.client.movetoscreen(c, mouse.screen - 1)
+    end),
     awful.key({ modkey, "Control" }, "o",      function (c) c.ontop = not c.ontop end),
     awful.key({ modkey, "Shift"   }, "a",      function (c) c.sticky = not c.sticky end),
     awful.key({ modkey, "Shift"   }, "r",      function (c) c:redraw()                       end),
