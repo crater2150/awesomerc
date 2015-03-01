@@ -57,14 +57,12 @@ end
 -- }}}
 
 -- {{{ Key bindings
-globalkeys = {}
-globalkeys = tags.extend_key_table(globalkeys);
 
 bindings = require("bindings")
+bindings.setup()
 bindings.modalbind.set_x_offset(18)
-globalkeys = bindings.extend_key_table(globalkeys)
-
-root.keys(globalkeys)
+bindings.add_bindings(tags.create_bindings())
+bindings.apply()
 -- }}}
 
 -- {{{ rules

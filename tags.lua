@@ -84,14 +84,14 @@ function tags.setup(setuptable)
 	end
 end
 
-function tags.extend_key_table(globalkeys)
+function tags.create_bindings()
 	-- Compute the maximum number of digit we need, limited to 22
 	keynumber = 0
 	for s = 1, screen.count() do
 		keynumber = math.min(22, math.max(#(list[s]), keynumber));
 	end
 	
-	local tagkeys = globalkeys or {}
+	local tagkeys = {}
 
 	-- Bind all key numbers to tags, using keycodes
 	for i = 1, keynumber do

@@ -9,6 +9,8 @@ local modkey = conf.modkey or "Mod4"
 local mb = require("modalbind")
 local calendar = require("calendar")
 
+local globalkeys = {}
+
 app_folders = {
 	"/usr/share/applications",
 	"/usr/local/share/applications",
@@ -90,8 +92,8 @@ layoutsettings = {
 	C = { func = function () awful.tag.incncol(-1) end, desc = "Less columns" },
 }
 
-function bindings.extend_key_table(globalkeys)
-	return awful.util.table.join(globalkeys or {},
+function bindings.setup()
+	globalkeys = awful.util.table.join(
 	awful.key({ }, "Pause", spawnf('wmselect')), -- old keyboard
 	awful.key({ }, "Print", spawnf('wmselect')), -- new keyboard
 
@@ -203,6 +205,13 @@ function bindings.extend_key_table(globalkeys)
 	--}}}
 end
 
+function bindings.add_bindings(keys)
+	globalkeys = awful.util.table.join(globalkeys, keys);
+end
+
+function bindings.apply()
+	root.keys(globalkeys)
+end
 
 local function client_opacity_set(c, default, max, step)
 	if c.opacity < 0 or c.opacity > 1 then
