@@ -30,6 +30,9 @@ local function update_settings()
 	end
 end
 
+local aliases = {}
+aliases[" "] = "Space"
+
 
 --- Change the opacity of the modebox.
 -- @param amount opacity between 0.0 and 1.0, or nil to use default
@@ -213,6 +216,10 @@ function grab(keymap, name, stay_in_mode)
 
 		if event == "release" then return true end
 
+		if aliases[key] then
+			key = aliases[key]
+		end
+
 		if keymap[key] then
 			keygrabber.stop()
 			if type(keymap[key]) == "table" then
@@ -227,6 +234,8 @@ function grab(keymap, name, stay_in_mode)
 				if nesting < 1 then hide_box() end
 				return true
 			end
+		else
+			print("Unmapped key: \"" .. key .. "\"")
 		end
 
 		return true
