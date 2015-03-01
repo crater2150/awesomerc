@@ -86,7 +86,6 @@ local function setup() -- {{{
 		bars[s].right.top = right_top_layout
 	end
 end -- }}}
-widgets.setup = setup
 
 -- }}}
 --------------------------------------------------------------------------------
@@ -114,7 +113,7 @@ widgets.update = update
 local function get_layout(screen, bar, align) --{{{
 	if bars[screen][bar] == nil then return nil end
 
-	return bars[screen][bar][align]
+	return {screen = screen, layout = bars[screen][bar][align]}
 end --}}}
 widgets.layout = get_layout
 
@@ -126,7 +125,7 @@ widgets.layout = get_layout
 --------------------------------------------------------------------------------
 
 -- mail widget
-local function mailwidget(name, screen, parent_layout, mailboxes, notify_pos) --{{{
+local function mailwidget(name, parent, mailboxes, notify_pos) --{{{
 	local widget = wibox.widget.textbox()
 	local bg = wibox.widget.background()
 	bg:set_widget(widget)
@@ -149,60 +148,60 @@ local function mailwidget(name, screen, parent_layout, mailboxes, notify_pos) --
 		end
 		return "⬓⬓ Unread "..args[2].." / New "..args[1].. " "
 	end, 0, mailboxes)
-	wlist[screen][name] = widget
-	parent_layout:add(bg)
+	wlist[parent.screen][name] = widget
+	parent.layout:add(bg)
 	widgets.update(name)
 end
 --}}}
 widgets.add.mail = mailwidget
 
 -- text clock
-local function clockwidget(name, screen, parent_layout) -- {{{
-	wlist[screen][name] = awful.widget.textclock()
-	parent_layout:add(wlist[screen][name])
+local function clockwidget(name, parent) -- {{{
+	wlist[parent.screen][name] = awful.widget.textclock()
+	parent.layout:add(wlist[parent.screen][name])
 end
 --}}}
 widgets.add.clock = clockwidget
 
 -- layoutbox
-local function layoutwidget(screen, parent_layout) -- {{{
-	wlist[screen]["layout"] = awful.widget.layoutbox(s)
-	parent_layout:add(wlist[screen]["layout"])
+local function layoutwidget(parent) -- {{{
+	wlist[parent.screen]["layout"] = awful.widget.layoutbox(s)
+	parent.layout:add(wlist[parent.screen]["layout"])
 end
 --}}}
 widgets.add.layout = layoutwidget
 
 -- taglist
-local function taglistwidget(name, screen, parent_layout) --{{{
+local function taglistwidget(name, parent) --{{{
 	-- Create a taglist widget
-	wlist[screen][name] = awful.widget.taglist(screen,
+	wlist[parent.screen][name] = awful.widget.taglist(parent.screen,
 		awful.widget.taglist.filter.all,
 		mytaglist.buttons)
-	parent_layout:add(wlist[screen][name])
+	parent.layout:add(wlist[parent.screen][name])
 end --}}}
 widgets.add.taglist = taglistwidget
 
 -- system tray
 -- not using a name argument, because only one systray is allowed
-local function systraywidget(screen, parent_layout) --{{{
+local function systraywidget(parent) --{{{
 	if (wlist["systray"] ~= nil) then
 		return
 	end
 	wlist["systray"] = wibox.widget.systray()
-	parent_layout:add(wlist["systray"])
+	parent.layout:add(wlist["systray"])
 end --}}}
 widgets.add.systray = systraywidget
 
 -- cpu usage
-local function cpuwidget(name, screen, parent_layout) --{{{
-	wlist[screen][name] = wibox.widget.textbox()
-	vicious.register(wlist[screen][name], vicious.widgets.cpu, "CPU: $1%")
-	parent_layout:add(wlist[screen][name])
+local function cpuwidget(name, parent) --{{{
+	wlist[parent.screen][name] = wibox.widget.textbox()
+	vicious.register(wlist[parent.screen][name], vicious.widgets.cpu, "CPU: $1%")
+	parent.layout:add(wlist[parent.screen][name])
 end --}}}
 widgets.add.cpu = cpuwidget
 
 -- battery
-local function batterywidget(name, screen, parent_layout, batname) --{{{
+local function batterywidget(name, parent, batname) --{{{
 	print("creating batwidget '" .. name .. "' for battery '"..batname.."'")
 	local widget = wibox.widget.textbox()
 	local bg = wibox.widget.background()
@@ -221,18 +220,18 @@ local function batterywidget(name, screen, parent_layout, batname) --{{{
 				args[1]..args[2].."% - "..args[3]
 		end
 	end, 61, batname)
-	wlist[screen][name] = widget
-	parent_layout:add(bg)
+	wlist[parent.screen][name] = widget
+	parent.layout:add(bg)
 	widgets.update(name)
 end --}}}
 widgets.add.battery = batterywidget
 
 -- wireless status
-local function wifiwidget(name, screen, parent_layout, interface) --{{{
-	wlist[screen][name] = wibox.widget.textbox()
-	vicious.register(wlist[screen][name], vicious.widgets.wifi,
+local function wifiwidget(name, parent, interface) --{{{
+	wlist[parent.screen][name] = wibox.widget.textbox()
+	vicious.register(wlist[parent.screen][name], vicious.widgets.wifi,
 	"WLAN ${ssid} @ ${sign}, Q:${link}/70", 31, interface)
-	parent_layout:add(wlist[screen][name])
+	parent.layout:add(wlist[parent.screen][name])
 end --}}}
 widgets.add.wifi = wifiwidget
 
@@ -247,8 +246,8 @@ local spacer = wibox.widget.textbox()
 spacer:set_text(" ")
 
 -- manual spacing between widgets
-local function spacerwidget(parent_layout) --{{{
-	parent_layout:add(spacer)
+local function spacerwidget(parent) --{{{
+	parent.layout:add(spacer)
 end --}}}
 widgets.add.spacer = spacerwidget
 
@@ -260,6 +259,8 @@ widgets.set_spacer_text = spacertext
 
 -- }}}
 --------------------------------------------------------------------------------
+
+setup()
 
 return widgets
 

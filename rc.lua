@@ -27,33 +27,32 @@ tags.setup()
 
 -- {{{ widgets
 widgets = require("widgets")
-widgets.setup()
 for s = 1, screen.count() do
-	local ltop = widgets.layout(s,"left","top")
-	local rtop = widgets.layout(s,"right","top")
-	local lbottom = widgets.layout(s,"left","bottom")
-	local rbottom = widgets.layout(s,"right","bottom")
+	local ltop = widgets.layout(s, "left", "top")
+	local rtop = widgets.layout(s, "right", "top")
+	local lbottom = widgets.layout(s, "left", "bottom")
+	local rbottom = widgets.layout(s, "right", "bottom")
 
-	widgets.add.clock("clock", s, ltop)
+	widgets.add.clock("clock", ltop)
 
-	widgets.add.layout(s, lbottom)
-	widgets.add.taglist("tags", s, lbottom)
+	widgets.add.layout(lbottom)
+	widgets.add.taglist("tags", lbottom)
 
-	widgets.add.mail("mail_me", s, rbottom, { os.getenv("HOME") .. "/.maildir/me" }, "bottom_right")
+	widgets.add.mail("mail_me", rbottom, { os.getenv("HOME") .. "/.maildir/me" }, "bottom_right")
 	widgets.add.spacer(rbottom)
-	widgets.add.mail("mail_uber", s, rbottom, { os.getenv("HOME") .. "/.maildir/uber" }, "bottom_right")
+	widgets.add.mail("mail_uber", rbottom, { os.getenv("HOME") .. "/.maildir/uber" }, "bottom_right")
 
-	widgets.add.cpu("cpu", s, rtop)
+	widgets.add.cpu("cpu", rtop)
 	widgets.add.spacer(rtop)
-	widgets.add.battery("bat", s, rtop, "BAT0")
+	widgets.add.battery("int", rtop, "BAT0")
 	widgets.add.spacer(rtop)
-	widgets.add.battery("slice", s, rtop, "BAT1")
+	widgets.add.battery("ext", rtop, "BAT1")
 	widgets.add.spacer(rtop)
-	widgets.add.wifi("wlan", s, rtop, "wlan0")
+	widgets.add.wifi("wlan", rtop, "wlan0")
 	widgets.add.spacer(rtop)
-	widgets.add.systray(s, rtop)
+	widgets.add.systray(rtop)
 
-	widgets.set_spacer_text(" ◈ ")
+	widgets.set_spacer_text("   ◈   ")
 end
 -- }}}
 
