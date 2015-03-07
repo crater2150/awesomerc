@@ -3,7 +3,7 @@ theme = {}
 theme.wallpaper = "~/.wallpaper"
 -- }}}
 -- {{{ Styles
-theme.fontface = "Meslo for Powerline"
+theme.fontface = "Dina"
 theme.fontsize = 8
 theme.font     = theme.fontface .. " " .. theme.fontsize
 
