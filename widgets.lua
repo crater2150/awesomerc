@@ -230,7 +230,7 @@ widgets.add.battery = batterywidget
 local function wifiwidget(name, parent, interface) --{{{
 	wlist[parent.screen][name] = wibox.widget.textbox()
 	vicious.register(wlist[parent.screen][name], vicious.widgets.wifi,
-	"WLAN ${ssid} @ ${sign}, Q:${link}/70", 31, interface)
+	"WLAN ${ssid} @ ${sign}dBm, Q:${link}/70", 31, interface)
 	parent.layout:add(wlist[parent.screen][name])
 end --}}}
 widgets.add.wifi = wifiwidget

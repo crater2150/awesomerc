@@ -52,7 +52,7 @@ for s = 1, screen.count() do
 	widgets.add.spacer(rtop)
 	widgets.add.systray(rtop)
 
-	widgets.set_spacer_text(" ◈ ")
+	widgets.set_spacer_text("  ◈  ")
 end
 -- }}}
 

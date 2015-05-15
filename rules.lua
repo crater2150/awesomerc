@@ -60,13 +60,20 @@ local function setup(self)
 			}},
 			properties = { floating = true, size_hints_honor = true }
 		},
-
 		{
 			rule = { class = "Firefox", instance = "Navigator" },
 			properties = {
 				tag = tags[rule_screen][2],
 				floating = false, minimized = false 
-			}
+			},
+		},
+		{
+			rule = { class = "Whatsapp", instance = "Navigator" },
+			properties = {
+				tag = tags[rule_screen][3],
+				floating = false, minimized = false 
+			},
+			callback = awful.client.setslave
 		},
 		{
 			rule_any = { class = {"Pidgin"}, instance = {"Weechat"} },
@@ -92,10 +99,14 @@ local function setup(self)
 			properties = {
 				tag = tags[rule_screen][3],
 			},
-			callback = function(c)
-				awful.client.setslave(c)
-				callback = popup_urgent("new chat message")(c)
-			end
+			callback = awful.client.setslave
+		},
+		{
+			rule = { class = "Telegram" },
+			properties = {
+				tag = tags[rule_screen][3],
+			},
+			callback = awful.client.setslave
 		},
 		{
 			rule = { class = "Steam", name = "Steam" },
