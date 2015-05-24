@@ -13,9 +13,8 @@ layouts = require('layouts')
 
 -- {{{ Logging
 log = require("simplelog")
-log.add_logger(log.loggers.stdio, log.level.debug)
-log.add_logger(log.loggers.naughty, log.level.warn)
-
+log.add_logger(log.loggers.stdio, log.level.DEBUG)
+log.add_logger(log.loggers.naughty, log.level.WARNING)
 -- }}}
 
 -- {{{ Tags

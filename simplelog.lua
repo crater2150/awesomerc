@@ -1,4 +1,5 @@
 local naughty = require("naughty")
+local awful = require("awful")
 
 local simplelog = { loggers = {}, mt = {}}
 
@@ -12,13 +13,12 @@ for key, value in pairs(defaults) do
     settings[key] = value
 end
 
-local level = {
+simplelog.level = {
 	ERROR = 3,
 	WARNING = 2,
 	NORMAL = 1,
 	DEBUG = 0
 }
-simplelog.level = level
 
 local function loglv(msg, level)
 	for _,logger in ipairs(settings.loggers) do
@@ -54,17 +54,23 @@ function simplelog.add_logger(logger, level)
 end
 
 function simplelog.loggers.naughty(msg, severity)
-	if severity == level.WARNING then
+	if severity == simplelog.level.WARNING then
 		msg = "<span color=\"#ff6\">".. msg .. "</span>"
-	elseif severity == level.ERROR then
+	elseif severity == simplelog.level.ERROR then
 		msg = "<span color=\"#f66\">".. msg .. "</span>"
 	end
 	naughty.notify({ text = msg })
 end
 
+function simplelog.spawn(command)
+	simplelog.dbg("Executing: " .. command)
+	awful.util.spawn(command)
+end
+
 function simplelog.loggers.stdio(msg, severity)
 	print(msg)
 end
+
 
 simplelog.mt.__call = function(t,message) simplelog.log(message) end
 
