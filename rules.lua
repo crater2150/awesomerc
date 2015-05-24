@@ -102,17 +102,17 @@ local function setup(self)
 			callback = awful.client.setslave
 		},
 		{
+			rule = { class = "Steam", name = "Steam" },
+			properties = {
+				tag = tags[rule_screen][11],
+			}
+		},
+		{
 			rule = { class = "Telegram" },
 			properties = {
 				tag = tags[rule_screen][3],
 			},
 			callback = awful.client.setslave
-		},
-		{
-			rule = { class = "Steam", name = "Steam" },
-			properties = {
-				tag = tags[rule_screen][11],
-			}
 		},
 		{
 			rule_any = { role ={  "conversation" }, instance = { "Weechat" } },
