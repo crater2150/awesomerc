@@ -7,22 +7,32 @@ conf.modkey = "Mod4"
 -- screen number, on which rules will put clients by default
 conf.rule_screen=1
 
--- should mpd prompt clear playlist before adding matched songs
-conf.mpd_prompt_clear_before = true
+conf.mpd = {
+	-- should mpd prompt clear playlist before adding matched songs
+	replace_on_search = true,
+	-- default host and port. for further hosts, see bindings.lua
+	host = "localhost",
+	port = "6600"
+}
 
 -- default programs (for keybindings)
 conf.cmd = {}
-conf.cmd.terminal = "terminal"       -- Mod-Enter
-conf.cmd.browser = "webbrowser"      -- Mod-c f
-conf.cmd.im_client = "im-client"     -- Mod-c i
-conf.cmd.irc_client = "irc-client"   -- Mod-c I
-conf.cmd.mail_client = "mail-client" -- Mod-c m
-conf.cmd.mpd_client = "gmpc"         -- Mod-m g
+conf.cmd.terminal = "terminal"           -- Mod-Enter
+conf.cmd.terminal_exec = "terminal -e"   -- used by some mappings
+conf.cmd.browser = "webbrowser"          -- Mod-c f
+conf.cmd.im_client = "im-client"         -- Mod-c i
+conf.cmd.irc_client = "irc-client"       -- Mod-c I
+conf.cmd.mail_client = "mail-client"     -- Mod-c m
+conf.cmd.mpd_client = "gmpc"             -- Mod-m g
 conf.cmd.editor = {}
-conf.cmd.editor.terminal = conf.cmd.terminal .. " -e vim"
+conf.cmd.editor.terminal = conf.cmd.terminal_exec .. " vim"
 conf.cmd.editor.gui = "gvim"
 
 -- Mod-r binding for running programs
 conf.cmd.run = function() awful.util.spawn("dmenu_run -l 10 -y 350") end
+
+conf.calendar = {
+	start_week = 1
+}
 
 return conf
