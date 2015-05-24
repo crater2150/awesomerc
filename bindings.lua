@@ -35,20 +35,31 @@ bindings.spawnf = spawnf
 
 conf.cmd.run = conf.cmd.run or spawnf("dmenu_run")
 
+local function mpdserver(host)
+	return function() mpd.set_server(host, "6600") end
+end
+
+mpdhosts = {
+	n = { func = mpdserver("nas.fritz.box"), desc = "NAS" },
+	b = { func = mpdserver("berryhorst.fritz.box"), desc = "Berry" },
+	l = { func = mpdserver("127.0.0.1"), desc = "Local" }
+}
+
 mpdmap = {
 	m = { func = mpd.ctrl.toggle, desc = "Toggle" },
 	n = { func = mpd.ctrl.next, desc = "Next" },
 	N = { func = mpd.ctrl.prev, desc = "Prev" },
 	s = { func = spawnf("mpd"), desc = "start MPD" },
 	S = { func = spawnf("mpd --kill"), desc = "kill MPD" },
-	g = { func = spawnf(conf.cmd.mpd_client), desc = "Gmpc" }
+	g = { func = spawnf(conf.cmd.mpd_client), desc = "Gmpc" },
 }
 
 mpdpromts = {
 	a = { func = mpd.prompt.artist, desc = "artist" },
 	b = { func = mpd.prompt.album, desc = "album" },
 	t = { func = mpd.prompt.title, desc = "title" },
-	r = { func = mpd.prompt.toggle_replace_on_search, desc = "toggle replacing" }
+	r = { func = mpd.prompt.toggle_replace_on_search, desc = "toggle replacing" },
+	h = { func = mb.grabf(mpdhosts, "Select MPD host"), desc = "Change host" }
 }
 
 progmap = {

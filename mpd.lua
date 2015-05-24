@@ -12,14 +12,42 @@ local defaults = {}
 local settings = {}
 
 defaults.replace_on_search = true
+defaults.host = "127.0.0.1"
+defaults.port = "6600"
 
 for key, value in pairs(defaults) do
     settings[key] = value
 end
 
-mpc = function(command)
-	awful.util.spawn("mpc " .. command)
+for key, value in pairs(conf.mpd) do
+    settings[key] = value
 end
+
+-- {{{ local helpers
+local function mpc(command)
+	log.spawn("mpc -h " .. settings.host .. " -p " .. settings.port .. " " .. command)
+end
+
+local function dmenu(opts)
+	log.spawn("dmpc -h " .. settings.host .. " -p " .. settings.port .. " " ..
+		(clear_before and "-r" or "-R") .. " " .. opts)
+end
+
+local function notify(stext)
+	if not (naughty == nil) then
+		naughty.notify({
+			text= stext
+		})
+	end
+end
+--}}}
+
+M.set_server = function(host, port)
+	settings.host = host
+	settings.port = port
+	notify("Using mpd server " .. settings.host .. ":" .. settings.port)
+end
+
 
 -- {{{ mpd.ctrl submodule
 
@@ -49,10 +77,6 @@ end
 
 -- {{{ mpd.prompt submodule
 
-local clear_before = conf.mpd_prompt_clear_before == nil and
-	true or
-	conf.mpd_prompt_clear_before 
-
 M.prompt = {}
 
 M.prompt.artist = function()
@@ -69,32 +93,19 @@ M.prompt.title = function()
 end
 M.prompt.title = title
 
-function dmenu(opts)
-	awful.util.spawn("dmpc " .. (clear_before and "-r" or "-R") .. " " .. opts)
-end
-
 M.prompt.replace_on_search = function(bool)
-	clear_before = bool
+	settings.replace_on_search = bool
 end
 
 M.prompt.toggle_replace_on_search = function()
-	clear_before = not clear_before
+	settings.replace_on_search = not settings.replace_on_search
 	notify("MPD prompts now " ..(
-			clear_before and "replace" or "add to"
+			settings.replace_on_search and "replace" or "add to"
 			).. " the playlist")
 end
 
 -- }}}
 
--- {{{ notify wrapper
-notify = function(stext)
-	if not (naughty == nil) then
-		naughty.notify({
-			text= stext
-		})
-	end
-end
---}}}
 
 return M
 
