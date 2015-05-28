@@ -32,14 +32,16 @@ for s = 1, screen.count() do
 	local lbottom = widgets.layout(s, "left", "bottom")
 	local rbottom = widgets.layout(s, "right", "bottom")
 
-	widgets.add.clock("clock", ltop)
+	local clock = widgets.add.clock("clock", rtop)
+	clock:set_right(10)
 
-	widgets.add.layout(lbottom)
+	widgets.add.layout_indicator(lbottom)
 	widgets.add.taglist("tags", lbottom)
 
-	widgets.add.mail("mail_me", rbottom, { os.getenv("HOME") .. "/.maildir/me" }, "bottom_right")
-	widgets.add.spacer(rbottom)
-	widgets.add.mail("mail_uber", rbottom, { os.getenv("HOME") .. "/.maildir/uber" }, "bottom_right")
+	local mail1 = widgets.add.mail("mail_me", rbottom, { os.getenv("HOME") .. "/.maildir/me" }, "bottom_right", "me")
+	mail1:set_left(15)
+	local mail2 = widgets.add.mail("mail_uber", rbottom, { os.getenv("HOME") .. "/.maildir/uber" }, "bottom_right", "uber")
+	mail2:set_left(15)
 
 	widgets.add.cpu("cpu", rtop)
 	widgets.add.spacer(rtop)
