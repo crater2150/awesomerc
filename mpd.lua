@@ -30,7 +30,7 @@ end
 
 local function dmenu(opts)
 	log.spawn("dmpc -h " .. settings.host .. " -p " .. settings.port .. " " ..
-		(clear_before and "-r" or "-R") .. " " .. opts)
+		(settings.replace_on_search and "-r" or "-R") .. " " .. opts)
 end
 
 local function notify(stext)
