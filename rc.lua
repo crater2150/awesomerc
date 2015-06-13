@@ -32,8 +32,7 @@ for s = 1, screen.count() do
 	local lbottom = widgets.layout(s, "left", "bottom")
 	local rbottom = widgets.layout(s, "right", "bottom")
 
-	local clock = widgets.add.clock("clock", rtop)
-	clock:set_right(10)
+	local clock = widgets.add.clock("clock", ltop)
 
 	widgets.add.layout_indicator(lbottom)
 	widgets.add.taglist("tags", lbottom)

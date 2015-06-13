@@ -132,13 +132,13 @@ local hide = function(self)
 	self:set_widget(nil)
 end
 
-local function wrap_and_add(name, parent, widget)
+local function wrap_and_add(name, parent, widget, callback_widget)
 	local container = wibox.layout.margin(widget)
 	container.widget = widget
 	container.show = show
 	container.hide = hide
 
-	wlist[parent.screen][name] = widget
+	wlist[parent.screen][name] = callback_widget == nil and widget or callback_widget
 	parent.layout:add(container)
 	return container
 end
@@ -150,12 +150,12 @@ local function mailwidget(name, parent, mailboxes, notify_pos, title) --{{{
 	local bg = wibox.widget.background()
 	bg:set_widget(widget)
 
-	local container = wrap_and_add(name, parent, bg)
+	local container = wrap_and_add(name, parent, bg, widget)
 	vicious.register(widget, vicious.widgets.mdir, function(widget, args) 
 		if args[1] > 0 then
 			naughty.notify({
 				title = "New mail arrived in box " .. title,
-				text = title " "..args[2].." / "..args[1],
+				text = title .. " " ..args[2].." / "..args[1],
 				position = notify_pos or "top_left"
 
 			})
@@ -203,7 +203,7 @@ local function taglistwidget(name, parent) --{{{
 	end
 	-- Create a taglist widget
 	return wrap_and_add(name, parent,
-		awful.widget.taglist(parent.screen, filter_urgentonly, mytaglist.buttons)
+		awful.widget.taglist(parent.screen, awful.widget.taglist.filter.noempty, mytaglist.buttons)
 	)
 end --}}}
 widgets.add.taglist = taglistwidget
