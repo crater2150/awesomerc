@@ -40,8 +40,8 @@ local function mpdserver(host)
 end
 
 mpdhosts = {
-	n = { func = mpdserver("nas.fritz.box"), desc = "NAS" },
-	b = { func = mpdserver("berryhorst.fritz.box"), desc = "Berry" },
+	n = { func = mpdserver("nas.local"), desc = "NAS" },
+	b = { func = mpdserver("berryhorst.local"), desc = "Berry" },
 	l = { func = mpdserver("127.0.0.1"), desc = "Local" }
 }
 
@@ -200,9 +200,9 @@ function bindings.setup()
 	--{{{ misc. XF86 Keys
 
 	awful.key({ }, "XF86Sleep",  spawnf("s2ram")),
-	awful.key({ }, "XF86Away",  spawnf("xlock")),
-	awful.key({ }, "XF86TouchpadToggle",  spawnf("touchpad")),
-	awful.key({ "Shift" }, "XF86TouchpadToggle",  spawnf("wacomtouch")),
+	awful.key({ }, "Scroll_Lock",  spawnf("xlock")),
+	awful.key({ }, "XF86Explorer",  spawnf("touchpad")),
+	awful.key({ "Shift" }, "XF86Explorer",  spawnf("wacomtouch")),
 
 	--}}}
 
