@@ -83,6 +83,19 @@ local function setup(self)
 			callback = popup_urgent("new chat message")
 		},
 		{
+			rule = { class = "Skype" },
+			properties = {
+				tag = tags[rule_screen][3], opacity = 0.8
+			},
+		},
+		{
+			rule = { role = "conversationswindow", class = "skype" },
+			properties = {
+				tag = tags[rule_screen][3], opacity = 0.8
+			},
+			callback = awful.client.setmaster
+		},
+		{
 			rule = { role = "buddy_list" },
 			properties = {
 				master = true 
@@ -92,7 +105,8 @@ local function setup(self)
 			rule = { class = "Steam", name = "Friends" },
 			properties = {
 				tag = tags[rule_screen][3],
-			}
+			},
+			callback = awful.client.setmaster
 		},
 		{
 			rule = { class = "Steam", name = "Chat" },

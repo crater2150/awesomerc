@@ -43,7 +43,7 @@ end
 local defaultsetup = {
     {"1:⚙"},
     { name = "2:⌘",   layout = layouts[5]  },
-    { name = "3:☻",   layout = layouts[3], mwfact = 0.20 },
+    { name = "3:☻",   layout = layouts[3], mwfact = 0.20, ncol = 2, nmaster = 2},
     { name = "4:✉",   layout = layouts[5]  },
     {"5:☑"},
     {"6:♫"},
@@ -78,6 +78,12 @@ function tags.setup(setuptable)
 			list[s][i].selected = false
 			if(t.mwfact) then
 				awful.tag.setmwfact(t.mwfact,list[s][i])
+			end
+			if(t.ncol) then
+				awful.tag.setncol(t.ncol,list[s][i])
+			end
+			if(t.nmaster) then
+				awful.tag.setnmaster(t.nmaster,list[s][i])
 			end
 		end
 		list[s][1].selected = true
