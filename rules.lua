@@ -29,7 +29,7 @@ local function setup(self)
 				keys = clientkeys,
 				minimized = false,
 				size_hints_honor = false,
-				buttons = clientbuttons 
+				buttons = clientbuttons
 			},
 			-- print name and class of new windows for debugging purposes
 			callback = function(c)
@@ -64,14 +64,14 @@ local function setup(self)
 			rule = { class = "Firefox", instance = "Navigator" },
 			properties = {
 				tag = tags[rule_screen][2],
-				floating = false, minimized = false 
+				floating = false, minimized = false
 			},
 		},
 		{
 			rule = { class = "Whatsapp", instance = "Navigator" },
 			properties = {
 				tag = tags[rule_screen][3],
-				floating = false, minimized = false 
+				floating = false, minimized = false
 			},
 			callback = awful.client.setslave
 		},
@@ -98,7 +98,7 @@ local function setup(self)
 		{
 			rule = { role = "buddy_list" },
 			properties = {
-				master = true 
+				master = true
 			}
 		},
 		{
@@ -142,37 +142,37 @@ local function setup(self)
 		{
 			rule = { class = "Claws-mail" },
 			properties = {
-				tag = tags[rule_screen][4] 
+				tag = tags[rule_screen][4]
 			}
 		},
 		{
 			rule = { instance = "Gmutt" },
 			properties = {
-				tag = tags[rule_screen][4] 
+				tag = tags[rule_screen][4]
 			}
 		},
 		{
 			rule = { instance = "Gcanto" },
 			properties = {
-				tag = tags[rule_screen][5] 
+				tag = tags[rule_screen][5]
 			}
 		},
 		{
 			rule = { instance = "Gncmpcpp" },
 			properties = {
-				tag = tags[rule_screen][6] 
+				tag = tags[rule_screen][6]
 			}
 		},
 		{
 			rule = { class = "Gmpc" },
 			properties = {
-				tag = tags[rule_screen][6] 
+				tag = tags[rule_screen][6]
 			}
 		},
 		{
 			rule = { class = "Deluge" },
 			properties = {
-				tag = tags[rule_screen][7] 
+				tag = tags[rule_screen][7]
 			}
 		},
 		{
@@ -180,7 +180,7 @@ local function setup(self)
 			properties = {
 				size_hints_honor = true,
 				float = true,
-				fullscreen = true 
+				fullscreen = true
 			}
 		},
 		{
@@ -191,13 +191,13 @@ local function setup(self)
 				size_hints_honor = true,
 				float = true,
 				sticky = true,
-				fullscreen = true 
+				fullscreen = true
 			}
 		},
 		{
 			rule = { class = "Xhtop" },
 			properties = {
-				tag = tags[rule_screen][22] 
+				tag = tags[rule_screen][22]
 			}
 		},
 		{
@@ -231,13 +231,13 @@ local function setup(self)
 		{
 			rule = { instance = "Awesomelog" },
 			properties = {
-				tag = tags[rule_screen][14] 
+				tag = tags[rule_screen][14]
 			}
 		},
 		{
 			rule = { class = "GLSlideshow" },
 			properties = {
-				
+
 			}
 		}
 	}

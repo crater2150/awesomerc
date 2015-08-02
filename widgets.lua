@@ -151,7 +151,7 @@ local function mailwidget(name, parent, mailboxes, notify_pos, title) --{{{
 	bg:set_widget(widget)
 
 	local container = wrap_and_add(name, parent, bg, widget)
-	vicious.register(widget, vicious.widgets.mdir, function(widget, args) 
+	vicious.register(widget, vicious.widgets.mdir, function(widget, args)
 		if args[1] > 0 then
 			naughty.notify({
 				title = "New mail arrived in box " .. title,

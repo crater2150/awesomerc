@@ -96,7 +96,7 @@ function tags.create_bindings()
 	for s = 1, screen.count() do
 		keynumber = math.min(22, math.max(#(list[s]), keynumber));
 	end
-	
+
 	local tagkeys = {}
 
 	-- Bind all key numbers to tags, using keycodes

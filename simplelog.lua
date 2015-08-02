@@ -47,8 +47,8 @@ function simplelog.add_logger(logger, level)
 		level = settings.defaultlevel
 	end
 	table.insert(settings.loggers, function(msg, severity)
-		if severity >= level then 
-			logger(msg, severity) 
+		if severity >= level then
+			logger(msg, severity)
 		end
 	end)
 end

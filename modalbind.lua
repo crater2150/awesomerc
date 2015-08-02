@@ -48,7 +48,7 @@ function set_height(amount)
 	settings.height = amount or defaults.height
 	update_settings()
 end
-modalbind.set_height = set_height 
+modalbind.set_height = set_height
 
 --- Change border width of the modebox.
 -- @param amount width in pixels, or nil to use default
@@ -66,7 +66,7 @@ function set_x_offset (amount)
 	settings.x_offset = amount or defaults.x_offset
 	update_settings()
 end
-modalbind.set_x_offset = set_x_offset  
+modalbind.set_x_offset = set_x_offset
 
 --- Change vertical offset of the modebox.
 -- set location for the box with set_corner(). The box is shifted downwards if it
