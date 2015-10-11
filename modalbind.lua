@@ -100,41 +100,41 @@ function set_show_options(bool)
 end
 modalbind.set_show_options = set_show_options
 
-local function set_default(s, position)
-	minwidth, minheight = modewidget[s]:fit(screen[s].geometry.width,
-		screen[s].geometry.height)
-	modewibox[s].width = minwidth + 1;
-	modewibox[s].height = math.max(settings.height, minheight)
-	if position then
-		modewibox[s].x = getXOffset(s, position)
-		modewibox[s].y = getYOffset(s, position)
-	else
-		modewibox[s].x = settings.x_offset < 0 and
-			screen[s].geometry.x - modewibox[s].width + settings.x_offset or
-			settings.x_offset
-		modewibox[s].y = screen[s].geometry.height - modewibox[s].height
-	end
-end
 
-local function getXOffset(s,position)
+local function getXOffset(s, position)
+	local offset = 0
 	if type(position) == "table" then
-		return position.x
+		offset = position.x + screen[s].geometry.x
 	elseif position == "topleft" or position == "bottomleft" then
-		return 0
+		offset = screen[s].geometry.x
 	elseif position == "topright" or position == "bottomright" then
-		return screen[s].geometry.x - modewibox[s].width
+		offset = screen[s].geometry.x + screen[s].geometry.width - modewibox[s].width
 	end
+	return offset + settings.x_offset
 end
 
 
 local function getYOffset(s,position)
+	local offset = 0
 	if type(position) == "table" then
-		return position.y
+		offset = position.y + screen[s].geometry.y
 	elseif position == "topleft" or position == "topright" then
-		return 0
+		offset = screen[s].geometry.y
 	elseif position == "bottomleft" or position == "bottomright" then
-		return screen[s].geometry.y - modewibox[s].height
+		offset = screen[s].geometry.y + screen[s].geometry.height - modewibox[s].height
 	end
+	return offset + settings.y_offset
+end
+
+local function set_default(s, position)
+	local minwidth, minheight = modewidget[s]:fit(screen[s].geometry.width,
+		screen[s].geometry.height)
+	modewibox[s].width = minwidth + 1;
+	modewibox[s].height = math.max(settings.height, minheight)
+
+	local pos = position or "bottomleft"
+	modewibox[s].x = getXOffset(s, pos)
+	modewibox[s].y = getYOffset(s, pos)
 end
 
 local function ensure_init()
@@ -154,6 +154,7 @@ local function ensure_init()
 			bg = beautiful.bg_normal,
 			border_width = settings.border_width,
 			border_color = beautiful.bg_focus,
+			screen = s
 		})
 
 		local modelayout = {}
@@ -162,7 +163,6 @@ local function ensure_init()
 		modewibox[s]:set_widget(modelayout[s]);
 		set_default(s)
 		modewibox[s].visible = false
-		modewibox[s].screen = s
 		modewibox[s].ontop = true
 
 		-- Widgets for prompt wibox
@@ -248,7 +248,7 @@ function grabf(keymap, name, stay_in_mode)
 end
 modalbind.grabf = grabf
 
-function modebox() return modewibox[1] end
+function modebox() return modewibox[mouse.screen] end
 modalbind.modebox = modebox
 
 return modalbind
