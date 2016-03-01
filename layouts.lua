@@ -1,6 +1,5 @@
 local awful = require("awful")
 local conf = conf
-local modkey = conf.modkey or "Mod4"
 
 local layouts={ mt={} }
 local list = {

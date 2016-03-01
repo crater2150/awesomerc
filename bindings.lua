@@ -36,12 +36,15 @@ bindings.spawnf = spawnf
 conf.cmd.run = conf.cmd.run or spawnf("dmenu_run")
 
 local function mpdserver(host)
-	return function() mpd.set_server(host, "6600") end
+	return function()
+		mpd.set_server(host, "6600")
+		awful.util.spawn("mpd-host set " .. host .. " 6600")
+	end
 end
 
 mpdhosts = {
-	n = { func = mpdserver("nas.local"), desc = "NAS" },
-	b = { func = mpdserver("berryhorst.local"), desc = "Berry" },
+	n = { func = mpdserver("nas"), desc = "NAS" },
+	b = { func = mpdserver("berryhorst"), desc = "Berry" },
 	l = { func = mpdserver("127.0.0.1"), desc = "Local" }
 }
 
