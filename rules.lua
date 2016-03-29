@@ -68,32 +68,11 @@ local function setup(self)
 			},
 		},
 		{
-			rule = { class = "Whatsapp", instance = "Navigator" },
-			properties = {
-				tag = tags[rule_screen][3],
-				floating = false, minimized = false
-			},
-			callback = awful.client.setslave
-		},
-		{
 			rule_any = { class = {"Pidgin"}, instance = {"Weechat"} },
 			properties = {
 				tag = tags[rule_screen][3], opacity = 0.8
 			},
 			callback = popup_urgent("new chat message")
-		},
-		{
-			rule = { class = "Skype" },
-			properties = {
-				tag = tags[rule_screen][3], opacity = 0.8
-			},
-		},
-		{
-			rule = { role = "conversationswindow", class = "skype" },
-			properties = {
-				tag = tags[rule_screen][3], opacity = 0.8
-			},
-			callback = awful.client.setmaster
 		},
 		{
 			rule = { role = "buddy_list" },

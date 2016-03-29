@@ -43,7 +43,7 @@ end
 local defaultsetup = {
     {"1:⚙"},
     { name = "2:⌘",   layout = layouts[5]  },
-    { name = "3:☻",   layout = layouts[3], mwfact = 0.20, ncol = 2, nmaster = 1},
+    { name = "3:☻",   layout = layouts[3], mwfact = 0.20, ncol = 2, nmaster = 2},
     { name = "4:✉",   layout = layouts[5]  },
     {"5:☑"},
     {"6:♫"},

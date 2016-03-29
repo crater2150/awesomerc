@@ -69,6 +69,7 @@ progmap = {
 	f = { func = spawnf(conf.cmd.browser), desc = "Browser" },
 	i = { func = spawnf(conf.cmd.im_client), desc = "IM Client" },
 	I = { func = spawnf(conf.cmd.irc_client), desc = "IRC" },
+	t = { func = spawnf("telegram"), desc = "Telegram" },
 	m = { func = spawnf(conf.cmd.mail_client), desc = "Mail" },
 	s = { func = spawnf("steam"), desc = "Steam" }
 }
@@ -154,10 +155,10 @@ function bindings.setup()
 		awful.client.swap.byidx( -1)
 	end),
 	awful.key({ modkey,           }, "h", function ()
-		awful.screen.focus_relative( 1)
+		awful.screen.focus_relative(-1)
 	end),
 	awful.key({ modkey,           }, "l", function ()
-		awful.screen.focus_relative(-1)
+		awful.screen.focus_relative(1)
 	end),
 	--}}}
 
@@ -246,10 +247,10 @@ clientkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
     awful.key({ modkey,           }, "o",      awful.client.movetoscreen                        ),
     awful.key({ modkey, "Shift"   }, "h", function (c)
-	    awful.client.movetoscreen(c, mouse.screen + 1)
+	    awful.client.movetoscreen(c, mouse.screen - 1)
     end),
     awful.key({ modkey, "Shift"   }, "l", function (c)
-	    awful.client.movetoscreen(c, mouse.screen - 1)
+	    awful.client.movetoscreen(c, mouse.screen + 1)
     end),
     awful.key({ modkey, "Control" }, "o",      function (c) c.ontop = not c.ontop end),
     awful.key({ modkey, "Shift"   }, "a",      function (c) c.sticky = not c.sticky end),
