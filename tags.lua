@@ -4,7 +4,6 @@ local conf = conf
 local modkey = conf.modkey or "Mod4"
 
 local tags={ mt={} }
-local layouts = layouts
 
 local function getfunc_viewonly(i)
 	return function ()
@@ -42,27 +41,27 @@ end
 
 local defaultsetup = {
     {"1:⚙"},
-    { name = "2:⌘",   layout = layouts[5]  },
-    { name = "3:☻",   layout = layouts[3], mwfact = 0.20, ncol = 2, nmaster = 2},
-    { name = "4:✉",   layout = layouts[5]  },
+    { name = "2:⌘",   layout = awful.layout.suit.max  },
+    { name = "3:☻",   layout = awful.layout.suit.tile, mwfact = 0.20, ncol = 2, nmaster = 2},
+    { name = "4:✉",   layout = awful.layout.suit.max  },
     {"5:☑"},
     {"6:♫"},
     {"7:☣"},
     {"8:☕"},
     {"9:⚂"},
     {"0:☠"},
-    { name = "F1:☭",   layout = layouts[5] },
+    { name = "F1:☭",   layout = awful.layout.suit.max },
     {"F2:♚"},
     {"F3:♛"},
     {"F4:♜"}--,
-    -- { name = "F5:♝",  layout = layouts[1]  },
-    -- { name = "F6:♞",  layout = layouts[1]  },
-    -- { name = "F7:♟",  layout = layouts[1]  },
-    -- { name = "F8:⚖",  layout = layouts[1]  },
-    -- { name = "F9:⚛",  layout = layouts[1]  },
-    -- { name = "F10:⚡", layout = layouts[1]  },
-    -- { name = "F11:⚰", layout = layouts[1]  },
-    -- { name = "F12:⚙", layout = layouts[1]  }
+    -- {"F5:♝"},
+    -- {"F6:♞"},
+    -- {"F7:♟"},
+    -- {"F8:⚖"},
+    -- {"F9:⚛"},
+    -- {"F10:⚡"},
+    -- {"F11:⚰"},
+    -- {"F12:⚙"}
 }
 
 local list = {}
@@ -72,7 +71,7 @@ function tags.setup(setuptable)
 	for s = 1, screen.count() do
 		list[s] = {}
 		for i, t in ipairs(setup) do
-			local layout = t.layout or layouts[1]
+			local layout = t.layout or conf.default_layout or awful.layout.suit.fair
 			local name = t.name or t[1]
 			list[s][i] = awful.tag.new({name}, s, layout)[1];
 			list[s][i].selected = false

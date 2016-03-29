@@ -9,8 +9,6 @@ conf            = require("localconf")
 inspect = require("inspect")
 -- }}}
 
-layouts = require('layouts')
-
 -- {{{ Logging
 log = require("simplelog")
 log.add_logger(log.loggers.stdio, log.level.DEBUG)
