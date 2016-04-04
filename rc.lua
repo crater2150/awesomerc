@@ -10,7 +10,7 @@ inspect = require("lib.inspect")
 -- }}}
 
 -- {{{ Logging
-log = require("simplelog")
+log = require("separable.simplelog")
 log.add_logger(log.loggers.stdio, log.level.DEBUG)
 log.add_logger(log.loggers.naughty, log.level.WARNING)
 -- }}}
