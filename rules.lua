@@ -76,9 +76,7 @@ local function setup(self)
 		},
 		{
 			rule = { role = "buddy_list" },
-			properties = {
-				master = true
-			}
+			callback = awful.client.setmaster
 		},
 		{
 			rule = { class = "Steam", name = "Friends" },
