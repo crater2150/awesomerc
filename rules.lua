@@ -2,7 +2,6 @@ local rules = { mt={} }
 local awful = require("awful")
 local tags = tags
 local beautiful = require("beautiful")
-local inspect=require("inspect")
 local binder = binder or require("separable.binder")
 
 local rule_screen = 1

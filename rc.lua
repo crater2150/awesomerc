@@ -6,7 +6,7 @@ beautiful       = require("autobeautiful")
 naughty         = require("naughty")
 conf            = require("localconf")
                   require("errors")
-inspect = require("inspect")
+inspect = require("lib.inspect")
 -- }}}
 
 -- {{{ Logging
