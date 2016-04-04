@@ -56,11 +56,15 @@ end
 
 -- {{{ Key bindings
 
-bindings = require("bindings")
-bindings.setup()
-bindings.modalbind.set_x_offset(18)
-bindings.add_bindings(tags.create_bindings())
-bindings.apply()
+binder = require("separable.binder")
+binder.modal.set_x_offset(18)
+
+binder.add_default_bindings()
+binder.add_bindings(tags.create_bindings())
+binder.add_bindings(require("mybindings"))
+
+binder.apply()
+
 -- }}}
 
 -- {{{ rules

@@ -7,6 +7,9 @@ conf.modkey = "Mod4"
 -- screen number, on which rules will put clients by default
 conf.rule_screen=1
 
+-- default layout for tags
+conf.default_layout = awful.layout.suit.fair
+
 conf.mpd = {
 	-- should mpd prompt clear playlist before adding matched songs
 	replace_on_search = true,

@@ -1,7 +1,6 @@
 local beautiful = require("beautiful")
 local wibox = require("wibox")
 local conf = conf
-local mb = require("modalbind")
 local awful = require("awful")
 
 local log = log

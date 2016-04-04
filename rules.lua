@@ -3,6 +3,7 @@ local awful = require("awful")
 local tags = tags
 local beautiful = require("beautiful")
 local inspect=require("inspect")
+local binder = binder or require("separable.binder")
 
 local rule_screen = 1
 
@@ -26,10 +27,10 @@ local function setup(self)
 				border_color = beautiful.border_normal,
 				focus = awful.client.focus.filter,
 				raise = true,
-				keys = clientkeys,
 				minimized = false,
 				size_hints_honor = false,
-				buttons = clientbuttons
+				keys = binder.client.keys(),
+				buttons = binder.client.buttons(),
 			},
 			-- print name and class of new windows for debugging purposes
 			callback = function(c)
