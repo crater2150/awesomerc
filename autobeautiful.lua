@@ -4,7 +4,12 @@ local awful     = require("awful")
 
 beautiful.init(awful.util.getdir("config") .. "/theme.lua")
 
-if beautiful.wallpaper then
+local wallpaperrc = awful.util.getdir("config") .. "/wallpaperrc"
+local f=io.open(wallpaperrc,"r")
+if f~=nil then
+	io.close(f)
+	dofile(wallpaperrc)
+elseif beautiful.wallpaper then
     for s = 1, screen.count() do
         gears.wallpaper.maximized(beautiful.wallpaper, s, true)
     end
