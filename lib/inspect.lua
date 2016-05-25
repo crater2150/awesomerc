@@ -86,7 +86,8 @@ function Inspector:new(t, depth)
       ['thread']   = 0,
       ['table']    = 0,
       ['key']    = 0,
-      ['tag']    = 0
+      ['tag']    = 0,
+      ['other']  = 0
     },
     ids = {
       ['function'] = setmetatable({}, {__mode = "kv"}),
@@ -94,7 +95,8 @@ function Inspector:new(t, depth)
       ['thread']   = setmetatable({}, {__mode = "kv"}),
       ['table']    = setmetatable({}, {__mode = "kv"}),
       ['key']    = setmetatable({}, {__mode = "kv"}),
-      ['tag']    = setmetatable({}, {__mode = "kv"})
+      ['tag']    = setmetatable({}, {__mode = "kv"}),
+      ['other']    = setmetatable({}, {__mode = "kv"})
     },
     tableAppearances = setmetatable({}, {__mode = "k"})
   }
@@ -209,6 +211,7 @@ function Inspector:getId(v)
   local idtable = self.ids[tv]
   local id = idtable and idtable[v] or nil
   if not id then
+    if self.maxIds[tv] == nil then tv = 'other' end
     id              = self.maxIds[tv] + 1
     self.maxIds[tv] = id
     self.ids[tv][v] = id
