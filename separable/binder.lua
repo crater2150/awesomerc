@@ -51,6 +51,49 @@ layoutsettings = {
 	C = { func = function () awful.tag.incncol(-1) end, desc = "Less columns" },
 }
 
+local function screen_focus_wrapdir(dir)
+	return function()
+		local target = screen_in_wrapdir(dir)
+		print("moving to screen")
+		print(inspect(target))
+		awful.screen.focus(target)
+	end
+end
+
+local function screen_move_client_wrapdir(dir)
+	return function(c)
+		local target = screen_in_wrapdir(dir)
+		awful.client.movetoscreen(c, target)
+	end
+end
+
+local opposite_dirs = {
+	left  = "right",
+	right = "left",
+	up    = "down",
+	down  = "up"
+}
+
+function screen_in_wrapdir(dir, _screen)
+    local sel = _screen or mouse.screen
+    if sel then
+        local geomtbl = {}
+        for s = 1, screen.count() do
+            geomtbl[s] = screen[s].geometry
+        end
+        local target = awful.util.get_rectangle_in_direction(dir, geomtbl, screen[sel].geometry)
+        if not target then
+		local new_target = sel
+		while new_target do
+			target = new_target
+			new_target = awful.util.get_rectangle_in_direction(opposite_dirs[dir], geomtbl, screen[target].geometry)
+		end
+        end
+
+	return target
+    end
+end
+
 local default_bindings = awful.util.table.join(
 	--awful.key({ modkey, "Control" }, "r", awesome.restart),
 	awful.key({ modkey, "Shift"   }, "q", awesome.quit),
@@ -94,12 +137,8 @@ local default_bindings = awful.util.table.join(
 	awful.key({ modkey, "Shift"   }, "k", function ()
 		awful.client.swap.byidx( -1)
 	end),
-	awful.key({ modkey,           }, "h", function ()
-		awful.screen.focus_relative(-1)
-	end),
-	awful.key({ modkey,           }, "l", function ()
-		awful.screen.focus_relative(1)
-	end),
+	awful.key({ modkey,           }, "h", screen_focus_wrapdir("left")),
+	awful.key({ modkey,           }, "l", screen_focus_wrapdir("right")),
 	--}}}
 
 	--{{{ Modal mappings
@@ -159,12 +198,8 @@ awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                
 awful.key({ modkey,           }, "f",      awful.client.floating.toggle                     ),
 awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
 awful.key({ modkey,           }, "o",      awful.client.movetoscreen                        ),
-awful.key({ modkey, "Shift"   }, "h", function (c)
-	awful.client.movetoscreen(c, mouse.screen - 1)
-end),
-awful.key({ modkey, "Shift"   }, "l", function (c)
-	awful.client.movetoscreen(c, mouse.screen + 1)
-end),
+awful.key({ modkey, "Shift"   }, "h", screen_move_client_wrapdir("left")),
+awful.key({ modkey, "Shift"   }, "l", screen_move_client_wrapdir("right")),
 awful.key({ modkey, "Control" }, "o",      function (c) c.ontop = not c.ontop end),
 awful.key({ modkey, "Shift"   }, "a",      function (c) c.sticky = not c.sticky end),
 awful.key({ modkey, "Shift"   }, "r",      function (c) c:redraw()                       end),
