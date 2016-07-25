@@ -52,7 +52,7 @@ layoutsettings = {
 }
 
 local default_bindings = awful.util.table.join(
-	awful.key({ modkey, "Control" }, "r", awesome.restart),
+	--awful.key({ modkey, "Control" }, "r", awesome.restart),
 	awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 	awful.key({ modkey,           }, "Return", spawnf(conf.cmd.terminal)),
 
@@ -130,6 +130,10 @@ end
 
 function binder.add_default_bindings()
 	return binder.add_bindings(default_bindings)
+end
+
+function binder.clear()
+	globalkeys = {}
 end
 
 

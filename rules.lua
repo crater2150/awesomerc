@@ -49,9 +49,11 @@ local function setup(self)
 		{
 			rule = { class = "Sm" },
 			properties = {
-				--ontop = true,
+				floating = true,
+				size_hints_honor = true,
+		--		--ontop = true,
 				fullscreen = true,
-				border_width = 0
+		--		border_width = 0
 			}
 		},
 		{

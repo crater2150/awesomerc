@@ -58,6 +58,13 @@ local docmap = {
 	j = { func = binder.spawn("dmjavadoc"), desc = "Javadoc" }
 }
 
+local reloadmap = {
+	r = { func = awesome.restart, desc = "Awesome, full restart" },
+	b = { func = function()
+		binder.add_bindings(require("mybindings"))
+	end, desc = "Bindings" },
+}
+
 local calendarmap = {
 	o = { func = function() calendar:next() end, desc = "Next" },
 	i = { func = function() calendar:prev() end, desc = "Prev" },
@@ -67,6 +74,7 @@ local calendarmap = {
 
 local myglobalkeys = awful.util.table.join(
 	awful.key({ }, "Pause", binder.spawn('wmselect')),
+	awful.key({ }, "Print", binder.spawn('dmscrot')),
 
 	--{{{ Modal mappings
 
@@ -74,6 +82,8 @@ local myglobalkeys = awful.util.table.join(
 	awful.key({ modkey, "Shift"   },  "m",  mb.grabf(mpdpromts, "MPD - Search for")),
 	awful.key({ modkey            },  "c",  mb.grabf(progmap, "Commands")),
 	awful.key({ modkey            },  "d",  mb.grabf(docmap, "Documents")),
+
+	awful.key({ modkey, "Control" },  "r",  mb.grabf(reloadmap, "Reload")),
 	--}}}
 
 	-- {{{ scratch drop
