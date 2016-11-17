@@ -102,7 +102,10 @@ local myglobalkeys = awful.util.table.join(
 
 	--{{{ misc. XF86 Keys
 
-	awful.key({         }, "Scroll_Lock",   binder.spawn("xlock")),
+	awful.key({         },         "Scroll_Lock", binder.spawn("xlock")),
+	awful.key({ modkey  },         "BackSpace",   binder.spawn("xlock")),
+	awful.key({ modkey, "Shift" }, "BackSpace",   binder.spawn("feierabend")),
+
 	awful.key({         }, "XF86Explorer",  binder.spawn("touchpad")),
 	awful.key({ "Shift" }, "XF86Explorer",  binder.spawn("wacomtouch")),
 

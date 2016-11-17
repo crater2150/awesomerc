@@ -81,6 +81,12 @@ local function setup(self)
 			callback = awful.client.setmaster
 		},
 		{
+			rule = { class = "Eclipse" },
+			properties = {
+				float = false
+			}
+		},
+		{
 			rule = { class = "Steam", name = "Friends" },
 			properties = {
 				tag = tags[rule_screen][3],
