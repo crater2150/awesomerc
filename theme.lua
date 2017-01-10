@@ -1,6 +1,7 @@
 -- {{{ Main
 theme = {}
 theme.wallpaper = "~/.wallpaper"
+
 -- }}}
 -- {{{ Styles
 theme.fontface = "Dina"
@@ -17,10 +18,11 @@ theme.bg_urgent = "#DA4E4E"
 -- }}}
 
 -- {{{ Borders
-theme.border_width  = "2"
-theme.border_normal = "#3F3F3F"
-theme.border_focus  = "#AAAAFF"
-theme.border_marked = "#CC9393"
+theme.useless_gap = 0
+theme.border_width  = 2
+theme.border_normal = "#3f3f3f"
+theme.border_focus  = "#aaaaff"
+theme.border_marked = "#cc9393"
 -- }}}
 
 -- {{{ Titlebars

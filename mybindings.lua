@@ -8,7 +8,7 @@ local mb = binder.modal
 
 local mpd = require("separable.mpd")
 local scratch = require("scratch")
-local calendar = require("separable.calendar")
+--local calendar = require("separable.calendar")
 
 local myglobalkeys = {}
 
@@ -65,11 +65,11 @@ local reloadmap = {
 	end, desc = "Bindings" },
 }
 
-local calendarmap = {
-	o = { func = function() calendar:next() end, desc = "Next" },
-	i = { func = function() calendar:prev() end, desc = "Prev" },
-	onClose = function() calendar:hide() end
-}
+--local calendarmap = {
+--	o = { func = function() calendar:next() end, desc = "Next" },
+--	i = { func = function() calendar:prev() end, desc = "Prev" },
+--	onClose = function() calendar:hide() end
+--}
 
 
 local myglobalkeys = awful.util.table.join(
@@ -111,17 +111,17 @@ local myglobalkeys = awful.util.table.join(
 
 	awful.key({         }, "XF86AudioPlay", mpd.ctrl.toggle),
 	awful.key({         }, "XF86AudioNext", mpd.ctrl.next),
-	awful.key({         }, "XF86AudioPrev", mpd.ctrl.prev),
+	awful.key({         }, "XF86AudioPrev", mpd.ctrl.prev)
 
 	--}}}
 
 	-- calendar {{{
-	awful.key({ modkey },  "y",
-	function()
-		calendar:show()
-		mb.grab(calendarmap, "Calendar", true)
-	end
-	)
+	--awful.key({ modkey },  "y",
+	--function()
+	--	calendar:show()
+	--	mb.grab(calendarmap, "Calendar", true)
+	--end
+	--)
 	--}}}
 )
 

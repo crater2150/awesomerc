@@ -1,11 +1,11 @@
 -- libraries {{{
-awful           = require("awful")
-awful.rules     = require("awful.rules")
-                  require("awful.autofocus")
-beautiful       = require("autobeautiful")
-naughty         = require("naughty")
-conf            = require("localconf")
-                  require("errors")
+local awful = require("awful")
+              require("awful.autofocus")
+	      --require("autobeautiful")
+beautiful   = require("autobeautiful")
+naughty     = require("naughty")
+conf        = require("localconf")
+              require("errors")
 inspect = require("lib.inspect")
 -- }}}
 
@@ -25,10 +25,10 @@ tags.setup()
 -- {{{ widgets
 widgets = require("widgets")
 for s = 1, screen.count() do
-	local ltop = widgets.layout(s, "left", "top")
-	local rtop = widgets.layout(s, "right", "top")
-	local lbottom = widgets.layout(s, "left", "bottom")
-	local rbottom = widgets.layout(s, "right", "bottom")
+	local ltop = widgets.container(s, "left", "top")
+	local rtop = widgets.container(s, "right", "top")
+	local lbottom = widgets.container(s, "left", "bottom")
+	local rbottom = widgets.container(s, "right", "bottom")
 
 	local clock = widgets.add.clock("clock", ltop)
 
@@ -67,11 +67,7 @@ binder.apply()
 
 -- }}}
 
--- {{{ rules
-rules = require("rules")
-rules.setup()
--- }}}
-
+require("rules")
 require("signals")
 
 --
