@@ -1,5 +1,6 @@
 local wibox = require("wibox")
 local vicious = require("vicious")
+local naughty = require("naughty")
 local modkey = conf.modkey or "Mod4"
 local awful = require("awful")
 local tag = require("awful.tag")
@@ -30,7 +31,7 @@ awful.button({ }, 5, function(t) awful.tag.viewprev(awful.tag.getscreen(t)) end)
 -- setup {{{
 --------------------------------------------------------------------------------
 local function setup()
-	for s = 1, screen.count() do
+	for s in screen do
 		wlist[s]={}
 		bars[s]={}
 
@@ -97,7 +98,7 @@ end
 
 -- force update of a widget
 local function update(widgetname, index)
-	for s = 1, screen.count() do
+	for s in screen do
 		if wlist[s] ~= nil and wlist[s][widgetname] ~= nil then
 			if index ~= nil then
 				vicious.force({ wlist[s][widgetname][index] })

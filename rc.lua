@@ -1,7 +1,6 @@
 -- libraries {{{
 local awful = require("awful")
               require("awful.autofocus")
-	      --require("autobeautiful")
 beautiful   = require("autobeautiful")
 naughty     = require("naughty")
 conf        = require("localconf")
@@ -24,7 +23,7 @@ tags.setup()
 
 -- {{{ widgets
 widgets = require("widgets")
-for s = 1, screen.count() do
+for s in screen do
 	local ltop = widgets.container(s, "left", "top")
 	local rtop = widgets.container(s, "right", "top")
 	local lbottom = widgets.container(s, "left", "bottom")

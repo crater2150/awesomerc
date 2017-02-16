@@ -207,7 +207,12 @@ awful.key({ modkey,           }, "n",      function (c) c.minimized = not c.mini
 awful.key({ modkey,           }, "b",      function (c) c.border_width = c.border_width > 0 and 0 or beautiful.border_width end),
 awful.key({ modkey,           }, "Up",     function(c) client_opacity_set(c, 1, 1, 0.1) end),
 awful.key({ modkey,           }, "Down",   function(c) client_opacity_set(c, 1, 0, -0.1) end),
-awful.key({ }, "XF86Calculater",      awful.client.movetoscreen                        )
+awful.key({ }, "XF86Calculater",      awful.client.movetoscreen                        ),
+awful.key({ modkey }, "i", function(c)
+	require("naughty").notify({ text =
+	    string.format("name: %s\nclass: %s\ntype: %s", c["name"], c["class"], c["type"])
+	})
+    end)
 )
 
 local clientbuttons = awful.util.table.join(

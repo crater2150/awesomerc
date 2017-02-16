@@ -38,6 +38,9 @@ awful.rules.rules = {
 		  if (c["class"] ~= nil) then
 			print("class: " .. c["class"])
 		  end
+		  if (c["type"] ~= nil) then
+			print("type: " .. c["type"])
+		  end
 	    end
       },
       {
@@ -81,7 +84,22 @@ awful.rules.rules = {
       {
 	    rule = { class = "Eclipse" },
 	    properties = {
-		  float = false
+		  screen = 1, tag = "8",
+		  floating = false
+	    }
+      },
+      {
+	    rule = { class = "Eclipse", name = nil, type = "dialog" },
+	    properties = {
+		  screen = 2, tag = "8",
+		  floating = false
+	    }
+      },
+      {
+	    rule = { class = "Eclipse", name = ".*", type = "dialog" },
+	    properties = {
+		  screen = 1, tag = "8",
+		  floating = false
 	    }
       },
       {
