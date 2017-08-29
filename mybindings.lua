@@ -46,7 +46,7 @@ local progmap = {
 	f = { func = binder.spawn(conf.cmd.browser), desc = "Browser" },
 	i = { func = binder.spawn(conf.cmd.im_client), desc = "IM Client" },
 	I = { func = binder.spawn(conf.cmd.irc_client), desc = "IRC" },
-	t = { func = binder.spawn("telegram"), desc = "Telegram" },
+	t = { func = binder.spawn("telegram-desktop"), desc = "Telegram" },
 	m = { func = binder.spawn(conf.cmd.mail_client), desc = "Mail" },
 	s = { func = binder.spawn("steam"), desc = "Steam" }
 }
