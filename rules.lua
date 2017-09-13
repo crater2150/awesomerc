@@ -3,6 +3,7 @@ awful.rules = require("awful.rules")
 
 local beautiful = require("beautiful")
 local binder = binder or require("separable.binder")
+local log = require("talkative")
 
 -- create a notification when given client becomes urgent
 local function popup_urgent(client, message)
@@ -29,17 +30,17 @@ awful.rules.rules = {
 		  screen = awful.screen.preferred,
 		  placement = awful.placement.no_overlap+awful.placement.no_offscreen
 	    },
-	    -- print name and class of new windows for debugging purposes
+	    -- log name and class of new windows for debugging purposes
 	    callback = function(c)
-		  print("-----------\nnew client\n")
+		  log("-----------\nnew client\n")
 		  if (c["name"] ~= nil) then
-			print("name: " .. c["name"])
+			log("name: " .. c["name"])
 		  end
 		  if (c["class"] ~= nil) then
-			print("class: " .. c["class"])
+			log("class: " .. c["class"])
 		  end
 		  if (c["type"] ~= nil) then
-			print("type: " .. c["type"])
+			log("type: " .. c["type"])
 		  end
 	    end
       },

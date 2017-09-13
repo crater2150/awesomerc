@@ -13,7 +13,7 @@ beautiful.init(awful.util.getdir("config") .. "/theme.lua")
 require("tapestry")
 
 -- {{{ Logging
-log = require("separable.simplelog")
+log = require("talkative")
 log.add_logger(log.loggers.stdio, log.level.DEBUG)
 log.add_logger(log.loggers.naughty, log.level.WARNING)
 -- }}}
