@@ -54,8 +54,6 @@ layoutsettings = {
 local function screen_focus_wrapdir(dir)
 	return function()
 		local target = screen_in_wrapdir(dir)
-		print("moving to screen")
-		print(inspect(target))
 		awful.screen.focus(target)
 	end
 end
