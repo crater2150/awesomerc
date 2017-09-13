@@ -1,12 +1,16 @@
 -- libraries {{{
 local awful = require("awful")
               require("awful.autofocus")
-beautiful   = require("autobeautiful")
+beautiful   = require("beautiful")
 naughty     = require("naughty")
 conf        = require("localconf")
               require("errors")
 inspect = require("lib.inspect")
 -- }}}
+
+beautiful.init(awful.util.getdir("config") .. "/theme.lua")
+
+require("tapestry")
 
 -- {{{ Logging
 log = require("separable.simplelog")

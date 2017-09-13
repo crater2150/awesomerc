@@ -4,3 +4,6 @@
 [submodule "modalbind"]
 	path = modalbind
 	url = https://github.com/crater2150/awesome-modalbind.git
+[submodule "tapestry"]
+	path = tapestry
+	url = https://github.com/crater2150/awesome-tapestry.git
