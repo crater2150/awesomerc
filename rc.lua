@@ -56,6 +56,7 @@ end
 -- {{{ Key bindings
 
 binder = require("separable.binder")
+binder.modal.set_location("bottom","left")
 binder.modal.set_x_offset(18)
 
 binder.add_default_bindings()

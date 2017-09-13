@@ -20,54 +20,47 @@ local function mpdserver(host)
 end
 
 local mpdhosts = {
-	n = { func = mpdserver("nas"), desc = "NAS" },
-	b = { func = mpdserver("berryhorst"), desc = "Berry" },
-	l = { func = mpdserver("127.0.0.1"), desc = "Local" }
+	{"n", mpdserver("nas"),        "NAS" },
+	{"b", mpdserver("berryhorst"), "Berry" },
+	{"l", mpdserver("127.0.0.1"),  "Local" }
 }
 
 local mpdmap = {
-	m = { func = mpd.ctrl.toggle, desc = "Toggle" },
-	n = { func = mpd.ctrl.next, desc = "Next" },
-	N = { func = mpd.ctrl.prev, desc = "Prev" },
-	s = { func = binder.spawn("mpd"), desc = "start MPD" },
-	S = { func = binder.spawn("mpd --kill"), desc = "kill MPD" },
-	g = { func = binder.spawn(conf.cmd.mpd_client), desc = "Gmpc" },
+	{"m", mpd.ctrl.toggle,                   "Toggle" },
+	{"n", mpd.ctrl.next,                     "Next" },
+	{"N", mpd.ctrl.prev,                     "Prev" },
+	{"s", binder.spawn("mpd"),               "start MPD" },
+	{"S", binder.spawn("mpd --kill"),        "kill MPD" },
+	{"g", binder.spawn(conf.cmd.mpd_client), "Gmpc" },
 }
 
 local mpdpromts = {
-	a = { func = mpd.prompt.artist, desc = "artist" },
-	b = { func = mpd.prompt.album, desc = "album" },
-	t = { func = mpd.prompt.title, desc = "title" },
-	r = { func = mpd.prompt.toggle_replace_on_search, desc = "toggle replacing" },
-	h = { func = mb.grabf(mpdhosts, "Select MPD host"), desc = "Change host" }
+	{"a", mpd.prompt.artist, "artist" },
+	{"b", mpd.prompt.album,  "album" },
+	{"t", mpd.prompt.title,  "title" },
+	{"r", mpd.prompt.toggle_replace_on_search,   "toggle replacing" },
+	{"h", mb.grabf(mpdhosts, "Select MPD host"), "Change host" }
 }
 
 local progmap = {
-	f = { func = binder.spawn(conf.cmd.browser), desc = "Browser" },
-	i = { func = binder.spawn(conf.cmd.im_client), desc = "IM Client" },
-	I = { func = binder.spawn(conf.cmd.irc_client), desc = "IRC" },
-	t = { func = binder.spawn("telegram-desktop"), desc = "Telegram" },
-	m = { func = binder.spawn(conf.cmd.mail_client), desc = "Mail" },
-	s = { func = binder.spawn("steam"), desc = "Steam" }
+	{"f", binder.spawn(conf.cmd.browser),     "Browser" },
+	{"i", binder.spawn(conf.cmd.im_client),   "IM Client" },
+	{"I", binder.spawn(conf.cmd.irc_client),  "IRC" },
+	{"t", binder.spawn("telegram-desktop"),   "Telegram" },
+	{"m", binder.spawn(conf.cmd.mail_client), "Mail" },
+	{"s", binder.spawn("steam"),              "Steam" }
 }
 
 local docmap = {
-	u = { func = binder.spawn("docopen ~/doc/uni pdf"), desc = "Uni-Dokumente" },
-	b = { func = binder.spawn("docopen ~/books pdf epub mobi txt lit html htm"), desc = "Bücher" },
-	t = { func = binder.spawn("dmtexdoc"), desc = "Texdoc" },
-	j = { func = binder.spawn("dmjavadoc"), desc = "Javadoc" }
-}
-
-local reloadmap = {
-	r = { func = awesome.restart, desc = "Awesome, full restart" },
-	b = { func = function()
-		binder.add_bindings(require("mybindings"))
-	end, desc = "Bindings" },
+	{"u", binder.spawn("docopen ~/doc/uni pdf"), "Uni-Dokumente" },
+	{"b", binder.spawn("docopen ~/books pdf epub mobi txt lit html htm"), "Bücher" },
+	{"t", binder.spawn("dmtexdoc"), "Texdoc" },
+	{"j", binder.spawn("dmjavadoc"), "Javadoc" }
 }
 
 --local calendarmap = {
---	o = { func = function() calendar:next() end, desc = "Next" },
---	i = { func = function() calendar:prev() end, desc = "Prev" },
+--	o = { function() calendar:next() end, "Next" },
+--	i = { function() calendar:prev() end, "Prev" },
 --	onClose = function() calendar:hide() end
 --}
 
@@ -82,8 +75,6 @@ local myglobalkeys = awful.util.table.join(
 	awful.key({ modkey, "Shift"   },  "m",  mb.grabf(mpdpromts, "MPD - Search for")),
 	awful.key({ modkey            },  "c",  mb.grabf(progmap, "Commands")),
 	awful.key({ modkey            },  "d",  mb.grabf(docmap, "Documents")),
-
-	awful.key({ modkey, "Control" },  "r",  mb.grabf(reloadmap, "Reload")),
 	--}}}
 
 	-- {{{ scratch drop

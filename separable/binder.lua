@@ -3,7 +3,7 @@ local awful = require("awful")
 local beautiful = beautiful
 
 local modkey = conf.modkey or "Mod4"
-local mb = require("separable.modalbind")
+local mb = require("modalbind")
 
 local globalkeys = {}
 
@@ -33,22 +33,22 @@ conf.cmd.run = conf.cmd.run or spawnf("dmenu_run")
 
 local function use_layout(layout) return function() awful.layout.set(layout) end end
 layoutmap = {
-	f = { func = use_layout(awful.layout.suit.fair),            desc ="Fair" },
-	h = { func = use_layout(awful.layout.suit.fair.horizontal), desc ="Fair Horizontal" },
-	t = { func = use_layout(awful.layout.suit.tile),            desc ="Tile" },
-	b = { func = use_layout(awful.layout.suit.tile.bottom),     desc ="Tile Bottom" },
-	m = { func = use_layout(awful.layout.suit.max),             desc ="Maximized" },
-	F = { func = use_layout(awful.layout.suit.max.fullscreen),  desc ="Fullscreen" },
-	Space = { func = use_layout(awful.layout.suit.floating),    desc ="Float" }
+	{"f", use_layout(awful.layout.suit.fair),            "Fair" },
+	{"h", use_layout(awful.layout.suit.fair.horizontal), "Fair Horizontal" },
+	{"t", use_layout(awful.layout.suit.tile),            "Tile" },
+	{"b", use_layout(awful.layout.suit.tile.bottom),     "Tile Bottom" },
+	{"m", use_layout(awful.layout.suit.max),             "Maximized" },
+	{"F", use_layout(awful.layout.suit.max.fullscreen),  "Fullscreen" },
+	{"space", use_layout(awful.layout.suit.floating),    "Float" }
 }
 
 layoutsettings = {
-	l = { func = function () awful.tag.incmwfact( 0.05) end, desc = "Master bigger" },
-	h = { func = function () awful.tag.incmwfact(-0.05) end, desc = "Master smaller" },
-	H = { func = function () awful.tag.incnmaster( 1) end, desc = "More masters" },
-	L = { func = function () awful.tag.incnmaster(-1) end, desc = "Less masters" },
-	c = { func = function () awful.tag.incncol( 1) end, desc = "More columns" },
-	C = { func = function () awful.tag.incncol(-1) end, desc = "Less columns" },
+	{"h", function () awful.tag.incmwfact(-0.05) end,  "Master smaller" },
+	{"l", function () awful.tag.incmwfact( 0.05) end,  "Master bigger" },
+	{"H", function () awful.tag.incnmaster( 1) end,    "More masters" },
+	{"L", function () awful.tag.incnmaster(-1) end,    "Less masters" },
+	{"c", function () awful.tag.incncol( 1) end,       "More columns" },
+	{"C", function () awful.tag.incncol(-1) end,       "Less columns" },
 }
 
 local function screen_focus_wrapdir(dir)
@@ -95,7 +95,7 @@ function screen_in_wrapdir(dir, _screen)
 end
 
 local default_bindings = awful.util.table.join(
-	--awful.key({ modkey, "Control" }, "r", awesome.restart),
+	awful.key({ modkey, "Control" }, "r", awesome.restart),
 	awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 	awful.key({ modkey,           }, "Return", spawnf(conf.cmd.terminal)),
 
