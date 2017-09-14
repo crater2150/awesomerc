@@ -7,7 +7,7 @@ local binder = binder or require("separable.binder")
 local mb = binder.modal
 
 local mpd = require("separable.mpd")
-local scratch = require("scratch")
+local handy = require("handy")
 --local calendar = require("separable.calendar")
 
 local myglobalkeys = {}
@@ -77,9 +77,9 @@ local myglobalkeys = awful.util.table.join(
 	awful.key({ modkey            },  "d",  mb.grabf(docmap, "Documents")),
 	--}}}
 
-	-- {{{ scratch drop
+	-- {{{ handy console
 	awful.key({ }, "F12", function ()
-		scratch.drop(conf.cmd.terminal,"center","center", 0.99, 0.7)
+		handy(conf.cmd.terminal, awful.placement.centered, 0.9, 0.7)
 	end ),
 	-- }}}
 
