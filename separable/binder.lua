@@ -19,14 +19,7 @@ menubar.utils.terminal = conf.cmd.terminal -- Set the terminal for applications 
 
 local binder = {modal = mb}
 
--- {{{ Mouse bindings
-root.buttons(awful.util.table.join(
-	awful.button({ }, 4, awful.tag.viewnext),
-	awful.button({ }, 5, awful.tag.viewprev)
-))
--- }}}
-
-local function spawnf(cmd) return function() awful.util.spawn(cmd) end end
+local function spawnf(cmd) return function() awful.spawn(cmd) end end
 binder.spawn = spawnf
 
 conf.cmd.run = conf.cmd.run or spawnf("dmenu_run")
@@ -212,6 +205,11 @@ awful.key({ modkey }, "i", function(c)
 	})
     end)
 )
+
+root.buttons(awful.util.table.join(
+	awful.button({ }, 4, awful.tag.viewnext),
+	awful.button({ }, 5, awful.tag.viewprev)
+))
 
 local clientbuttons = awful.util.table.join(
 awful.button({ }, 1, function (c) client.focus = c; c:raise() end),
