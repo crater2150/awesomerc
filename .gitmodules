@@ -13,3 +13,6 @@
 [submodule "handy"]
 	path = handy
 	url = https://github.com/crater2150/awesome-handy.git
+[submodule "audiowheel"]
+	path = audiowheel
+	url = https://github.com/crater2150/awesome-audiowheel.git

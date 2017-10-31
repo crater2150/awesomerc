@@ -140,9 +140,9 @@ local default_bindings = awful.util.table.join(
 
 	--{{{ Audio control
 
-	awful.key({ }, "XF86AudioLowerVolume",  spawnf("amixer set Master 2%-")),
-	awful.key({ }, "XF86AudioRaiseVolume",  spawnf("amixer set Master 2%+")),
-	awful.key({ }, "XF86AudioMute",         spawnf("amixer set Master toggle")),
+	--awful.key({ }, "XF86AudioLowerVolume",  spawnf("amixer set Master 2%-")),
+	--awful.key({ }, "XF86AudioRaiseVolume",  spawnf("amixer set Master 2%+")),
+	--awful.key({ }, "XF86AudioMute",         spawnf("amixer set Master toggle")),
 
 	--}}}
 

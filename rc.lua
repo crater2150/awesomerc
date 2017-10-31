@@ -57,6 +57,9 @@ for s in screen do
 end
 -- }}}
 
+audiowheel = require("audiowheel")-- { bg = "#ffff00aa" }
+
+
 -- {{{ Key bindings
 
 binder = require("separable.binder")
@@ -66,6 +69,12 @@ binder.modal.set_x_offset(18)
 binder.add_default_bindings()
 binder.add_bindings(tags.create_bindings())
 binder.add_bindings(require("mybindings"))
+
+binder.add_bindings(awful.util.table.join(
+    awful.key({}, "XF86AudioRaiseVolume", function() audiowheel:up() end),
+    awful.key({}, "XF86AudioLowerVolume", function() audiowheel:down() end),
+    awful.key({}, "XF86AudioMute",        function() audiowheel:toggle() end)
+))
 
 binder.apply()
 
