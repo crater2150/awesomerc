@@ -51,9 +51,10 @@ local progmap = {
 	{"s", binder.spawn("steam"),              "Steam" }
 }
 
+local home = os.getenv("HOME")
 local docmap = {
-	{"u", binder.spawn("docopen ~/doc/uni pdf"), "Uni-Dokumente" },
-	{"b", binder.spawn("docopen ~/books pdf epub mobi txt lit html htm"), "Bücher" },
+	{"p", binder.spawn("docopen " .. home .. "/ pdf"), "Alle PDF-Dokumente" },
+	{"b", binder.spawn("docopen " .. home .. "/doc/books pdf epub mobi txt lit html htm"), "Bücher" },
 	{"t", binder.spawn("dmtexdoc"), "Texdoc" },
 	{"j", binder.spawn("dmjavadoc"), "Javadoc" }
 }
@@ -88,6 +89,7 @@ local myglobalkeys = awful.util.table.join(
 	awful.key({ modkey }, "s", binder.spawn("dmsearch")),
 	awful.key({ modkey }, "x", binder.spawn("dmxrandr")),
 	awful.key({ modkey, "Shift" }, "x", binder.spawn("xd --dmenu")),
+	awful.key({ modkey }, "z", binder.spawn("dmumount")),
 
 	--}}}
 
