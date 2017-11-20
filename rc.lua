@@ -38,10 +38,8 @@ for s in screen do
 	widgets.add.layout_indicator(lbottom)
 	widgets.add.taglist("tags", lbottom)
 
-	local mail1 = widgets.add.mail("mail_me", rbottom, { os.getenv("HOME") .. "/.maildir/me" }, "bottom_right", "me")
-	mail1:set_left(15)
-	local mail2 = widgets.add.mail("mail_uber", rbottom, { os.getenv("HOME") .. "/.maildir/uber" }, "bottom_right", "uber")
-	mail2:set_left(15)
+	local mail = widgets.add.mail("mail", rbottom, { os.getenv("HOME") .. "/.maildir/uber" }, "bottom_right", "uber")
+	mail:set_left(15)
 
 	widgets.add.cpu("cpu", rtop)
 	widgets.add.spacer(rtop)
