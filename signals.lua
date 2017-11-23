@@ -23,7 +23,7 @@ local fixed_clients = {
 }
 
 local function may_lose_focus(c)
-    if c ~= nil then return true end
+    if c == nil then return true end
     return not awful.rules.matches_list(c, fixed_clients)
 end
 
