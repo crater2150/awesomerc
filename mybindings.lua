@@ -44,9 +44,9 @@ local mpdpromts = {
 
 local progmap = {
 	{"f", binder.spawn(conf.cmd.browser),     "Browser" },
-	{"i", binder.spawn(conf.cmd.im_client),   "IM Client" },
-	{"I", binder.spawn(conf.cmd.irc_client),  "IRC" },
-	{"t", binder.spawn("telegram-desktop"),   "Telegram" },
+	{"i", binder.spawn(conf.cmd.irc_client),  "IRC" },
+	{"t", binder.spawn("telegram"),           "Telegram" },
+	{"w", binder.spawn("wire"),               "Wire" },
 	{"m", binder.spawn(conf.cmd.mail_client), "Mail" },
 	{"s", binder.spawn("steam"),              "Steam" }
 }
