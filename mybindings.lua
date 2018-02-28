@@ -59,6 +59,10 @@ local docmap = {
 	{"j", binder.spawn("dmjavadoc"), "Javadoc" }
 }
 
+local notifymap = {
+	{"m", binder.spawn("newmails -p"), "Show unread mails" },
+}
+
 --local calendarmap = {
 --	o = { function() calendar:next() end, "Next" },
 --	i = { function() calendar:prev() end, "Prev" },
@@ -76,6 +80,7 @@ local myglobalkeys = awful.util.table.join(
 	awful.key({ modkey, "Shift"   },  "m",  mb.grabf(mpdpromts, "MPD - Search for")),
 	awful.key({ modkey            },  "c",  mb.grabf(progmap, "Commands")),
 	awful.key({ modkey            },  "d",  mb.grabf(docmap, "Documents")),
+	awful.key({ modkey            },  "n",  mb.grabf(notifymap, "Notifications")),
 	--}}}
 
 	-- {{{ handy console
@@ -104,17 +109,10 @@ local myglobalkeys = awful.util.table.join(
 
 	awful.key({         }, "XF86AudioPlay", mpd.ctrl.toggle),
 	awful.key({         }, "XF86AudioNext", mpd.ctrl.next),
-	awful.key({         }, "XF86AudioPrev", mpd.ctrl.prev)
+	awful.key({         }, "XF86AudioPrev", mpd.ctrl.prev),
 
-	--}}}
+	awful.key({ modkey }, "y", binder.spawn("copyq toggle"))
 
-	-- calendar {{{
-	--awful.key({ modkey },  "y",
-	--function()
-	--	calendar:show()
-	--	mb.grab(calendarmap, "Calendar", true)
-	--end
-	--)
 	--}}}
 )
 

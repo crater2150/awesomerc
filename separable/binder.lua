@@ -90,15 +90,6 @@ local default_bindings = awful.util.table.join(
 	awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 	awful.key({ modkey,           }, "Return", spawnf(conf.cmd.terminal)),
 
-	awful.key({ modkey, "Control" }, "n", awful.client.restore),
-	awful.key({ modkey, "Shift"   }, "n",
-	function()
-		local tag = awful.tag.selected()
-		for i=1, #tag:clients() do
-			awful.client.restore(tag:clients()[i])
-		end
-	end),
-
 	--{{{ Layout manipulation and client position
 	awful.key({ modkey }, "j", function ()
 		awful.client.focus.byidx( 1)
@@ -194,7 +185,6 @@ awful.key({ modkey, "Shift"   }, "l", screen_move_client_wrapdir("right")),
 awful.key({ modkey, "Control" }, "o",      function (c) c.ontop = not c.ontop end),
 awful.key({ modkey, "Shift"   }, "a",      function (c) c.sticky = not c.sticky end),
 awful.key({ modkey, "Shift"   }, "r",      function (c) c:redraw()                       end),
-awful.key({ modkey,           }, "n",      function (c) c.minimized = not c.minimized    end),
 awful.key({ modkey,           }, "b",      function (c) c.border_width = c.border_width > 0 and 0 or beautiful.border_width end),
 awful.key({ modkey,           }, "Up",     function(c) client_opacity_set(c, 1, 1, 0.1) end),
 awful.key({ modkey,           }, "Down",   function(c) client_opacity_set(c, 1, 0, -0.1) end),
