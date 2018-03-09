@@ -77,7 +77,7 @@ awful.rules.rules = {
       },
       {
 	    rule_any = { class = {
-		  "pinentry", "Passprompt", "MPlayer"
+		  "pinentry", "Passprompt", "copyq"
 	    }},
 	    properties = { floating = true, size_hints_honor = true }
       },
@@ -179,19 +179,7 @@ awful.rules.rules = {
 	    }
       },
       {
-	    rule = { class = "Dmenu" },
-	    properties = {
-		  opacity = 0.8
-	    }
-      },
-      {
-	    rule_any = { class = {"URxvt", "Alacritty" } },
-	    properties = {
-		  opacity = 0.8
-	    }
-      },
-      {
-	    rule = { class = "Gvim" },
+	    rule_any = { class = {"URxvt", "Alacritty", "GVim", "G%l*" } },
 	    properties = {
 		  opacity = 0.8
 	    }
