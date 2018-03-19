@@ -85,7 +85,7 @@ local myglobalkeys = awful.util.table.join(
 
 	-- {{{ handy console
 	awful.key({ }, "F12", function ()
-		handy(conf.cmd.terminal, awful.placement.centered, 0.9, 0.7)
+		handy("urxvt -e tmux", awful.placement.centered, 0.9, 0.7)
 	end ),
 	-- }}}
 
