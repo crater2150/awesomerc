@@ -32,12 +32,11 @@ local mpdmap = {
 	{"s", binder.spawn("mpd"),               "start MPD" },
 	{"S", binder.spawn("mpd --kill"),        "kill MPD" },
 	{"g", binder.spawn(conf.cmd.mpd_client), "Gmpc" },
-}
-
-local mpdpromts = {
+	{"separator", "Search" },
 	{"a", mpd.prompt.artist, "artist" },
 	{"b", mpd.prompt.album,  "album" },
 	{"t", mpd.prompt.title,  "title" },
+	{"j", mpd.prompt.jump,  "jump" },
 	{"r", mpd.prompt.toggle_replace_on_search,   "toggle replacing" },
 	{"h", mb.grabf(mpdhosts, "Select MPD host"), "Change host" }
 }
@@ -77,7 +76,7 @@ local myglobalkeys = awful.util.table.join(
 	--{{{ Modal mappings
 
 	awful.key({ modkey            },  "m",  mb.grabf(mpdmap, "MPD", true)),
-	awful.key({ modkey, "Shift"   },  "m",  mb.grabf(mpdpromts, "MPD - Search for")),
+	--awful.key({ modkey, "Shift"   },  "m",  mb.grabf(mpdpromts, "MPD - Search for")),
 	awful.key({ modkey            },  "c",  mb.grabf(progmap, "Commands")),
 	awful.key({ modkey            },  "d",  mb.grabf(docmap, "Documents")),
 	awful.key({ modkey            },  "n",  mb.grabf(notifymap, "Notifications")),

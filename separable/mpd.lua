@@ -91,6 +91,11 @@ end
 M.prompt.title = function()
 	dmenu("-a -b -t")
 end
+
+M.prompt.jump = function()
+	dmenu("-j")
+end
+
 M.prompt.title = title
 
 M.prompt.replace_on_search = function(bool)
