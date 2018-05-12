@@ -10,7 +10,7 @@ local globalkeys = {}
 app_folders = {
 	"/usr/share/applications",
 	"/usr/local/share/applications",
-	os.getenv("HOME") .. "/.local/applications",
+	(os.getenv("XDG_DATA_HOME") or os.getenv("HOME") .. "/.local/share") .. "/applications",
 	os.getenv("HOME") .. "/Desktop"
 }
 local menubar = require("menubar")
