@@ -70,7 +70,7 @@ local notifymap = {
 
 
 local myglobalkeys = awful.util.table.join(
-	awful.key({ }, "Pause", binder.spawn('wmselect')),
+	awful.key({ }, "Pause", binder.spawn('rofi -show window')),
 	awful.key({ }, "Print", binder.spawn('dmscrot')),
 
 	--{{{ Modal mappings
