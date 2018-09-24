@@ -66,12 +66,7 @@ end
 local tagdef = {
 	{"1"},
 	{"2", { layout = awful.layout.suit.max }},
-	{"3", {
-		layout = awful.layout.suit.tile,
-		master_width_factor = 0.20,
-		column_count = 2,
-		master_count = 2
-	}},
+	{"3"},
 	{"4", { layout = awful.layout.suit.max }},
 	{"5"},
 	{"6"},

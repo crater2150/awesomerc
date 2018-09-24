@@ -44,23 +44,13 @@ awful.rules.rules = {
 		  end
 	    end
       },
-      { rule = { class = "qutebrowser", type = "utility" },
-      -- workaround for qutebrowser dropdown problems. does not fully fix the
-      -- problems :-/
-	    properties = {
-		  border_width = 0, focus = false,
-		  floating = true, size_hints_honor = true,
-		  focusable = false, skip_taskbar = true,
-		  ontop = true, above = true,
-		  placement = function() return false end,
-	    }
-      },
-      { rule = { name = "", class = "jetbrains-idea", type = "dialog" },
-	    properties = { placement = false },
-	    callback = function(c)
-		  c:connect_signal("unfocus", function() client.focus = c end)
-	    end
-      },
+      { rule = { class = "qutebrowser" }, properties = { tag = "3" } },
+      --{ rule = { name = "", class = "jetbrains-idea", type = "dialog" },
+      --      properties = { placement = false },
+      --      callback = function(c)
+      --  	  c:connect_signal("unfocus", function() client.focus = c end)
+      --      end
+      --},
       {
 	    rule = { class = "Passprompt" },
 	    properties = { ontop = true, focus = true}
@@ -80,13 +70,6 @@ awful.rules.rules = {
 		  "pinentry", "Passprompt", "copyq"
 	    }},
 	    properties = { floating = true, size_hints_honor = true }
-      },
-      {
-	    rule = { class = "Firefox", instance = "Navigator" },
-	    properties = {
-		  screen = 1, tag = "2",
-		  floating = false, minimized = false
-	    },
       },
       {
 	    rule_any = { class = {"Pidgin"}, instance = {"Weechat"} },
@@ -179,7 +162,7 @@ awful.rules.rules = {
 	    }
       },
       {
-	    rule_any = { class = {"URxvt", "Alacritty", "GVim", "G%l*" } },
+	    rule_any = { class = {"URxvt", "Alacritty", "GVim" } },
 	    properties = {
 		  opacity = 0.8
 	    }
