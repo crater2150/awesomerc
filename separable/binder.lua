@@ -4,6 +4,7 @@ local beautiful = beautiful
 
 local modkey = conf.modkey or "Mod4"
 local mb = require("modalbind")
+mb.init()
 
 local globalkeys = {}
 
