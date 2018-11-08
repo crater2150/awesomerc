@@ -42,12 +42,15 @@ local mpdmap = {
 }
 
 local progmap = {
-	{"f", binder.spawn(conf.cmd.browser),     "Browser" },
+	{"f", binder.spawn("firefox"),         "Firefox" },
+	{"q", binder.spawn("qutebrowser"),     "Qutebrowser" },
+	--{"b", binder.spawn(conf.cmd.browser),     "Browser" },
 	{"i", binder.spawn(conf.cmd.irc_client),  "IRC" },
+	{"m", binder.spawn(conf.cmd.mail_client), "Mail" },
 	{"t", binder.spawn("telegram"),           "Telegram" },
 	{"w", binder.spawn("wire"),               "Wire" },
-	{"m", binder.spawn(conf.cmd.mail_client), "Mail" },
-	{"s", binder.spawn("steam"),              "Steam" }
+	{"s", binder.spawn("steam"),              "Steam" },
+	{"n", binder.spawn("netflix"),            "Netflix" }
 }
 
 local home = os.getenv("HOME")

@@ -44,7 +44,7 @@ awful.rules.rules = {
 		  end
 	    end
       },
-      { rule = { class = "qutebrowser" }, properties = { tag = "3" } },
+      { rule = { class = "qutebrowser" }, properties = { tag = "2" } },
       --{ rule = { name = "", class = "jetbrains-idea", type = "dialog" },
       --      properties = { placement = false },
       --      callback = function(c)
@@ -142,7 +142,7 @@ awful.rules.rules = {
 	    callback = awful.client.setslave
       },
       {
-	    rule = { instance = "Gmutt" },
+	    rule_any = { instance = {"Gmutt"}, name = {"Gmutt"} },
 	    properties = {
 		  tag = "4"
 	    }

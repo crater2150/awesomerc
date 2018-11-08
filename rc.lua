@@ -61,8 +61,8 @@ audiowheel = require("audiowheel")-- { bg = "#ffff00aa" }
 -- {{{ Key bindings
 
 binder = require("separable.binder")
-binder.modal.set_location("bottom","left")
-binder.modal.set_x_offset(18)
+binder.modal.set_location("bottom_left")
+--binder.modal.set_x_offset(18)
 
 binder.add_default_bindings()
 binder.add_bindings(tags.create_bindings())

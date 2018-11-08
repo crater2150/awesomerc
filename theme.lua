@@ -25,6 +25,11 @@ theme.border_focus  = "#aaaaff"
 theme.border_marked = "#cc9393"
 -- }}}
 
+-- {{{ Modebox
+theme.modebox_border_width = 2
+theme.modebox_border  = "#aaaaff"
+-- }}}
+
 -- {{{ Titlebars
 theme.titlebar_bg_focus  = "#3F3F3F"
 theme.titlebar_bg_normal = "#3F3F3F"
