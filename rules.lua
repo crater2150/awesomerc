@@ -52,6 +52,9 @@ awful.rules.rules = {
 		  if (c["type"] ~= nil) then
 		        log("type: " .. c["type"])
 		  end
+		  if (c["instance"] ~= nil) then
+		        log("instance: " .. c["instance"])
+		  end
 	    end
       },
       { rule = { class = "qutebrowser" }, properties = { tag = "2" } },
@@ -189,7 +192,7 @@ awful.rules.rules = {
 	    }
       },
       {
-	    rule = { instance = "Awesomelog" },
+	    rule = { name = "Awesomelog" },
 	    properties = {
 		  tag = "F4"
 	    }
