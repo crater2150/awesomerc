@@ -95,6 +95,9 @@ local myglobalkeys = awful.util.table.join(
 	awful.key({ }, "F12", function ()
 		handy("urxvt -e tmux", awful.placement.centered, 0.9, 0.7)
 	end ),
+	awful.key({ modkey }, "x", function ()
+		handy("urxvt -e ikhal", awful.placement.centered, 0.9, 0.7)
+	end ),
 	-- }}}
 
 	--{{{ dmenu prompts
@@ -119,7 +122,8 @@ local myglobalkeys = awful.util.table.join(
 	awful.key({         }, "XF86AudioNext", mpd.ctrl.next),
 	awful.key({         }, "XF86AudioPrev", mpd.ctrl.prev),
 
-	awful.key({ modkey }, "y", binder.spawn("copyq toggle"))
+	awful.key({ modkey }, "y", binder.spawn("copyq toggle")),
+	awful.key({ modkey }, "/", binder.spawn("rofi -show calc -modi calc -no-show-match -no-sort"))
 
 	--}}}
 )

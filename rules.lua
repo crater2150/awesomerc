@@ -148,7 +148,8 @@ awful.rules.rules = {
       {
 	    rule_any = { instance = {"Gmutt"}, name = {"Gmutt"} },
 	    properties = {
-		  tag = "4"
+		  tag = "4",
+		  screen = 2
 	    }
       },
       {
