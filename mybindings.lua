@@ -10,8 +10,6 @@ local mb = binder.modal
 
 local mpd = require("separable.mpd")
 local handy = require("handy")
---local calendar = require("separable.calendar")
-
 local myglobalkeys = {}
 
 local function mpdserver(host)
@@ -63,12 +61,9 @@ local docmap = {
 	{"j", binder.spawn("dmjavadoc"), "Javadoc" }
 }
 
---local calendarmap = {
---	o = { function() calendar:next() end, "Next" },
---	i = { function() calendar:prev() end, "Prev" },
---	onClose = function() calendar:hide() end
---}
-
+local notifymap = {
+	{"m", binder.spawn("newmails -p"), "Show unread mails" },
+}
 
 local myglobalkeys = awful.util.table.join(
 	awful.key({ }, "Pause", binder.spawn('rofi -show window')),

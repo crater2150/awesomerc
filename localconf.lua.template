@@ -34,8 +34,4 @@ conf.cmd.editor.gui = "gvim"
 -- Mod-r binding for running programs
 conf.cmd.run = function() awful.util.spawn("dmenu_run -l 10 -y 350") end
 
-conf.calendar = {
-	start_week = 1
-}
-
 return conf
