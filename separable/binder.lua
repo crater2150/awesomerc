@@ -126,8 +126,8 @@ local default_bindings = awful.util.table.join(
 
 	--{{{ Modal mappings
 
-	awful.key({ modkey            },  "space",  mb.grabf(layoutmap, "Layouts")),
-	awful.key({ modkey, "Control" },  "space",  mb.grabf(layoutsettings, "Layout settings", true)),
+	awful.key({ modkey            },  "space",  mb.grabf{keymap=layoutmap, name="Layouts"}),
+	awful.key({ modkey, "Control" },  "space",  mb.grabf{keymap=layoutsettings, name="Layout settings", stay_in_mode=true}),
 	--}}}
 
 	--{{{ Audio control

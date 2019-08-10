@@ -40,7 +40,7 @@ local mpdmap = {
 	{"t", mpd.prompt.title,  "title" },
 	{"j", mpd.prompt.jump,  "jump" },
 	{"r", mpd.prompt.toggle_replace_on_search,   "toggle replacing" },
-	{"h", mb.grabf(mpdhosts, "Select MPD host"), "Change host" }
+	{"h", mb.grabf{keymap=mpdhosts, name="Select MPD host"}, "Change host" }
 }
 
 local progmap = {
@@ -76,10 +76,10 @@ local myglobalkeys = awful.util.table.join(
 
 	--{{{ Modal mappings
 
-	awful.key({ modkey            },  "m",  mb.grabf(mpdmap, "MPD", true)),
+	awful.key({ modkey            },  "m",  mb.grabf{keymap=mpdmap, name="MPD", stay_in_mode=true}),
 	--awful.key({ modkey, "Shift"   },  "m",  mb.grabf(mpdpromts, "MPD - Search for")),
-	awful.key({ modkey            },  "c",  mb.grabf(progmap, "Commands")),
-	awful.key({ modkey            },  "d",  mb.grabf(docmap, "Documents")),
+	awful.key({ modkey            },  "c",  mb.grabf{keymap=progmap, name="Commands"}),
+	awful.key({ modkey            },  "d",  mb.grabf{keymap=docmap, name="Documents"}),
 	awful.key({ modkey            },  "n",  function()
 		if naughty.is_suspended() then
 			naughty.resume()
