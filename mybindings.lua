@@ -2,6 +2,8 @@
 local awful = require("awful")
 local conf = conf
 
+local naughty = require("naughty")
+
 local modkey = conf.modkey or "Mod4"
 local binder = binder or require("separable.binder")
 local mb = binder.modal
@@ -61,10 +63,6 @@ local docmap = {
 	{"j", binder.spawn("dmjavadoc"), "Javadoc" }
 }
 
-local notifymap = {
-	{"m", binder.spawn("newmails -p"), "Show unread mails" },
-}
-
 --local calendarmap = {
 --	o = { function() calendar:next() end, "Next" },
 --	i = { function() calendar:prev() end, "Prev" },
@@ -82,7 +80,15 @@ local myglobalkeys = awful.util.table.join(
 	--awful.key({ modkey, "Shift"   },  "m",  mb.grabf(mpdpromts, "MPD - Search for")),
 	awful.key({ modkey            },  "c",  mb.grabf(progmap, "Commands")),
 	awful.key({ modkey            },  "d",  mb.grabf(docmap, "Documents")),
-	awful.key({ modkey            },  "n",  mb.grabf(notifymap, "Notifications")),
+	awful.key({ modkey            },  "n",  function()
+		if naughty.is_suspended() then
+			naughty.resume()
+			naughty.notify({ text = "Notifications enabled", timeout = 2 })
+		else
+			naughty.notify({ text = "Notifications disabled", timeout = 2 })
+			naughty.suspend()
+		end
+	end),
 	--}}}
 
 	-- {{{ handy console
