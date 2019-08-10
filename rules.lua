@@ -56,6 +56,10 @@ awful.rules.rules = {
 	    properties = { ontop = true, focus = true}
       },
       {
+	    rule = { class = "Dragon" },
+	    properties = { ontop = true, sticky = true}
+      },
+      {
 	    rule = { class = "Sm" },
 	    properties = {
 		  floating = true,
