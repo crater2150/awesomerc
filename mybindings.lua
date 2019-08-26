@@ -40,6 +40,12 @@ local mpdmap = {
 	{"r", mpd.prompt.toggle_replace_on_search,   "toggle replacing" },
 	{"h", mb.grabf{keymap=mpdhosts, name="Select MPD host"}, "Change host" }
 }
+local mprismap = {
+	{"m", binder.spawn("playerctl play-pause"), "Toggle" },
+	{"n", binder.spawn("playerctl next"),       "Next" },
+	{"N", binder.spawn("playerctl previous"),   "Prev" },
+	{"s", binder.spawn("playerctl stop"),       "Prev" },
+}
 
 local progmap = {
 	{"f", binder.spawn("firefox"),         "Firefox" },
@@ -71,7 +77,15 @@ local myglobalkeys = awful.util.table.join(
 
 	--{{{ Modal mappings
 
-	awful.key({ modkey            },  "m",  mb.grabf{keymap=mpdmap, name="MPD", stay_in_mode=true}),
+	awful.key({ modkey            },  "m",  function()
+		awful.spawn.easy_async("playerctl -p spotify status", function(stdout, stderr, reason, exitcode)
+			if exitcode > 0 then
+				mb.grab(mpdmap, "MPD", true)
+			else
+				mb.grab(mprismap, "Spotify", true)
+			end
+		end)
+	end),
 	--awful.key({ modkey, "Shift"   },  "m",  mb.grabf(mpdpromts, "MPD - Search for")),
 	awful.key({ modkey            },  "c",  mb.grabf{keymap=progmap, name="Commands"}),
 	awful.key({ modkey            },  "d",  mb.grabf{keymap=docmap, name="Documents"}),
