@@ -14,6 +14,8 @@ local function popup_urgent(client, message)
       end)
 end
 
+screen2 = screen:count() > 1 and 2 or 1
+
 awful.rules.rules = {
       -- All clients will match this rule.
       {
@@ -96,7 +98,7 @@ awful.rules.rules = {
       {
 	    rule = { class = "Eclipse", name = nil, type = "dialog" },
 	    properties = {
-		  screen = 2, tag = "8",
+		  screen = screen2, tag = "8",
 		  floating = false
 	    }
       },
@@ -149,7 +151,7 @@ awful.rules.rules = {
 	    rule_any = { instance = {"Gmutt"}, name = {"Gmutt"} },
 	    properties = {
 		  tag = "4",
-		  screen = 2
+		  screen = screen2
 	    }
       },
       {
