@@ -42,15 +42,17 @@ for s in screen do
 	local mail = widgets.add.mail("mail", rbottom, { os.getenv("HOME") .. "/.maildir/uber" }, "bottom_right", "uber")
 	mail:set_left(15)
 
-	widgets.add.cpu("cpu", rtop)
-	widgets.add.spacer(rtop)
-	widgets.add.battery("int", rtop, "BAT0")
-	widgets.add.spacer(rtop)
-	widgets.add.battery("ext", rtop, "BAT1")
-	widgets.add.spacer(rtop)
-	widgets.add.wifi("wlan", rtop, "wlan0")
-	widgets.add.spacer(rtop)
-	widgets.add.systray(rtop)
+	if s == screen.primary then
+	    widgets.add.cpu("cpu", rtop)
+	    widgets.add.spacer(rtop)
+	    widgets.add.battery("int", rtop, "BAT0")
+	    widgets.add.spacer(rtop)
+	    widgets.add.battery("ext", rtop, "BAT1")
+	    widgets.add.spacer(rtop)
+	    widgets.add.wifi("wlan", rtop, "wlan0")
+	    widgets.add.spacer(rtop)
+	    widgets.add.systray(rtop)
+	end
 
 	widgets.set_spacer_text("  ◈  ")
 end
