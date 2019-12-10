@@ -35,6 +35,7 @@ for s in screen do
 
 	local clock = widgets.add.clock("clock", ltop)
 
+	widgets.add.text(" (S:" .. s.index .. ") ", lbottom)
 	widgets.add.layout_indicator(lbottom)
 	widgets.add.taglist("tags", lbottom)
 

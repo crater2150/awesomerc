@@ -287,6 +287,14 @@ local function spacerwidget(parent)
 end --}}}
 widgets.add.spacer = spacerwidget
 
+-- manual spacing between widgets
+local function textwidget(text, parent)
+	local newtext = wibox.widget.textbox()
+	newtext:set_text(text)
+	parent.container:add(newtext)
+end --}}}
+widgets.add.text = textwidget
+
 -- change appearance of spacers
 local function spacertext(text)
 	spacer:set_text(text)
