@@ -105,7 +105,10 @@ local myglobalkeys = awful.util.table.join(
 		handy("urxvt -e tmux", awful.placement.centered, 0.9, 0.7)
 	end ),
 	awful.key({ modkey }, "x", function ()
-		handy("urxvt -e ikhal", awful.placement.centered, 0.9, 0.7)
+		handy("urxvt -e ikhal", awful.placement.centered, 0.9, 0.7, 'single')
+	end ),
+	awful.key({ modkey }, "a", function ()
+		handy("pavucontrol", awful.placement.centered, 0.6, 0.8, 'single')
 	end ),
 	-- }}}
 
