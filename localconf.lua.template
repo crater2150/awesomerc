@@ -5,7 +5,11 @@ local awful = awful
 conf.modkey = "Mod4"
 
 -- screen number, on which rules will put clients by default
-conf.rule_screen=1
+conf.screen = {
+	main = 1,
+	mail = 2,
+	chat = 3,
+}
 
 -- default layout for tags
 conf.default_layout = awful.layout.suit.fair

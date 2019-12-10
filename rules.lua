@@ -1,5 +1,6 @@
 local awful = require("awful")
 awful.rules = require("awful.rules")
+local localconf = require("localconf")
 
 local beautiful = require("beautiful")
 local binder = binder or require("separable.binder")
@@ -13,6 +14,13 @@ local function popup_urgent(client, message)
 	    end
       end)
 end
+if not localconf.screen then
+      localconf.screen = {}
+end
+local screen_main = localconf.screen.main or 1
+local screen_chat = localconf.screen.chat or screen.count()
+local screen_mail = localconf.screen.mail or screen.count()
+print("Screens: main: ".. screen_main .. ", chat: ".. screen_chat .. ", mail: " .. screen_mail)
 
 screen2 = screen:count() > 1 and 2 or 1
 
@@ -78,9 +86,9 @@ awful.rules.rules = {
 	    properties = { floating = true, size_hints_honor = true }
       },
       {
-	    rule_any = { class = {"Pidgin"}, instance = {"Weechat"} },
+	    rule_any = { class = {"Pidgin"}, instance = {"Weechat"}, name = {"Weechat"}},
 	    properties = {
-		  tag = "3", opacity = 0.8
+		  screen = chat, tag = "3", opacity = 0.8
 	    },
 	    callback = function(c) popup_urgent(c, "new chat message") end
       },
@@ -112,14 +120,14 @@ awful.rules.rules = {
       {
 	    rule = { class = "Steam", name = "Friends" },
 	    properties = {
-		  tag = "3"
+		  screen = screen_chat, tag = "3"
 	    },
 	    callback = awful.client.setmaster
       },
       {
 	    rule = { class = "Steam", name = "Chat" },
 	    properties = {
-		  tag = "3"
+		  screen = screen_chat, tag = "3"
 	    },
 	    callback = awful.client.setslave
       },
@@ -130,9 +138,15 @@ awful.rules.rules = {
 	    }
       },
       {
+	    rule = { class = "rocketchat" },
+	    properties = {
+		  screen = screen_chat, tag = "5"
+	    }
+      },
+      {
 	    rule = { class = "Telegram" },
 	    properties = {
-		  tag = "3"
+		  screen = screen_chat, tag = "3"
 	    },
 	    callback = awful.client.setslave
       },
@@ -151,7 +165,7 @@ awful.rules.rules = {
 	    rule_any = { instance = {"Gmutt"}, name = {"Gmutt"} },
 	    properties = {
 		  tag = "4",
-		  screen = screen2
+		  screen = screen_mail
 	    }
       },
       {
