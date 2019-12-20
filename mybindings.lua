@@ -47,16 +47,22 @@ local mprismap = {
 	{"s", binder.spawn("playerctl stop"),       "Prev" },
 }
 
+local messengermap = {
+	{"i", binder.spawn(conf.cmd.irc_client),  "IRC" },
+	{"m", binder.spawn(conf.cmd.mail_client), "Mail" },
+	{"r", binder.spawn("rocketchat"),         "RocketChat" },
+	{"s", binder.spawn("signal-desktop"),     "Signal" },
+	{"t", binder.spawn("telegram"),           "Telegram" },
+	{"w", binder.spawn("wire"),               "Wire" },
+}
+
 local progmap = {
 	{"f", binder.spawn("firefox"),         "Firefox" },
 	{"q", binder.spawn("qutebrowser"),     "Qutebrowser" },
 	--{"b", binder.spawn(conf.cmd.browser),     "Browser" },
-	{"i", binder.spawn(conf.cmd.irc_client),  "IRC" },
-	{"m", binder.spawn(conf.cmd.mail_client), "Mail" },
-	{"t", binder.spawn("telegram"),           "Telegram" },
-	{"w", binder.spawn("wire"),               "Wire" },
 	{"s", binder.spawn("steam"),              "Steam" },
-	{"n", binder.spawn("netflix"),            "Netflix" }
+	{"n", binder.spawn("netflix"),            "Netflix" },
+	{"m", mb.grabf{keymap=messengermap, name="⇒ Messengers"}, "Messengers" },
 }
 
 local home = os.getenv("HOME")
