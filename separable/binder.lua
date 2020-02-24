@@ -192,7 +192,9 @@ awful.key({ modkey,           }, "Down",   function(c) client_opacity_set(c, 1, 
 awful.key({ }, "XF86Calculater",      awful.client.movetoscreen                        ),
 awful.key({ modkey }, "i", function(c)
 	require("naughty").notify({ text =
-	    string.format("name: %s\nclass: %s\ntype: %s", c["name"], c["class"], c["type"])
+	    string.format(
+	    "name: %s\nclass: %s\ninstance: %s\ntype: %s",
+	    c["name"], c["class"], c["instance"], c["type"])
 	})
     end)
 )
