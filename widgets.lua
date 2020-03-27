@@ -41,12 +41,12 @@ local function setup()
 		leftwibar[s] = awful.wibar({
 			position = "left",
 			screen = s,
-			width = 18
+			width = math.floor(s.dpi / 5)
 		})
 		rightwibar[s] = awful.wibar({
 			position = "right",
 			screen = s,
-			width = 18
+			width = math.floor(s.dpi / 5)
 		})
 
 		-- {{{ create containers

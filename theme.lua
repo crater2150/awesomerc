@@ -1,11 +1,13 @@
 -- {{{ Main
+
+local awful = require("awful")
 theme = {}
 theme.wallpaper = "~/.wallpaper"
 
 -- }}}
 -- {{{ Styles
-theme.fontface = "Dina"
-theme.fontsize = 8
+theme.fontface = "Menlo for Powerline"
+theme.fontsize = math.floor(awful.screen.focused().dpi / 8)
 theme.font     = theme.fontface .. " " .. theme.fontsize
 
 -- {{{ Colors
