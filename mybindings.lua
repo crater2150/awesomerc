@@ -107,7 +107,7 @@ local myglobalkeys = awful.util.table.join(
 	--}}}
 
 	-- {{{ handy console
-	awful.key({ }, "F12", function ()
+	awful.key({ }, "F12", nil, function ()
 		handy("alacritty --class handy -e tmux", awful.placement.centered, 0.9, 0.7, nil, "handy")
 	end ),
 	awful.key({ modkey }, "x", function ()
