@@ -7,9 +7,6 @@ local tag = require("awful.tag")
 local beautiful = require("beautiful")
 local widgets = { add = {} }
 
---------------------------------------------------------------------------------
--- table declarations {{{
---------------------------------------------------------------------------------
 local wlist = {}
 local bars = {}
 local leftwibar = {}
@@ -24,172 +21,65 @@ awful.button({ modkey }, 3, awful.client.toggletag),
 awful.button({ }, 4, function(t) awful.tag.viewnext(awful.tag.getscreen(t)) end),
 awful.button({ }, 5, function(t) awful.tag.viewprev(awful.tag.getscreen(t)) end)
 )
--- }}}
---------------------------------------------------------------------------------
-
---------------------------------------------------------------------------------
--- setup {{{
---------------------------------------------------------------------------------
-local function setup()
-	for s in screen do
-		wlist[s]={}
-		bars[s]={}
 
 
-
-		-- Create the wibar
-		leftwibar[s] = awful.wibar({
-			position = "left",
-			screen = s,
-			width = math.floor(s.dpi / 5)
-		})
-		rightwibar[s] = awful.wibar({
-			position = "right",
-			screen = s,
-			width = math.floor(s.dpi / 5)
-		})
-
-		-- {{{ create containers
-		local left_bottom_container = wibox.layout.fixed.horizontal()
-		local left_top_container = wibox.layout.fixed.horizontal()
-
-		local left_container = wibox.layout.align.horizontal()
-		left_container:set_left(left_bottom_container)
-		left_container:set_right(left_top_container)
-
-		local right_bottom_container = wibox.layout.fixed.horizontal()
-		local right_top_container = wibox.layout.fixed.horizontal()
-
-		local right_container = wibox.layout.align.horizontal()
-		right_container:set_left(right_top_container)
-		right_container:set_right(right_bottom_container)
-		--}}}
-
-
-		-- {{{ rotate containers and add to wibox
-		local leftrotate = wibox.container.rotate()
-		leftrotate:set_direction('east')
-		leftrotate:set_widget(left_container)
-		leftwibar[s]:set_widget(leftrotate)
-
-		local rightrotate = wibox.container.rotate()
-		rightrotate:set_direction('west')
-		rightrotate:set_widget(right_container)
-		rightwibar[s]:set_widget(rightrotate)
-		--}}}
-
-
-		bars[s] = {}
-		bars[s].left = {}
-		bars[s].left.bottom = left_bottom_container
-		bars[s].left.top = left_top_container
-		bars[s].right = {}
-		bars[s].right.bottom = right_bottom_container
-		bars[s].right.top = right_top_container
-	end
-end
-
--- }}}
---------------------------------------------------------------------------------
-
---------------------------------------------------------------------------------
--- Utility {{{
---------------------------------------------------------------------------------
-
--- force update of a widget
-local function update(widgetname, index)
-	for s in screen do
-		if wlist[s] ~= nil and wlist[s][widgetname] ~= nil then
-			if index ~= nil then
-				vicious.force({ wlist[s][widgetname][index] })
-			else
-				vicious.force({ wlist[s][widgetname] })
-			end
-		end
-	end
-end
---}}}
-widgets.update = update
-
--- get container for adding widgets
-local function get_container(screen, bar, align)
-	if bars[screen][bar] == nil then return nil end
-
-	return {screen = screen, container = bars[screen][bar][align]}
-end
-widgets.container = get_container
-
--- }}}
---------------------------------------------------------------------------------
-
---------------------------------------------------------------------------------
--- widget creators {{{
---------------------------------------------------------------------------------
-
-local show = function(self)
-	self:set_widget(self.widget)
-end
-
-local hide = function(self)
-	self:set_widget(nil)
-end
-
-local function wrap_and_add(name, parent, widget, callback_widget)
-	local container = wibox.container.margin(widget)
-	container.widget = widget
-	container.show = show
-	container.hide = hide
-
-	wlist[parent.screen][name] = callback_widget == nil and widget or callback_widget
-	parent.container:add(container)
-	return container
+local function percentage_overlay(p, color, prefix, suffix)
+	return (
+		'<span color="%s">%s%d%%%s</span>'
+	):format(color, prefix or "", p, suffix or "")
 end
 
 
--- mail widget
-local function mailwidget(name, parent, mailboxes, notify_pos, title)
+function widgets.setup(s)
+	return {
+		left = function(bottom, top) s.leftwibar = add_bar(s, "left", "east", bottom, top) end,
+		right = function(top, bottom) s.rightwibar = add_bar(s, "right", "west", top, bottom) end
+	}
+end
+
+function add_bar(s, position, direction, first, second)
+	newbar = awful.wibar({
+		position = position,
+		screen = s,
+		width = math.floor(s.dpi / 5)
+	})
+
+	newbar:setup {
+		{
+			first,
+			nil,
+			second,
+			layout = wibox.layout.align.horizontal
+		},
+		direction = direction,
+		widget = wibox.container.rotate
+	}
+	return newbar
+end
+
+
+function widgets.mail(mailboxes, notify_pos, title)
 	local widget = wibox.widget.textbox()
-	local bg = wibox.container.background()
-	bg:set_widget(widget)
+	local bg = wibox.widget { widget, widget = wibox.container.background }
 
-	local container = wrap_and_add(name, parent, bg, widget)
 	vicious.register(widget, vicious.widgets.mdir, function(widget, args)
 		if args[1] > 0 then
-			naughty.notify({
-				title = "New mail arrived in box " .. title,
-				text = title .. " " ..args[2].." / "..args[1],
-				position = notify_pos or "top_left"
-
-			})
 			bg:set_bg(beautiful.bg_urgent)
 			bg:set_fg(beautiful.fg_urgent)
-			container:show()
+			bg.visible = true
 		elseif args[2] > 0 then
 			bg:set_bg(beautiful.bg_focus)
 			bg:set_fg(beautiful.fg_focus)
-			container:show()
+			bg.visible = true
 		else
-			bg:set_bg(beautiful.bg_normal)
-			bg:set_fg(beautiful.fg_normal)
-			container:hide()
+			bg.visible = false
 		end
 		return "⬓⬓ Unread "..args[2].." / New "..args[1].. " "
-	end, 0, mailboxes)
-	widgets.update(name)
-	return container
+	end, 60, mailboxes)
+	return bg
 end
---}}}
-widgets.add.mail = mailwidget
 
--- text clock
-local function clockwidget(name, parent)
-	return wrap_and_add(name, parent, wibox.widget.textclock())
-end
---}}}
-widgets.add.clock = clockwidget
-
--- containerbox
-local function layoutwidget(parent)
+function widgets.layout(s)
 	local mylayoutbox = awful.widget.layoutbox(s)
 
 	mylayoutbox:buttons(awful.util.table.join(
@@ -198,114 +88,142 @@ local function layoutwidget(parent)
 		awful.button({ }, 4, function () awful.layout.inc( 1) end),
 		awful.button({ }, 5, function () awful.layout.inc(-1) end)
 	))
-	return wrap_and_add("layout", parent, mylayoutbox);
+	return mylayoutbox
 end
---}}}
-widgets.add.layout_indicator = layoutwidget
 
--- taglist
-local function taglistwidget(name, parent)
-	local filter_urgentonly = function(t, args)
-		for k, c in pairs(t:clients()) do
-			if c.urgent then return true end
-		end
-		return t.selected
-	end
-	-- Create a taglist widget
-	return wrap_and_add(name, parent,
-	awful.widget.taglist(parent.screen, awful.widget.taglist.filter.noempty, mytaglist.buttons)
+function widgets.screennum(s)
+		return wibox.widget.textbox("Screen " .. s.index)
+end
+
+function widgets.taglist(s)
+	return awful.widget.taglist(
+		s, awful.widget.taglist.filter.noempty, mytaglist.buttons
 	)
-end --}}}
-widgets.add.taglist = taglistwidget
+end
 
--- system tray
--- not using a name argument, because only one systray is allowed
-local function systraywidget(parent)
-	if (wlist["systray"] ~= nil) then
-		return
-	end
-	wlist["systray"] = wibox.widget.systray()
-	parent.container:add(wlist["systray"])
-	return wlist["systray"]
-end --}}}
-widgets.add.systray = systraywidget
+function widgets.systray(s)
+	return {
+		wibox.widget.systray(),
+		layout = awful.widget.only_on_screen,
+		screen = s and s.index or "primary",
+	}
+end
 
--- cpu usage
-local function cpuwidget(name, parent)
-	local cpu = wrap_and_add(name, parent, wibox.widget.textbox())
-	vicious.register(wlist[parent.screen][name], vicious.widgets.cpu, "CPU: $1%")
-	return cpu
-end --}}}
-widgets.add.cpu = cpuwidget
+local function graph_label(graph, label, rotation, fontsize)
+	return wibox.widget {
+		{
+			{
+				text = label,
+				font = beautiful.fontface and (beautiful.fontface .. " " .. (fontsize or 7)) or beautiful.font,
+				widget = wibox.widget.textbox
+			},
+			direction = rotation or 'east', widget = wibox.container.rotate 
+		},
+		graph,
+		layout = wibox.layout.fixed.horizontal
+	}
+end
+
+function widgets.cpu(s)
+	vicious.cache(vicious.widgets.cpu)
+	return widgets.graph(s, "CPU", vicious.widgets.cpu, "$1", 1)
+end
+
+function widgets.ram(s)
+	return widgets.graph(s, "RAM", vicious.widgets.mem, "$1", 1)
+end
+
+function widgets.graph(s, label, viciouswidget, viciousformat, interval)
+	local graph = wibox.widget {
+		width = 60,
+		background_color = beautiful.bg_focus,
+		color = "linear:0,0:0,20:0,#FF0000:0.3,#FFFF00:0.6," .. beautiful.fg_normal,
+		widget = wibox.widget.graph,
+	}
+	local overlay = wibox.widget {
+		align = 'center',
+		widget = wibox.widget.textbox
+	}
+	vicious.register(
+		graph,
+		viciouswidget,
+		function(widget, args)
+			overlay.markup = percentage_overlay(args[1], beautiful.bg_normal)
+			return args[1]
+		end,
+		interval or 1
+		)
+	return {
+		layout = awful.widget.only_on_screen,
+		screen = s and s.index or "primary",
+		graph_label(
+			{
+				graph,
+				overlay,
+				layout = wibox.layout.stack
+			},
+			label,
+			nil,
+			7
+		)
+	}
+end
+
+local function bar_with_overlay(fg, bg, width, height)
+	local progress = wibox.widget {
+		max_value = 1,
+		color = fg,
+		background_color = bg,
+		forced_width = width,
+		forced_height = height,
+		widget        = wibox.widget.progressbar,
+	}
+
+	progress.overlay = wibox.widget {
+		font = beautiful.fontface and (beautiful.fontface .. " " .. 7) or beautiful.font,
+		align = center,
+		widget = wibox.widget.textbox
+	}
+
+	return {
+		progress,
+		progress.overlay,
+		layout = wibox.layout.stack
+	}
+end
 
 -- battery
-local function batterywidget(name, parent, batname)
-	local widget = wibox.widget.textbox()
-	local bg = wibox.container.background()
-	bg:set_widget(widget)
-	vicious.register(widget, vicious.widgets.bat, function (widget, args)
-		if args[2] == 0 then return ""
+function widgets.battery(s)
+	bat1 = bar_with_overlay(beautiful.fg_focus, beautiful.bg_focus, 100, math.floor(s.dpi / 10))
+	bat2 = bar_with_overlay(beautiful.fg_focus, beautiful.bg_focus, 100, math.floor(s.dpi / 10))
+
+	combined_bats = graph_label(
+		{ bat1,bat2,layout = wibox.layout.fixed.vertical },
+		"BAT"
+	)
+
+	callback = function (widget, args)
+		if args[2] == 0 then
+			combined_bats:set_visible(false)
+			return ""
 		else
+			combined_bats.visible = true
 			if args[2] < 15 then
-				bg:set_bg(beautiful.bg_urgent)
-				bg:set_fg(beautiful.fg_urgent)
+				widget.background_color = beautiful.bg_urgent
 			else
-				bg:set_bg(beautiful.bg_normal)
-				bg:set_fg(beautiful.fg_normal)
+				widget.background_color = beautiful.bg_focus
 			end
-			return name .. ": " ..
-			args[1]..args[2].."% - "..args[3]
+			widget.overlay.markup = percentage_overlay(
+				args[2] * 100, beautiful.bg_normal, args[1] .. " "
+			)
+			return args[2]
 		end
-	end, 61, batname)
-	widgets.update(name)
-	return wrap_and_add(name, parent, bg)
-end --}}}
-widgets.add.battery = batterywidget
+	end
 
--- wireless status
-local function wifiwidget(name, parent, interface)
-	local wifi = wrap_and_add(name, parent, wibox.widget.textbox())
-	vicious.register(wlist[parent.screen][name], vicious.widgets.wifi,
-	"WLAN ${ssid} @ ${sign}dBm, Q:${link}/70", 31, interface)
-	return wifi
-end --}}}
-widgets.add.wifi = wifiwidget
+	vicious.register(bat1[1], vicious.widgets.bat, callback, 61, "BAT0")
+	vicious.register(bat2[1], vicious.widgets.bat, callback, 61, "BAT1")
 
--- }}}
---------------------------------------------------------------------------------
+	return combined_bats
+end
 
---------------------------------------------------------------------------------
--- spacers {{{
---------------------------------------------------------------------------------
-
-local spacer = wibox.widget.textbox()
-spacer:set_text(" ")
-
--- manual spacing between widgets
-local function spacerwidget(parent)
-	parent.container:add(spacer)
-end --}}}
-widgets.add.spacer = spacerwidget
-
--- manual spacing between widgets
-local function textwidget(text, parent)
-	local newtext = wibox.widget.textbox()
-	newtext:set_text(text)
-	parent.container:add(newtext)
-end --}}}
-widgets.add.text = textwidget
-
--- change appearance of spacers
-local function spacertext(text)
-	spacer:set_text(text)
-end --}}}
-widgets.set_spacer_text = spacertext
-
--- }}}
---------------------------------------------------------------------------------
-
-setup()
-
-return widgets
-
--- vim:foldmethod=marker
+return setmetatable(widgets, { __call = function(_, ...) return widgets.setup(...) end })

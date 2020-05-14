@@ -7,7 +7,8 @@ theme.wallpaper = "~/.wallpaper"
 -- }}}
 -- {{{ Styles
 theme.fontface = "Menlo for Powerline"
-theme.fontsize = math.floor(awful.screen.focused().dpi / 8)
+--theme.fontface = "Terminus for Powerline"
+theme.fontsize = math.floor(awful.screen.focused().dpi / 10)
 theme.font     = theme.fontface .. " " .. theme.fontsize
 
 -- {{{ Colors

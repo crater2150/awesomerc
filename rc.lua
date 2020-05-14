@@ -6,6 +6,7 @@ naughty     = require("naughty")
 conf        = require("localconf")
               require("errors")
 inspect = require("lib.inspect")
+wibox = require("wibox")
 -- }}}
 
 beautiful.init(awful.util.getdir("config") .. "/theme.lua")
@@ -28,33 +29,27 @@ tags.setup()
 -- {{{ widgets
 widgets = require("widgets")
 for s in screen do
-	local ltop = widgets.container(s, "left", "top")
-	local rtop = widgets.container(s, "right", "top")
-	local lbottom = widgets.container(s, "left", "bottom")
-	local rbottom = widgets.container(s, "right", "bottom")
+    widgets(s).left(
+	{
+	    widgets.screennum(s),
+	    widgets.spacer,
+	    widgets.layout(s),
+	    widgets.taglist(s),
+	    layout = wibox.layout.fixed.horizontal
+	},
+	wibox.widget.textclock()
+	)
 
-	local clock = widgets.add.clock("clock", ltop)
-
-	widgets.add.text(" (S:" .. s.index .. ") ", lbottom)
-	widgets.add.layout_indicator(lbottom)
-	widgets.add.taglist("tags", lbottom)
-
-	local mail = widgets.add.mail("mail", rbottom, { os.getenv("HOME") .. "/.maildir/uber" }, "bottom_right", "uber")
-	mail:set_left(15)
-
-	if s == screen.primary then
-	    widgets.add.cpu("cpu", rtop)
-	    widgets.add.spacer(rtop)
-	    widgets.add.battery("int", rtop, "BAT0")
-	    widgets.add.spacer(rtop)
-	    widgets.add.battery("ext", rtop, "BAT1")
-	    widgets.add.spacer(rtop)
-	    widgets.add.wifi("wlan", rtop, "wlan0")
-	    widgets.add.spacer(rtop)
-	    widgets.add.systray(rtop)
-	end
-
-	widgets.set_spacer_text("  ◈  ")
+    widgets(s).right(
+	{
+	    widgets.cpu(),
+	    widgets.ram(),
+	    widgets.battery(s),
+	    widgets.systray(s),
+	    layout = wibox.layout.fixed.horizontal
+	},
+	widgets.mail({ os.getenv("HOME") .. "/.maildir/uber" }, "bottom_right", "uber")
+	)
 end
 -- }}}
 
