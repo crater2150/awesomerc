@@ -196,5 +196,16 @@ awful.rules.rules = {
 	    properties = {
 		  tag = "F4"
 	    }
+      },
+      {
+	    rule = { class = "Dragon" },
+	    properties = {
+		  sticky = true,
+		  ontop = true
+	    }
+      },
+      {
+	    rule = { class = "adobe dng converter.exe" },
+	    properties = { floating = true, size_hints_honor = true }
       }
 }
