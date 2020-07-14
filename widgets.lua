@@ -8,9 +8,6 @@ local beautiful = require("beautiful")
 local widgets = { add = {} }
 
 local wlist = {}
-local bars = {}
-local leftwibar = {}
-local rightwibar = {}
 
 local mytaglist = {}
 mytaglist.buttons = awful.util.table.join(
@@ -62,7 +59,7 @@ function widgets.mail(mailboxes, notify_pos, title)
 	local widget = wibox.widget.textbox()
 	local bg = wibox.widget { widget, widget = wibox.container.background }
 
-	vicious.register(widget, vicious.widgets.mdir, function(widget, args)
+	local callback = function(widget, args)
 		if args[1] > 0 then
 			bg:set_bg(beautiful.bg_urgent)
 			bg:set_fg(beautiful.fg_urgent)
@@ -75,7 +72,9 @@ function widgets.mail(mailboxes, notify_pos, title)
 			bg.visible = false
 		end
 		return "⬓⬓ Unread "..args[2].." / New "..args[1].. " "
-	end, 60, mailboxes)
+	end
+	vicious.register(widget, vicious.widgets.mdir, callback, 60, mailboxes)
+	table.insert(wlist, widget)
 	return bg
 end
 
@@ -117,7 +116,7 @@ local function graph_label(graph, label, rotation, fontsize)
 				font = beautiful.fontface and (beautiful.fontface .. " " .. (fontsize or 7)) or beautiful.font,
 				widget = wibox.widget.textbox
 			},
-			direction = rotation or 'east', widget = wibox.container.rotate 
+			direction = rotation or 'east', widget = wibox.container.rotate
 		},
 		graph,
 		layout = wibox.layout.fixed.horizontal
@@ -144,15 +143,13 @@ function widgets.graph(s, label, viciouswidget, viciousformat, interval)
 		align = 'center',
 		widget = wibox.widget.textbox
 	}
-	vicious.register(
-		graph,
-		viciouswidget,
-		function(widget, args)
-			overlay.markup = percentage_overlay(args[1], beautiful.bg_normal)
-			return args[1]
-		end,
-		interval or 1
-		)
+	local callback = function(widget, args)
+		overlay.markup = percentage_overlay(args[1], beautiful.bg_normal)
+		return args[1]
+	end
+	vicious.register(graph, viciouswidget, callback, interval or 1)
+	table.insert(wlist, graph)
+
 	return {
 		layout = awful.widget.only_on_screen,
 		screen = s and s.index or "primary",
@@ -221,9 +218,17 @@ function widgets.battery(s)
 	end
 
 	vicious.register(bat1[1], vicious.widgets.bat, callback, 61, "BAT0")
+	table.insert(wlist, bat1[1])
 	vicious.register(bat2[1], vicious.widgets.bat, callback, 61, "BAT1")
+	table.insert(wlist, bat2[1])
 
 	return combined_bats
+end
+
+-- name is ignored and there for backwards compatibility. will simply update all
+-- widgets registered with vicious
+function widgets.update(name)
+	vicious.force(wlist)
 end
 
 return setmetatable(widgets, { __call = function(_, ...) return widgets.setup(...) end })
