@@ -28,7 +28,7 @@ tags.setup()
 
 -- {{{ widgets
 widgets = require("widgets")
-for s in screen do
+awful.screen.connect_for_each_screen(function(s)
     widgets(s).left(
 	{
 	    widgets.screennum(s),
@@ -50,7 +50,7 @@ for s in screen do
 	},
 	widgets.mail({ os.getenv("HOME") .. "/.maildir/uber" }, "bottom_right", "uber")
 	)
-end
+end)
 -- }}}
 
 audiowheel = require("audiowheel")-- { bg = "#ffff00aa" }
