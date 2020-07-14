@@ -31,14 +31,15 @@ local mpdmap = {
 	{"N", mpd.ctrl.prev,                     "Prev" },
 	{"s", binder.spawn("mpd"),               "start MPD" },
 	{"S", binder.spawn("mpd --kill"),        "kill MPD" },
-	{"g", binder.spawn(conf.cmd.mpd_client), "Gmpc" },
+	{"g", binder.spawn(conf.cmd.mpd_client), "Gmpc", stay_in_mode=false },
 	{"separator", "Search" },
 	{"a", mpd.prompt.artist, "artist" },
 	{"b", mpd.prompt.album,  "album" },
 	{"t", mpd.prompt.title,  "title" },
 	{"j", mpd.prompt.jump,  "jump" },
 	{"r", mpd.prompt.toggle_replace_on_search,   "toggle replacing" },
-	{"h", mb.grabf{keymap=mpdhosts, name="Select MPD host"}, "Change host" }
+	{"h", mb.grabf{keymap=mpdhosts, name="Select MPD host"},
+		"Change host", stay_in_mode=false }
 }
 local mprismap = {
 	{"m", binder.spawn("playerctl play-pause"), "Toggle" },
