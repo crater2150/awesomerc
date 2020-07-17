@@ -85,7 +85,9 @@ local myglobalkeys = awful.util.table.join(
 	--{{{ Modal mappings
 
 	awful.key({ modkey            },  "m",  function()
-		awful.spawn.easy_async("which playerctl && playerctl -p spotify status", function(stdout, stderr, reason, exitcode)
+		awful.spawn.easy_async_with_shell(
+		"which playerctl && playerctl -p spotify status",
+		function(stdout, stderr, reason, exitcode)
 			if exitcode > 0 then
 				mb.grab{keymap=mpdmap, name="MPD", stay_in_mode=true}
 			else
