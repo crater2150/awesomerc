@@ -133,6 +133,8 @@ local myglobalkeys = awful.util.table.join(
 	awful.key({ modkey }, "x", binder.spawn("dmxrandr")),
 	awful.key({ modkey, "Shift" }, "x", binder.spawn("xd --dmenu")),
 	awful.key({ modkey }, "z", binder.spawn("dmumount")),
+	awful.key({ modkey }, "p", binder.spawn("passmenu --type")),
+	awful.key({ modkey, "Shift" }, "p", binder.spawn("passmenu")),
 
 	--}}}
 

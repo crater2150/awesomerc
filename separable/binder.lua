@@ -7,6 +7,7 @@ local mb = require("modalbind")
 mb.init()
 
 local globalkeys = {}
+local globalkeyfuncs = {}
 
 app_folders = {
 	"/usr/share/applications",
@@ -86,81 +87,34 @@ function screen_in_wrapdir(dir, _screen)
     end
 end
 
-local default_bindings = awful.util.table.join(
-	awful.key({ modkey, "Control" }, "r", awesome.restart),
-	awful.key({ modkey, "Shift"   }, "q", awesome.quit),
-	awful.key({ modkey,           }, "Return", spawnf(conf.cmd.terminal)),
-
-	--{{{ Layout manipulation and client position
-	awful.key({ modkey }, "j", function ()
-		awful.client.focus.byidx( 1)
-		if client.focus then client.focus:raise() end
-	end),
-	awful.key({ modkey }, "k", function ()
-		awful.client.focus.byidx(-1)
-		if client.focus then client.focus:raise() end
-	end),
-
-	-- Layout manipulation
-	awful.key({ modkey }, "Tab", function ()
-		awful.client.focus.history.previous()
-		if client.focus then
-			client.focus:raise()
-		end
-	end),
-	awful.key({ "Mod1",           }, "Tab", function ()
-		awful.client.focus.history.previous()
-		if client.focus then
-			client.focus:raise()
-		end
-	end),
-	awful.key({ modkey, "Shift"   }, "j", function ()
-		awful.client.swap.byidx(  1)
-	end),
-	awful.key({ modkey, "Shift"   }, "k", function ()
-		awful.client.swap.byidx( -1)
-	end),
-	awful.key({ modkey,           }, "h", screen_focus_wrapdir("left")),
-	awful.key({ modkey,           }, "l", screen_focus_wrapdir("right")),
-	--}}}
-
-	--{{{ Modal mappings
-
-	awful.key({ modkey            },  "space",  mb.grabf{keymap=layoutmap, name="Layouts"}),
-	awful.key({ modkey, "Control" },  "space",  mb.grabf{keymap=layoutsettings, name="Layout settings", stay_in_mode=true}),
-	--}}}
-
-	--{{{ Audio control
-
-	--awful.key({ }, "XF86AudioLowerVolume",  spawnf("amixer set Master 2%-")),
-	--awful.key({ }, "XF86AudioRaiseVolume",  spawnf("amixer set Master 2%+")),
-	--awful.key({ }, "XF86AudioMute",         spawnf("amixer set Master toggle")),
-
-	--}}}
-
-	--{{{ Prompt
-
-	awful.key({ modkey }, "r", conf.cmd.run),
-	awful.key({ modkey, "Shift" }, "r", menubar.show)
-	--}}}
-)
-
 function binder.add_bindings(keys)
 	globalkeys = awful.util.table.join(globalkeys, keys);
 	return binder
 end
 
-function binder.add_default_bindings()
-	return binder.add_bindings(default_bindings)
+function binder.add_reloadable(key_func)
+    table.insert(globalkeyfuncs, key_func)
+    return binder
 end
 
 function binder.clear()
 	globalkeys = {}
+	globalkeyfuncs = {}
 end
 
 
 function binder.apply()
-	root.keys(globalkeys)
+	local allkeys = awful.util.table.clone(globalkeys)
+	inspect=require("lib/inspect")
+	print(inspect(globalkeyfuncs))
+	for k,v in pairs(globalkeyfuncs) do
+	    print("k:" .. k)
+	    local loadedkeys = v()
+	    print(inspect(loadedkeys))
+	    allkeys = awful.util.table.join(allkeys, loadedkeys)
+	end
+	print(inspect(allkeys))
+	root.keys(allkeys)
 end
 
 local function client_opacity_set(c, default, max, step)
@@ -226,6 +180,73 @@ end
 function binder.client.add_bindings(keys)
 	clientkeys = awful.util.table.join(clientkeys, keys);
 end
+
+local default_bindings = awful.util.table.join(
+	awful.key({ modkey, "Control" }, "r", awesome.restart),
+	awful.key({ modkey, "Shift"   }, "q", awesome.quit),
+	awful.key({ modkey,           }, "Return", spawnf(conf.cmd.terminal)),
+
+	--{{{ Layout manipulation and client position
+	awful.key({ modkey }, "j", function ()
+		awful.client.focus.byidx( 1)
+		if client.focus then client.focus:raise() end
+	end),
+	awful.key({ modkey }, "k", function ()
+		awful.client.focus.byidx(-1)
+		if client.focus then client.focus:raise() end
+	end),
+
+	-- Layout manipulation
+	awful.key({ modkey }, "Tab", function ()
+		awful.client.focus.history.previous()
+		if client.focus then
+			client.focus:raise()
+		end
+	end),
+	awful.key({ "Mod1",           }, "Tab", function ()
+		awful.client.focus.history.previous()
+		if client.focus then
+			client.focus:raise()
+		end
+	end),
+	awful.key({ modkey, "Shift"   }, "j", function ()
+		awful.client.swap.byidx(  1)
+	end),
+	awful.key({ modkey, "Shift"   }, "k", function ()
+		awful.client.swap.byidx( -1)
+	end),
+	awful.key({ modkey,           }, "h", screen_focus_wrapdir("left")),
+	awful.key({ modkey,           }, "l", screen_focus_wrapdir("right")),
+	--}}}
+
+	--{{{ Modal mappings
+
+	awful.key({ modkey            },  "space",  mb.grabf{keymap=layoutmap, name="Layouts"}),
+	awful.key({ modkey, "Control" },  "space",  mb.grabf{keymap=layoutsettings, name="Layout settings", stay_in_mode=true}),
+	--}}}
+
+	--{{{ Audio control
+
+	--awful.key({ }, "XF86AudioLowerVolume",  spawnf("amixer set Master 2%-")),
+	--awful.key({ }, "XF86AudioRaiseVolume",  spawnf("amixer set Master 2%+")),
+	--awful.key({ }, "XF86AudioMute",         spawnf("amixer set Master toggle")),
+
+	--}}}
+
+	--{{{ Prompt
+
+	awful.key({ modkey }, "r", conf.cmd.run),
+	awful.key({ modkey, "Shift" }, "r", menubar.show),
+
+	--}}}
+
+	-- reloading
+	awful.key({ modkey, "Control" }, "b", binder.apply)
+)
+function binder.add_default_bindings()
+	return binder.add_bindings(default_bindings)
+end
+
 
 
 return binder

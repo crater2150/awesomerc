@@ -64,8 +64,9 @@ binder.modal.hide_default_options()
 --binder.modal.set_x_offset(18)
 
 binder.add_default_bindings()
-binder.add_bindings(tags.create_bindings())
-binder.add_bindings(require("mybindings"))
+binder.add_reloadable(tags.create_bindings)
+mybindings = awful.util.getdir("config") .. "/mybindings.lua"
+binder.add_reloadable(function() return dofile(mybindings) end)
 
 binder.add_bindings(awful.util.table.join(
     awful.key({}, "XF86AudioRaiseVolume", function() audiowheel:up() end),
