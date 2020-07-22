@@ -41,11 +41,17 @@ local mpdmap = {
 	{"h", mb.grabf{keymap=mpdhosts, name="Select MPD host"},
 		"Change host", stay_in_mode=false }
 }
+
+local playerctl = "playerctl"
+if conf.mprisplayer then
+	playerctl = playerctl .. " -p " .. conf.mprisplayer
+end
+
 local mprismap = {
-	{"m", binder.spawn("playerctl play-pause"), "Toggle" },
-	{"n", binder.spawn("playerctl next"),       "Next" },
-	{"N", binder.spawn("playerctl previous"),   "Prev" },
-	{"s", binder.spawn("playerctl stop"),       "Prev" },
+	{"m", binder.spawn(playerctl .. " play-pause"), "Toggle" },
+	{"n", binder.spawn(playerctl .. " next"),       "Next" },
+	{"N", binder.spawn(playerctl .. " previous"),   "Prev" },
+	{"s", binder.spawn(playerctl .. " stop"),       "Prev" },
 }
 
 local messengermap = {
@@ -86,7 +92,7 @@ local myglobalkeys = awful.util.table.join(
 
 	awful.key({ modkey            },  "m",  function()
 		awful.spawn.easy_async_with_shell(
-		"which playerctl && playerctl -p spotify status",
+		"which playerctl && " .. playerctl .. " status",
 		function(stdout, stderr, reason, exitcode)
 			if exitcode > 0 then
 				mb.grab{keymap=mpdmap, name="MPD", stay_in_mode=true}
