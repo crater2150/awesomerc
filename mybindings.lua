@@ -74,8 +74,8 @@ local progmap = {
 
 local home = os.getenv("HOME")
 local docmap = {
-	{"p", binder.spawn("docopen " .. home .. "/ pdf"), "Alle PDF-Dokumente" },
-	{"b", binder.spawn("docopen " .. home .. "/doc/books pdf epub mobi txt lit html htm"), "Bücher" },
+	{"p", binder.spawn("docopen -e pdf " .. home), "Alle PDF-Dokumente" },
+	{"b", binder.spawn("docopen -e pdf -e epub -e mobi -e txt -e lit -e html -e htm " .. home .. "/doc/books "), "Bücher" },
 	{"t", binder.spawn("dmtexdoc"), "Texdoc" },
 	{"j", binder.spawn("dmjavadoc"), "Javadoc" }
 }

@@ -215,8 +215,10 @@ local default_bindings = awful.util.table.join(
 	awful.key({ modkey, "Shift"   }, "k", function ()
 		awful.client.swap.byidx( -1)
 	end),
-	awful.key({ modkey,           }, "h", screen_focus_wrapdir("left")),
-	awful.key({ modkey,           }, "l", screen_focus_wrapdir("right")),
+	--awful.key({ modkey,           }, "h", screen_focus_wrapdir("left")),
+	--awful.key({ modkey,           }, "l", screen_focus_wrapdir("right")),
+	awful.key({ modkey,           }, "h", function() awful.screen.focus_relative(1) end),
+	awful.key({ modkey,           }, "l", function() awful.screen.focus_relative(-1) end),
 	--}}}
 
 	--{{{ Modal mappings
