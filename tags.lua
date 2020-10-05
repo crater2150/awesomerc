@@ -80,12 +80,20 @@ local tagdef = {
 	{"F4", { layout = awful.layout.suit.max }},
 }
 
+function defaultlayout(s)
+	if s.geometry.width > s.geometry.height then
+		return awful.layout.suit.fair
+	else
+		return awful.layout.suit.fair.horizontal
+	end
+end
+
 function tags.setup()
 	awful.screen.connect_for_each_screen(function(s)
 		for _,t in ipairs(tagdef) do
 			awful.tag.add(t[1], awful.util.table.join(
 				{screen = s},
-				t[2] or { layout = awful.layout.layouts[1] }
+				t[2] or { layout = defaultlayout(s) }
 			))
 		end
 		s.tags[1]:view_only()
