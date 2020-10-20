@@ -61,6 +61,7 @@ audiowheel = require("audiowheel")-- { bg = "#ffff00aa" }
 binder = require("separable.binder")
 binder.modal.set_location("bottom_left")
 binder.modal.hide_default_options()
+binder.modal.set_opacity(0.8)
 --binder.modal.set_x_offset(18)
 
 binder.add_default_bindings()
