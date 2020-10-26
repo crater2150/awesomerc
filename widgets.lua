@@ -211,7 +211,7 @@ function widgets.battery(s)
 				widget.background_color = beautiful.bg_focus
 			end
 			widget.overlay.markup = percentage_overlay(
-				args[2] * 100, beautiful.bg_normal, args[1] .. " "
+				args[2], beautiful.bg_normal, args[1] .. " "
 			)
 			return args[2]
 		end
