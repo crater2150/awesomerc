@@ -63,6 +63,22 @@ local messengermap = {
 	{"w", binder.spawn("wire"),               "Wire" },
 }
 
+local function brightnesskey(key)
+	return {key, binder.spawn("xbacklight -set " .. key .. "0"),  key .. "0%" }
+end
+local brightnessmap = {
+	brightnesskey("1"),
+	brightnesskey("2"),
+	brightnesskey("3"),
+	brightnesskey("4"),
+	brightnesskey("5"),
+	brightnesskey("6"),
+	brightnesskey("7"),
+	brightnesskey("8"),
+	brightnesskey("9"),
+	{"0", binder.spawn("xbacklight -set 100"),  "100%" },
+}
+
 local progmap = {
 	{"f", binder.spawn("firefox"),         "Firefox" },
 	{"q", binder.spawn("qutebrowser"),     "Qutebrowser" },
@@ -104,6 +120,7 @@ local myglobalkeys = awful.util.table.join(
 	--awful.key({ modkey, "Shift"   },  "m",  mb.grabf(mpdpromts, "MPD - Search for")),
 	awful.key({ modkey            },  "c",  mb.grabf{keymap=progmap, name="Commands"}),
 	awful.key({ modkey            },  "d",  mb.grabf{keymap=docmap, name="Documents"}),
+	awful.key({ modkey            },  "b",  mb.grabf{keymap=brightnessmap, name="Brightness"}),
 	awful.key({ modkey            },  "n",  function()
 		if naughty.is_suspended() then
 			naughty.resume()
