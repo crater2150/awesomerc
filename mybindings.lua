@@ -12,6 +12,14 @@ local mpd = require("separable.mpd")
 local handy = require("handy")
 local myglobalkeys = {}
 
+local wibars = {}
+for s in screen do
+	table.insert(wibars, s.leftwibar)
+	table.insert(wibars, s.rightwibar)
+end
+local lockhl = require("lockhl")
+lockhl:setup(wibars, '#F2C740')
+
 local function mpdserver(host)
 	return function()
 		mpd.set_server(host, "6600")
@@ -55,11 +63,12 @@ local mprismap = {
 }
 
 local messengermap = {
+	{"e", binder.spawn("launch-elements"),    "Element" },
 	{"i", binder.spawn(conf.cmd.irc_client),  "IRC" },
 	{"m", binder.spawn(conf.cmd.mail_client), "Mail" },
 	{"r", binder.spawn("rocketchat"),         "RocketChat" },
 	{"s", binder.spawn("signal-desktop"),     "Signal" },
-	{"t", binder.spawn("telegram"),           "Telegram" },
+	{"t", binder.spawn("telegram-desktop"),   "Telegram" },
 	{"w", binder.spawn("wire"),               "Wire" },
 }
 
@@ -102,7 +111,8 @@ local notifymap = {
 
 local myglobalkeys = awful.util.table.join(
 	awful.key({ }, "Pause", binder.spawn('rofi -show window')),
-	awful.key({ }, "Print", binder.spawn('dmscrot')),
+	--awful.key({ }, "Print", binder.spawn('dmscrot')),
+	awful.key({ }, "Print", binder.spawn('flameshot gui')),
 
 	--{{{ Modal mappings
 
@@ -150,7 +160,7 @@ local myglobalkeys = awful.util.table.join(
 	awful.key({ modkey }, "x", binder.spawn("dmxrandr")),
 	awful.key({ modkey, "Shift" }, "x", binder.spawn("xd --dmenu")),
 	awful.key({ modkey }, "z", binder.spawn("dmumount")),
-	awful.key({ modkey }, "p", binder.spawn("passmenu --type")),
+	awful.key({ modkey }, "p", nil, binder.spawn("passmenu --type")),
 	awful.key({ modkey, "Shift" }, "p", binder.spawn("passmenu")),
 
 	--}}}
@@ -169,7 +179,10 @@ local myglobalkeys = awful.util.table.join(
 	awful.key({         }, "XF86AudioPrev", mpd.ctrl.prev),
 
 	awful.key({ modkey }, "y", binder.spawn("copyq toggle")),
-	awful.key({ modkey }, "/", binder.spawn("rofi -show calc -modi calc -no-show-match -no-sort"))
+	awful.key({ modkey }, "/", binder.spawn("rofi -show calc -modi calc -no-show-match -no-sort")),
+	awful.key({ modkey }, "e", binder.spawn('rofi -show emoji')),
+	awful.key( {}, "Num_Lock", lockhl("Num")),
+	awful.key( {}, "Caps_Lock", lockhl("Caps"))
 
 	--}}}
 )
