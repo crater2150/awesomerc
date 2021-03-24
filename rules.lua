@@ -17,12 +17,10 @@ end
 if not localconf.screen then
       localconf.screen = {}
 end
-local screen_main = localconf.screen.main or 1
-local screen_chat = localconf.screen.chat or screen.count()
-local screen_mail = localconf.screen.mail or screen.count()
+local screen_main = math.min(localconf.screen.main or 1, screen.count())
+local screen_chat = math.min(localconf.screen.chat or screen.count(), screen.count())
+local screen_mail = math.min(localconf.screen.mail or screen.count(), screen.count())
 print("Screens: main: ".. screen_main .. ", chat: ".. screen_chat .. ", mail: " .. screen_mail)
-
-screen2 = screen:count() > 1 and 2 or 1
 
 awful.rules.rules = {
       -- All clients will match this rule.
@@ -107,13 +105,6 @@ awful.rules.rules = {
 	    }
       },
       {
-	    rule = { class = "Eclipse", name = nil, type = "dialog" },
-	    properties = {
-		  screen = screen2, tag = "8",
-		  floating = false
-	    }
-      },
-      {
 	    rule = { class = "Eclipse", name = ".*", type = "dialog" },
 	    properties = {
 		  screen = 1, tag = "8",
@@ -148,10 +139,17 @@ awful.rules.rules = {
       },
       {
 	    rule = { class = "Telegram" },
+	    except = { name = "Media viewer" },
 	    properties = {
 		  screen = screen_chat, tag = "3"
 	    },
 	    callback = awful.client.setslave
+      },
+      {
+	    rule = { class = "Telegram", name = "Media viewer" },
+	    properties = {
+		  fullscreen = true
+	    },
       },
       {
 	    rule_any = { role ={  "conversation" }, instance = { "Weechat" } },
