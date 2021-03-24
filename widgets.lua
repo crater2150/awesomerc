@@ -38,6 +38,7 @@ function add_bar(s, position, direction, first, second)
 	newbar = awful.wibar({
 		position = position,
 		screen = s,
+		opacity = 0.6,
 		width = math.floor(s.dpi / 5)
 	})
 
